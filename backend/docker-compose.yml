@@ -1,9 +1,7 @@
-version: latest
-
 services:
   mongodb:
-    image: mongo:4
-    container_name: mongodb
+    image: mongo:latest
+    container_name: selfie-mongodb
     ports:
       - 27017:27017
     environment:
