@@ -1,5 +1,5 @@
 services:
-  mongodb:
+  mongo:
     image: mongo:latest
     container_name: selfie-mongodb
     ports:
@@ -19,10 +19,10 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
       ME_CONFIG_MONGODB_ADMINPASSWORD: pass
-      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_DATABASE: selfie-db
     depends_on:
-      - mongodb
+      - mongo
     volumes:
       - ./data/mongo-express:/data 
     restart: unless-stopped
