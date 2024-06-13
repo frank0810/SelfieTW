@@ -38,3 +38,7 @@ services:
     environment:
       MONGODB_URI: ${MONGODB_URI}
       JWT_SECRET: ${JWT_SECRET}
+    env_file:
+      - .env
+    depends_on:
+      - mongo
