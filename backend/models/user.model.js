@@ -10,13 +10,19 @@ const userSchema = new Schema({
   password: { type: String, required: true },
 });
 
-userSchema.pre('save', async function (next) {
+
+userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
     return next();
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+    this.password = hashedPassword;
+    next();
+  } catch (error) {
+    return next(error); // Passa l'errore a Mongoose per la gestione degli errori
+  }
 });
 
 const User = mongoose.model('User', userSchema);
