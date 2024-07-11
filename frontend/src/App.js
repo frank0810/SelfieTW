@@ -4,6 +4,9 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
+import PomodoroView from './components/PomodoroView/PomodoroView';
+import './App.css';
+
 
 const App = () => {
   return (
@@ -14,6 +17,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
+            <Route path="/pomodoro" element={<PomodoroView />} />
           </Route>
         </Routes>
       </div>

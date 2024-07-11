@@ -1,0 +1,28 @@
+
+body {
+  margin-top: 2%;
+  background-color: #f3f0e4; /* Colore panna per lo sfondo */
+  font-family: Arial, sans-serif; /* Font predefinito per il testo */
+  color: #333; /* Colore grigio scuro per il testo */
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+
+}
+.pomodoro-variant {
+  border: 1px solid #333; 
+  border-radius: 10px;
+  padding: 2%; 
+}
+
+#pomodoro-header{
+  color: red;
+  align-self: center;
+}
+
+button{
+  margin-top: 1%;
+}
