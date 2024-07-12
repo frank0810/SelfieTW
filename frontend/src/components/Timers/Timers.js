@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './Timers.css'; // Importa lo stile per il pop-up
+import './Timers.css'; 
 import studioImg from '../../imgs/study_time.png'; 
 import relaxImg from '../../imgs/relax_time.webp'; 
 
-const Timers = ({ cicles }) => {
+const Timers = ({ cicles, studyTime, relaxTime }) => {
   const [currentCycle, setCurrentCycle] = useState(0);
   const [timerIndex, setTimerIndex] = useState(0); // 0 è studio, 1 è relax
   const [timeLeft, setTimeLeft] = useState(0);
@@ -12,8 +12,8 @@ const Timers = ({ cicles }) => {
   const [showModal, setShowModal] = useState(false);
 
   const phases = [
-    { type: 'studio', duration: 30*60 },
-    { type: 'relax', duration: 5*60 }
+    { type: 'studio', duration: studyTime*60 },
+    { type: 'relax', duration: relaxTime*60 }
   ];
 
   useEffect(() => {
@@ -80,8 +80,12 @@ const Timers = ({ cicles }) => {
     <div id="timer-div">
       <p className='remaining-cicles'>Ciclo {currentCycle + 1} di {cicles}</p>
       <h2 className='time-to'>{timerType === 'studio' ? 'E\' il momento di studiare!' : 'Goditi un po\' di riposo!'}</h2>
-      <img src={timerType === 'studio' ? studioImg : relaxImg} className="timer-image"/>
+      <img src={timerType === 'studio' ? studioImg : relaxImg} className="timer-image" alt="study/relax time"/>
       <p id="time-left">{formatTime(timeLeft)}</p>
+      {currentCycle + 1 !== cicles ? (
+      <button onClick={handleNextTimer}>Passa alla prossima fase</button>
+      ):(<p></p>)}
+      <button onClick={reloadPage}>Termina Ciclo</button>
 
       {showModal && (
         <div className="popup">

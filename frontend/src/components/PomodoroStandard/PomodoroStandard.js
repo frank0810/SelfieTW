@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Timers from '../Timers/Timers';
+import './PomodoroStandard.css'; 
 
 const PomodoroStandard = ({ onSubmit }) => {
   const [cicles, setCicles] = useState(0);
@@ -27,7 +28,9 @@ const PomodoroStandard = ({ onSubmit }) => {
         <div>
           <label>
             Numero di cicli:
-            <input
+           
+          </label>
+          <input
               type="number"
               value={cicles}
               onChange={handleCiclesChange}
@@ -35,12 +38,11 @@ const PomodoroStandard = ({ onSubmit }) => {
               max="15"
               required
             />
-          </label>
         </div>
-        <button type="submit">Invia</button>
+        <button type="submit">Inizia</button>
       </form>}
 
-      {showTimers && <Timers cicles={cicles} />} {/* Passa direttamente cicles come prop a Timers */}
+      {showTimers && <Timers cicles={cicles} studyTime={30} relaxTime={5} />} 
     </div>
   );
 };

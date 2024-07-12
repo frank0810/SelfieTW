@@ -1,46 +1,21 @@
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  25% {
-    transform: rotate(10deg);
-  }
-
-  50% {
-    transform: rotate(0deg);
-  }
-
-  75% {
-    transform: rotate(-10deg);
-  }
-
-  100% {
-    transform: rotate(0deg);
-  }
+button {
+  padding: 10px 20px;
+  background-color: #62c6df;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 80%;
+  max-width: 300px;
 }
 
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+button:hover {
+  background-color: #62e483;
 }
 
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.popup { /*DA vedere */
-  /*GPT*/
+/* Popup */
+.popup {
   position: fixed;
   top: 0;
   left: 0;
@@ -53,14 +28,12 @@
 }
 
 .popup-content {
-  /*GPT*/
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
-
 
 .popup-content button {
   padding: 10px 20px;
@@ -72,12 +45,18 @@
   font-size: 16px;
 }
 
-#timer-div {
-  text-align: center;
-}
-
 .popup-content button:hover {
   background-color: #62e483;
+}
+
+/* Timer div */
+#timer-div {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1%;
+  padding: 10px;
 }
 
 .remaining-cicles {
@@ -87,7 +66,7 @@
 }
 
 .timer-image {
-  width: 12%;
+  width: 50%;
   height: auto;
   display: block;
   text-align: center;
@@ -101,9 +80,88 @@
   padding: 1%;
   max-width: fit-content;
   margin: auto;
-  Margin-top: 2%;
-  font-size: 2.5em;
+  margin-top: 2%;
+  font-size: 2em;
   font-family: system-ui;
   border: solid white 10px;
   border-radius: 8%;
+}
+
+/* Animation */
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Media Queries per schermi più grandi */
+@media (min-width: 600px) {
+  button {
+    width: 60%;
+    font-size: 18px;
+  }
+
+  .timer-image {
+    width: 25%;
+  }
+
+  #time-left {
+    font-size: 2.5em;
+  }
+}
+
+@media (min-width: 1024px) {
+  button {
+    width: 90%;
+    font-size: 20px;
+  }
+
+  .timer-image {
+    width: 12%;
+  }
+
+  #time-left {
+    font-size: 3em;
+  }
+
+  .remaining-cicles {
+    font-size: 1.5em;
+  }
+}
+
+/* Media Queries per l'orientamento orizzontale per dispositivi mobili */
+@media (max-width: 1024px) and (orientation: landscape) {
+  #timer-div {
+    flex-direction: row; /* Cambia layout a righe */
+    gap: 10px; /* Spazio tra gli elementi */
+  }
+
+  .timer-image {
+    width: 20%;
+  }
+
+  #time-left {
+    font-size: 1.5em;
+  }
+
+  .remaining-cicles {
+    font-size: 1em;
+  }
+
+  button {
+    width: 90%;
+    font-size: 14px;
+  }
 }

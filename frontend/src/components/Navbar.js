@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 
+
 const NavigationBar = ({ isAuthenticated }) => {
   const navigate = useNavigate();
 

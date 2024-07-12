@@ -37,11 +37,12 @@ button{
 }
 
 .navbar-nav .nav-link {
-  margin-right: 15px; /* Spaziatura tra i link della navbar */
+  margin-right: 12px; /* Spaziatura tra i link della navbar */
+  margin-left: 1%;
 }
 
 .navbar-brand {
-  margin-left: 0; /* Allinea il brand all'inizio della navbar */
+  margin-left: 1%; /* Allinea il brand all'inizio della navbar */
 }
 
 .navbar-nav.ml-auto {
