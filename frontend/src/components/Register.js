@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import NavigationBar from './Navbar';
 
 const Register = () => {
   const [firstName, setFirstName] = useState('');
@@ -21,6 +22,8 @@ const Register = () => {
   };
 
   return (
+    <>
+    <NavigationBar isAuthenticated={false} />
     <Container>
       <Row className="justify-content-md-center mt-5">
         <Col md={6}>
@@ -77,6 +80,7 @@ const Register = () => {
         </Col>
       </Row>
     </Container>
+  </>
   );
 };
 

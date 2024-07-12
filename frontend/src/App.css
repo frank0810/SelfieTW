@@ -1,12 +1,12 @@
-
 body {
-  margin-top: 2%;
+  /* margin-top: 2%; */
   background-color: #f3f0e4; /* Colore panna per lo sfondo */
   font-family: Arial, sans-serif; /* Font predefinito per il testo */
   color: #333; /* Colore grigio scuro per il testo */
-  margin-left: 2%;
-  margin-right: 2%;
+  /* margin-left: 2%;
+  margin-right: 2%; */
 }
+
 .App {
   display: flex;
   flex-direction: column;
@@ -25,4 +25,29 @@ body {
 
 button{
   margin-top: 1%;
+}
+
+.navbar {
+  padding: 0;
+  margin: 0;
+}
+
+.navbar .navbar-nav {
+  margin: 0;
+}
+
+.navbar-nav .nav-link {
+  margin-right: 15px; /* Spaziatura tra i link della navbar */
+}
+
+.navbar-brand {
+  margin-left: 0; /* Allinea il brand all'inizio della navbar */
+}
+
+.navbar-nav.ml-auto {
+  margin-left: auto;
+}
+
+.navbar-collapse {
+  flex-grow: 0;
 }
