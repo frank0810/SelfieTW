@@ -22,9 +22,9 @@ const PomodoroCustom = ({ setShowStandard }) => {
 
     const handleCheckboxChange = (proposal) => {
         if (selectedProposal === proposal) {
-            setSelectedProposal(null); // Deseleziona se la stessa proposta viene cliccata
+            setSelectedProposal(null); 
         } else {
-            setSelectedProposal(proposal); // Seleziona una nuova proposta
+            setSelectedProposal(proposal); 
         }
     };
 
@@ -44,7 +44,7 @@ const PomodoroCustom = ({ setShowStandard }) => {
                 break;
 
             case totMin >= 20 && totMin < 80:
-                // Proposte 1
+
                 setStudyTime1(18);
                 setRelaxTime1(2);
                 setStudyTime2(25);
@@ -60,7 +60,7 @@ const PomodoroCustom = ({ setShowStandard }) => {
                 break;
 
             case totMin >= 80 && totMin <= 180:
-                // Proposte 2
+
                 setStudyTime1(18);
                 setRelaxTime1(2);
                 setStudyTime2(30);
@@ -75,7 +75,7 @@ const PomodoroCustom = ({ setShowStandard }) => {
                 break;
 
             case totMin > 180:
-                // Proposte 3
+
                 setStudyTime1(30);
                 setRelaxTime1(5);
                 setStudyTime2(40);

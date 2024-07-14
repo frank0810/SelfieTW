@@ -13,9 +13,9 @@ const PomodoroStandard = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowTimers(true); // Imposta showTimers a true prima di chiamare onSubmit
+    setShowTimers(true); 
     onSubmit(cicles);
-    setShowForm(false) // Passa il numero di cicli aggiornato al genitore
+    setShowForm(false) 
   };
 
   return (

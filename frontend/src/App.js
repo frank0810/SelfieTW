@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Register from './components/Register';
-import Home from './components/Home';
+import Home from './components/Home/Home';
 import PrivateRoute from './components/PrivateRoute';
 import PomodoroView from './components/PomodoroView/PomodoroView';
 

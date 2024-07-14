@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+    height: 95vh; /* 95 e non 100 perché la navbar che è fuori dal container ne usa già 5 */
+}
+.card-text{
+    height: 4em;
+}
+
+.card-title{
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .container {
+        height: auto;
+        margin-top: 2.5%;
+        margin-bottom: 2.5%;
+    }
+
+    .card img {
+        display: none;
+    }
+
+}

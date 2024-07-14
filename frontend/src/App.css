@@ -1,8 +1,8 @@
 body {
   /* margin-top: 2%; */
-  background-color: #f3f0e4; /* Colore panna per lo sfondo */
-  font-family: Arial, sans-serif; /* Font predefinito per il testo */
-  color: #333; /* Colore grigio scuro per il testo */
+  background-color: #f3f0e4; 
+  font-family: Arial, sans-serif; 
+  color: #333; 
   /* margin-left: 2%;
   margin-right: 2%; */
 }
@@ -37,13 +37,12 @@ button{
 }
 
 .navbar-nav .nav-link {
-  margin-right: 12px; /* Spaziatura tra i link della navbar */
+  margin-right: 12px; 
   margin-left: 1%;
 }
 
 .navbar-brand {
-  margin-left: 1%; /* Allinea il brand all'inizio della navbar */
-}
+  margin-left: 1%; }
 
 .navbar-nav.ml-auto {
   margin-left: auto;
