@@ -3,11 +3,19 @@ const bcrypt = require('bcryptjs');
 
 const Schema = mongoose.Schema;
 
+const lastPomodoroSchema = new Schema({
+  cicles: { type: Number, default: 0 },
+  relaxTime: { type: Number, default: 0 }, 
+  studyTime: { type: Number, default: 0 }, 
+  updatedAt: { type: Date, default: Date.now }
+});
+
 const userSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  lastPomodoro: { type: lastPomodoroSchema, default: null }
 });
 
 
