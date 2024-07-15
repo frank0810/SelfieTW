@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 
-
 const NavigationBar = ({ isAuthenticated }) => {
   const navigate = useNavigate();
 
@@ -12,7 +11,7 @@ const NavigationBar = ({ isAuthenticated }) => {
   };
 
   return (
-    <Navbar bg="light" expand="lg" className="p-0"> {/* Rimuove il padding esterno */}
+    <Navbar bg="light" expand="lg" className="p-0 w-100">
       <Navbar.Brand as={Link} to="/" className="ml-3">SelfieApp</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
