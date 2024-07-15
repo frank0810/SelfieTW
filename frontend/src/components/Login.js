@@ -23,7 +23,7 @@ const Login = () => {
   return (
     <>
       <NavigationBar isAuthenticated={false} />
-      <Container>
+      <Container id="login-container">
         <Row className="justify-content-md-center mt-5">
           <Col md={6}>
             <h1 className="text-center">Login</h1>

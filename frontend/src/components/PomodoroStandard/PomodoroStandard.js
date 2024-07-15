@@ -39,7 +39,7 @@ const PomodoroStandard = ({ onSubmit }) => {
               required
             />
         </div>
-        <button type="submit">Inizia</button>
+        <button className="pomodoro-button" type="submit">Inizia</button>
       </form>}
 
       {showTimers && <Timers cicles={cicles} studyTime={30} relaxTime={5} />} 

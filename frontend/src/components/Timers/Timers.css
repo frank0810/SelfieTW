@@ -1,4 +1,4 @@
-button {
+.pomodoro-button {
   padding: 10px 20px;
   background-color: #62c6df;
   color: #fff;
@@ -14,7 +14,6 @@ button:hover {
   background-color: #62e483;
 }
 
-/* Popup */
 .popup {
   position: fixed;
   top: 0;
@@ -49,7 +48,6 @@ button:hover {
   background-color: #62e483;
 }
 
-/* Timer div */
 #timer-div {
   text-align: center;
   display: flex;
@@ -87,7 +85,7 @@ button:hover {
   border-radius: 8%;
 }
 
-/* Animation */
+
 @keyframes rotate {
   0% {
     transform: rotate(0deg);
@@ -106,9 +104,9 @@ button:hover {
   }
 }
 
-/* Media Queries per schermi più grandi */
+/*Per schermi tipo Tablet e PC*/
 @media (min-width: 600px) {
-  button {
+  .pomodoro-button  {
     width: 60%;
     font-size: 18px;
   }
@@ -123,7 +121,7 @@ button:hover {
 }
 
 @media (min-width: 1024px) {
-  button {
+  .pomodoro-button  {
     width: 90%;
     font-size: 20px;
   }
@@ -141,11 +139,11 @@ button:hover {
   }
 }
 
-/* Media Queries per l'orientamento orizzontale per dispositivi mobili */
+
 @media (max-width: 1024px) and (orientation: landscape) {
   #timer-div {
-    flex-direction: row; /* Cambia layout a righe */
-    gap: 10px; /* Spazio tra gli elementi */
+    flex-direction: row; 
+    gap: 10px; 
   }
 
   .timer-image {
@@ -160,7 +158,7 @@ button:hover {
     font-size: 1em;
   }
 
-  button {
+  .pomodoro-button  {
     width: 90%;
     font-size: 14px;
   }
