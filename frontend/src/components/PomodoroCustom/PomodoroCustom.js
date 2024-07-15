@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Timers from '../Timers/Timers';
 import './PomodoroCustom.css';
 
-const PomodoroCustom = ({ setShowStandard }) => {
+const PomodoroCustom = ({ setShowStandard, setShowCustom2 }) => {
     const [studyTime, setStudyTime] = useState(30);
     const [relaxTime, setRelaxTime] = useState(5);
     const [cicles, setCicles] = useState(0);
@@ -123,6 +123,7 @@ const PomodoroCustom = ({ setShowStandard }) => {
         setShowTimers(true)
         setShowForm(false)
         setShowStandard(false); 
+        setShowCustom2(false); 
 
 
         } 
@@ -143,7 +144,7 @@ return (
                     <p><u>Tempo disponibile:</u></p>
                     <label>
                         Ore:
-                    </label>
+                    
                     <input
                         type="number"
                         name="hours"
@@ -151,9 +152,10 @@ return (
                         max="12"
                         required
                     />
+                    </label>
                     <label>
                         Minuti:
-                    </label>
+                    
                     <input
                         type="number"
                         name="minutes"
@@ -162,8 +164,9 @@ return (
                         required
                         defaultValue={0}
                     />
+                    </label>
                 </div>
-                <button type="submit">Calcola proposte</button>
+                <button className="pomodoro-button" type="submit">Calcola proposte</button>
             </form>
         )}
         {showProposals && showForm &&(
@@ -177,7 +180,7 @@ return (
                                 checked={selectedProposal === 1}
                                 onChange={() => handleCheckboxChange(1)}
                             />
-                            Proposta 1: {ciclesProposal1} cicli da {studyTime1} minuti di studio e {relaxTime1} minuti di relax, per un totale di {ciclesProposal1 * (studyTime1 + relaxTime1)} minuti
+                           <b> Proposta 1</b>: {ciclesProposal1} cicli da {studyTime1} minuti di studio e {relaxTime1} minuti di relax, per un totale di {ciclesProposal1 * (studyTime1 + relaxTime1)} minuti
                         </label>
                     )}
                 </div>
@@ -189,7 +192,7 @@ return (
                                 checked={selectedProposal === 2}
                                 onChange={() => handleCheckboxChange(2)}
                             />
-                            Proposta 2: {ciclesProposal2} cicli da {studyTime2} minuti di studio e {relaxTime2} minuti di relax, per un totale di {ciclesProposal2 * (studyTime2 + relaxTime2)} minuti
+                            <b> Proposta 2</b>: {ciclesProposal2} cicli da {studyTime2} minuti di studio e {relaxTime2} minuti di relax, per un totale di {ciclesProposal2 * (studyTime2 + relaxTime2)} minuti
                         </label>
                     )}
                 </div>
@@ -201,11 +204,11 @@ return (
                                 checked={selectedProposal === 3}
                                 onChange={() => handleCheckboxChange(3)}
                             />
-                            Proposta 3: {ciclesProposal3} cicli da {studyTime3} minuti di studio e {relaxTime3} minuti di relax, per un totale di {ciclesProposal3 * (studyTime3 + relaxTime3)} minuti
+                            <b> Proposta 3</b>: {ciclesProposal3} cicli da {studyTime3} minuti di studio e {relaxTime3} minuti di relax, per un totale di {ciclesProposal3 * (studyTime3 + relaxTime3)} minuti
                         </label>
                     )}
                 </div>
-                <button type= "submit" >Inizia</button>
+                <button className="pomodoro-button" type= "submit" >Inizia</button>
             </form>
 
         )}

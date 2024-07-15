@@ -14,6 +14,10 @@
 .card-title{
     font-weight: bold;
 }
+
+#login-container{
+    display: block;
+}
 @media (max-width: 768px) {
     .container {
         height: auto;
