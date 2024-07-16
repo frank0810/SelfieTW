@@ -18,6 +18,12 @@
 #login-container{
     display: block;
 }
+
+#card-data-preview{
+    height: 6em;
+    justify-content: center;
+
+}
 @media (max-width: 768px) {
     .container {
         height: auto;

@@ -69,8 +69,43 @@ const Timers = ({ cicles, studyTime, relaxTime }) => {
   };
 
   const reloadPage = () => {
+    updatePomodoro();
     window.location.reload();
   };
+
+
+  const updatePomodoro = async () => {
+    const token = localStorage.getItem('token'); 
+
+
+    const data = {
+      cicles: cicles,       
+      relaxTime: relaxTime,   
+      studyTime: studyTime    
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/user/updateLastPomodoro', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was obviously not ok');
+      }
+
+      const result = await response.json();
+
+    } catch (error) {
+      console.error('There was a problem:', error);
+      alert('Pomdoro completato, ma aggiornamento dei dati fallito (update error)');
+    }
+  };
+
 
   const formatTime = (seconds) => {//GPT
     const minutes = Math.floor(seconds / 60);

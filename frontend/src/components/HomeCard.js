@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const HomeCard = ({ Category, Title, SectionLink, ImgUrl, CardDescription }) => {
+const HomeCard = ({ Category, Title, SectionLink, ImgUrl, CardDescription, Data }) => {
 
     return (
         <Card style={{ width: '18em' }}>
@@ -11,12 +11,11 @@ const HomeCard = ({ Category, Title, SectionLink, ImgUrl, CardDescription }) => 
             <Card.Body>
                 <Card.Title>{Title}</Card.Title>
                 <Card.Text>
-                    {CardDescription}
+                    <i>{CardDescription}</i>
                 </Card.Text>
             </Card.Body>
-            <ListGroup className="list-group-flush">
-                <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+            <ListGroup className="list-group-flush"  id="card-data-preview">
+                <ListGroup.Item>{Data}</ListGroup.Item>
             </ListGroup>
             <Card.Body>
                 <Card.Link href={SectionLink}>Vai a {Category}</Card.Link>

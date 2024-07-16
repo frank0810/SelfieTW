@@ -4,8 +4,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const eventsRouter = require('./routes/event');
 const tasksRouter = require('./routes/task');
-const userUpdateRouter = require('./routes/userUpdate');
-const { scheduleNotifications } = require('./notifications');
+const userRouter = require('./routes/user');
+//const { scheduleNotifications } = require('./notifications');
 
 dotenv.config();
 
@@ -16,9 +16,9 @@ app.use(cors());
 app.use(express.json());
 app.use('/events', eventsRouter);
 app.use('/tasks', tasksRouter);
-app.use('/user', userUpdateRouter);
+app.use('/user', userRouter);
 
-scheduleNotifications();
+//scheduleNotifications();
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
