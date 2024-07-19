@@ -5,6 +5,7 @@ import Logout from './components/Logout';
 import Register from './components/Register';
 import Home from './components/Home/Home';
 import PrivateRoute from './components/PrivateRoute';
+import ProfilePage from './components/ProfilePage';
 import PomodoroView from './components/PomodoroView/PomodoroView';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/" element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/pomodoro" element={<PomodoroView />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Routes>
       </div>

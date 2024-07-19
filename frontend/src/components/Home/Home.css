@@ -34,5 +34,8 @@
     .card img {
         display: none;
     }
+    #profile-picture{
+        display: inline;
+    }
 
 }

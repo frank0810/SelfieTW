@@ -18,6 +18,8 @@ app.use('/events', eventsRouter);
 app.use('/tasks', tasksRouter);
 app.use('/user', userRouter);
 
+app.use('/images', express.static('images'));
+
 //scheduleNotifications();
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });

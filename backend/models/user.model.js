@@ -11,11 +11,14 @@ const lastPomodoroSchema = new Schema({
 });
 
 const userSchema = new Schema({
+  username: { type: String, required: false },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  lastPomodoro: { type: lastPomodoroSchema, default: null }
+  lastPomodoro: { type: lastPomodoroSchema, default: null },
+  birthday: { type: Date, required: false }, 
+  profilePic: { type: String, required: false, default: '/images/profile-pic.jpg' }
 });
 
 
