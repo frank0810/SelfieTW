@@ -109,22 +109,32 @@ exports.updateBirthday = async (req, res) => {
 // Cambiare foto del profilo
 exports.updateProfilePic = async (req, res) => {
   const authHeader = req.headers.authorization;
-  const { profilePic } = req.body;
+  const { proPic } = req.body;
+
+  if (!authHeader) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  const token = authHeader.split(' ')[1];
 
   try {
-    const userId = getUserIdFromToken(authHeader);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
 
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.profilePic = profilePic;
+    user.profilePic = proPic || user.profilePic;
     await user.save();
 
-    res.json({ message: 'Profile picture updated successfully', profilePic: user.profilePic });
+    res.json({ message: 'Image updated successfully'});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
