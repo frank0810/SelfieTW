@@ -27,8 +27,8 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
         setShowTimers(true);
         //onSubmit(cicles);
         setShowForm(false)
-        setShowStandard(false); 
-        setShowCustom(false); 
+        setShowStandard(false);
+        setShowCustom(false);
     };
 
     return (
@@ -39,10 +39,11 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
             </p>
             {showForm && <form onSubmit={handleSubmit}>
                 <div>
-                    <label>
+                    <div style={{display:'flex'}}>
+                    <label style={{width:'auto'}}>
                         Numero di cicli:
 
-                    </label>
+                    </label >
                     <input
                         type="number"
                         value={cicles}
@@ -51,31 +52,34 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
                         max="15"
                         required
                     />
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <label style={{width:'auto'}}>
+                            Minuti di studio: 
 
-                    <label>
-                        Minuti di studio:
-
-                    </label>
-                    <input
-                        type="number"
-                        value={studyTime}
-                        onChange={handleStudyTimeChange}
-                        min="1"
-                        max="60"
-                        required
-                    />
-
-                    <label>
-                        Minuti di relax:
-                    </label>
-                    <input
-                        type="number"
-                        value={relaxTime}
-                        onChange={handleRelaxTimeChange}
-                        min="1"
-                        max="60"
-                        required
-                    />
+                        </label>
+                        <input
+                            type="number"
+                            value={studyTime}
+                            onChange={handleStudyTimeChange}
+                            min="1"
+                            max="60"
+                            required
+                        />
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <label style={{width:'auto'}}>
+                            Minuti di relax:
+                        </label>
+                        <input
+                            type="number"
+                            value={relaxTime}
+                            onChange={handleRelaxTimeChange}
+                            min="1"
+                            max="60"
+                            required
+                        />
+                    </div>
                 </div>
                 <button className="pomodoro-button" type="submit">Inizia</button>
             </form>}

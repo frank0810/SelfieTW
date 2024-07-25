@@ -7,15 +7,18 @@ import {
   MDBCardText,
   MDBCardBody,
   MDBCardImage,
-  MDBBtn,
 } from 'mdb-react-ui-kit';
 import NavigationBar from './Navbar';
-import { Row, Col, Image, Modal, Button } from 'react-bootstrap';
+import { Row, Col, Image, Modal, Button, Form } from 'react-bootstrap';
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showUsernameModal, setShowUsernameModal] = useState(false);
+  const [showBirthdayModal, setShowBirthdayModal] = useState(false);
+  const [newUsername, setNewUsername] = useState('');
+  const [newBirthday, setNewBirthday] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -36,7 +39,6 @@ const ProfilePage = () => {
 
         const result = await response.json();
         setUserData(result.user);
-        console.log('User details:', result.user);
       } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
       } finally {
@@ -73,8 +75,66 @@ const ProfilePage = () => {
     }
   };
 
+  const handleUsernameChange = async () => {
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch('http://localhost:3000/user/updateUsername', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ username: newUsername })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok :(');
+      }
+
+      const result = await response.json();
+      alert('Username aggiornato con successo!');
+      setUserData({ ...userData, username: newUsername });
+      setShowUsernameModal(false); // Chiudi la modale dopo aver aggiornato l'username
+    } catch (error) {
+      console.error('Errore durante l\'aggiornamento dell\'username:', error);
+    }
+  };
+
+  const handleBirthdayChange = async () => {
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch('http://localhost:3000/user/updateBirthday', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ birthday: newBirthday })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok :(');
+      }
+
+      const result = await response.json();
+      alert('Data di nascita aggiornata con successo!');
+      setUserData({ ...userData, birthday: newBirthday });
+      setShowBirthdayModal(false); // Chiudi la modale dopo aver aggiornato la data di nascita
+    } catch (error) {
+      console.error('Errore durante l\'aggiornamento della data di nascita:', error);
+    }
+  };
+
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  const handleShowUsernameModal = () => setShowUsernameModal(true);
+  const handleCloseUsernameModal = () => setShowUsernameModal(false);
+
+  const handleShowBirthdayModal = () => setShowBirthdayModal(true);
+  const handleCloseBirthdayModal = () => setShowBirthdayModal(false);
 
   // Se il caricamento è in corso, mostra un indicatore di caricamento
   if (loading) {
@@ -105,9 +165,9 @@ const ProfilePage = () => {
                   fluid
                 />
                 <div className="d-flex justify-content-center mb-2">
-                <Button
+                  <Button
                     onClick={handleShowModal}
-                    style={{ marginTop:'1%' }} // Imposta una larghezza e altezza fissa
+                    style={{ marginTop: '1%' }} 
                     variant="primary"
                   >
                     Cambia Immagine
@@ -121,37 +181,43 @@ const ProfilePage = () => {
               <MDBCardBody>
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Nome</MDBCardText>
+                    <MDBCardText style={{ height:'2em'}}>Nome</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">{userData?.firstName + ' ' + userData?.lastName}</MDBCardText>
+                    <MDBCardText className="text-muted" style={{ height:'2em'}}>{userData?.firstName + ' ' + userData?.lastName}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Email</MDBCardText>
+                    <MDBCardText style={{ height:'2em'}}>Email</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">{userData?.email}</MDBCardText>
+                    <MDBCardText className="text-muted" style={{ height:'2em'}}>{userData?.email}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Username</MDBCardText>
+                    <MDBCardText style={{ height:'2em'}}>Username</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">{username}</MDBCardText>
+                    <MDBCardText className="text-muted" style={{ height:'2em'}}>{username}</MDBCardText>
+                    <Button variant="link" onClick={handleShowUsernameModal} style={{margin: 0, padding: 0, fontSize: '0.85em'}}>
+                      Modifica Username
+                    </Button>
                   </MDBCol>
                 </MDBRow>
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText>Data di Nascita</MDBCardText>
+                    <MDBCardText style={{ height:'2em'}}>Data di Nascita</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted">{birthday}</MDBCardText>
+                    <MDBCardText className="text-muted" style={{ height:'2em'}}>{birthday}</MDBCardText>
+                    <Button variant="link" onClick={handleShowBirthdayModal} style={{margin: 0, padding: 0, fontSize: '0.85em'}}>
+                      Modifica Data di Nascita
+                    </Button>
                   </MDBCol>
                 </MDBRow>
               </MDBCardBody>
@@ -229,6 +295,59 @@ const ProfilePage = () => {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
             Chiudi
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showUsernameModal} onHide={handleCloseUsernameModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifica Username</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formNewUsername">
+              <Form.Label>Nuovo Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Il tuo nuovo username"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseUsernameModal}>
+            Chiudi
+          </Button>
+          <Button variant="primary" onClick={handleUsernameChange}>
+            Salva
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showBirthdayModal} onHide={handleCloseBirthdayModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modifica Data di Nascita</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formNewBirthday">
+              <Form.Control
+                type="date"
+                placeholder="Inserisci la nuova data di nascita"
+                value={newBirthday}
+                onChange={(e) => setNewBirthday(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseBirthdayModal}>
+            Chiudi
+          </Button>
+          <Button variant="primary" onClick={handleBirthdayChange}>
+            Salva
           </Button>
         </Modal.Footer>
       </Modal>

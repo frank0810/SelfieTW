@@ -22,7 +22,7 @@ const PomodoroView = () => {
     <div className="pomodoro-view">
       <div className="title">
         <img src={pomodoroLogo} alt="Pomodoro" id="logo" />
-        <h1 id="pomodoro-title">Metodo Pomodoro!</h1>
+        <h1 id="pomodoro-title" style={{fontWeight:'bold'}}>Metodo Pomodoro!</h1>
       </div>
       {showStandard && <PomodoroStandard onSubmit={handleFormSubmit} />}
       {showCustom && <PomodoroCustom setShowStandard={setShowStandard} setShowCustom2={setShowCustom2} />}
