@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const eventsRouter = require('./routes/event');
 const tasksRouter = require('./routes/task');
 const userRouter = require('./routes/user');
+const noteRoutes = require('./routes/note');
 //const { scheduleNotifications } = require('./notifications');
 
 dotenv.config();
@@ -17,7 +18,7 @@ app.use(express.json());
 app.use('/events', eventsRouter);
 app.use('/tasks', tasksRouter);
 app.use('/user', userRouter);
-
+app.use('/notes', noteRoutes);
 app.use('/images', express.static('images'));
 
 //scheduleNotifications();

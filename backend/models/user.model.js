@@ -18,7 +18,8 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   lastPomodoro: { type: lastPomodoroSchema, default: null },
   birthday: { type: Date, required: false }, 
-  profilePic: { type: String, required: false, default: '/images/profile-pic.jpg' }
+  profilePic: { type: String, required: false, default: '/images/profile-pic.jpg' },
+  userNotes: [{ type: Schema.Types.ObjectId, ref: 'Note' }]
 });
 
 
