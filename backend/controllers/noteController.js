@@ -11,7 +11,7 @@ exports.createNote = async (req, res) => {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  const token = authHeader.split(' ')[1]; // Devo prendere solo la parte dopo "Bearer"
+  const token = authHeader.split(' ')[1]; 
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -52,7 +52,7 @@ exports.deleteNote = async (req, res) => {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  const token = authHeader.split(' ')[1]; // Prendi solo la parte dopo "Bearer"
+  const token = authHeader.split(' ')[1]; 
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -91,7 +91,7 @@ exports.updateNote = async (req, res) => {
       return res.status(401).json({ message: 'No token provided' });
     }
   
-    const token = authHeader.split(' ')[1]; // Prendi solo la parte dopo "Bearer"
+    const token = authHeader.split(' ')[1]; 
   
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -127,3 +127,30 @@ exports.updateNote = async (req, res) => {
     }
   };
 
+  exports.getNoteById = async (req, res) => {
+    const authHeader = req.headers.authorization;
+    const { noteId } = req.params;
+  
+    if (!authHeader) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+  
+    const token = authHeader.split(' ')[1]; 
+  
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id;
+  
+      const note = await Note.findById(noteId);
+      if (!note) {
+        return res.status(404).json({ message: 'Note not found' });
+      }
+  
+      res.json({ note });
+    } catch (error) {
+      if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: 'Invalid token' });
+      }
+      res.status(500).json({ message: 'Server error' });
+    }
+  };

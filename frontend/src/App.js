@@ -7,6 +7,7 @@ import Home from './components/Home/Home';
 import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
 import PomodoroView from './components/PomodoroView/PomodoroView';
+import Note from './components/Note'; 
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/pomodoro" element={<PomodoroView />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/notes" element={<Note />} />
           </Route>
         </Routes>
       </div>
