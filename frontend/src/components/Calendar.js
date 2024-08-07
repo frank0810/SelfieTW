@@ -1,119 +1,245 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Navbar, Nav, Button, Modal, Form } from 'react-bootstrap';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import Calendar from 'react-calendar'; 
+import 'react-calendar/dist/Calendar.css'; 
+import { Link } from 'react-router-dom';
 
-const Calendar = () => {
+const CalendarComponent = () => {
   const [events, setEvents] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [newEvent, setNewEvent] = useState({ title: '', startDate: '', endDate: '', location: '', isAllDay: false });
+  const [tasks, setTasks] = useState([]);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const [newEvent, setNewEvent] = useState({
+    title: '',
+    startDate: new Date(),
+    endDate: new Date(),
+    location: '',
+    recurrence: '',
+    notifications: [],
+  });
+
+  const [newTask, setNewTask] = useState({
+    title: '',
+    deadline: new Date(),
+    notifications: [],
+  });
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const result = await axios.get('http://localhost:3000/events');
-      setEvents(result.data);
-    };
     fetchEvents();
+    fetchTasks();
   }, []);
 
-  const handleEventClick = (info) => {
-    alert('Event: ' + info.event.title);
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get('/events');
+      setEvents(response.data);
+    } catch (error) {
+      console.error('Errore nel caricamento degli eventi:', error);
+    }
   };
 
-  const handleDateClick = (info) => {
-    setNewEvent({ ...newEvent, startDate: info.dateStr, endDate: info.dateStr });
-    setShowModal(true);
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get('/tasks');
+      setTasks(response.data);
+    } catch (error) {
+      console.error('Errore nel caricamento delle attività:', error);
+    }
   };
 
-  const handleSave = async () => {
-    await axios.post('http://localhost:3000/events', newEvent);
-    setEvents([...events, newEvent]);
-    setShowModal(false);
+  const handleEventSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('/events', newEvent);
+      fetchEvents();
+      setShowEventModal(false);
+    } catch (error) {
+      console.error("Errore nella creazione dell'evento:", error);
+    }
+  };
+
+  const handleTaskSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('/tasks', newTask);
+      fetchTasks();
+      setShowTaskModal(false);
+    } catch (error) {
+      console.error("Errore nella creazione dell'attività:", error);
+    }
   };
 
   return (
-    <Container fluid className="p-0">
-      <Navbar bg="light" expand="lg" className="w-100">
-        <Navbar.Brand style={{ marginLeft: '20px' }}>SelfieApp</Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link href="/pomodoro">Pomodoro</Nav.Link>
-          <Nav.Link href="/calendar">Calendario</Nav.Link>
-          <Nav.Link href="/notes">Note</Nav.Link>
-        </Nav>
-        <Nav className="ms-auto">
-          <Nav.Link href="/profile">Profilo</Nav.Link>
-          <Nav.Link href="/logout">Logout</Nav.Link>
+    <Container>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand>Calendario</Navbar.Brand>
+        <Nav className="mr-auto">
+          <Link to="/calendar" className="nav-link">Calendario</Link> {/* Link per il calendario */}
+          <Button onClick={() => setShowEventModal(true)}>Aggiungi Evento</Button>
+          <Button onClick={() => setShowTaskModal(true)}>Aggiungi Attività</Button>
         </Nav>
       </Navbar>
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={events}
-        dateClick={handleDateClick}
-        eventClick={handleEventClick}
+
+      <Calendar
+        onChange={setSelectedDate}
+        value={selectedDate}
+        tileContent={({ date, view }) => (
+          <div>
+            {events.map(
+              (event) =>
+                event.startDate <= date &&
+                event.endDate >= date && (
+                  <div key={event._id}>{event.title}</div>
+                )
+            )}
+            {tasks.map(
+              (task) =>
+                task.deadline.toDateString() === date.toDateString() && (
+                  <div key={task._id}>{task.title}</div>
+                )
+            )}
+          </div>
+        )}
       />
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+
+      {/* Modal per aggiungere un evento */}
+      <Modal show={showEventModal} onHide={() => setShowEventModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>New Event</Modal.Title>
+          <Modal.Title>Aggiungi Evento</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleEventSubmit}>
             <Form.Group controlId="formEventTitle">
-              <Form.Label>Title</Form.Label>
+              <Form.Label>Titolo</Form.Label>
               <Form.Control
                 type="text"
+                placeholder="Inserisci il titolo"
                 value={newEvent.title}
-                onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, title: e.target.value })
+                }
               />
             </Form.Group>
-            <Form.Group controlId="formEventStart" className="mt-3">
-              <Form.Label>Start Date</Form.Label>
+            <Form.Group controlId="formEventStartDate">
+              <Form.Label>Data Inizio</Form.Label>
               <Form.Control
                 type="datetime-local"
                 value={newEvent.startDate}
-                onChange={(e) => setNewEvent({ ...newEvent, startDate: e.target.value })}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, startDate: e.target.value })
+                }
               />
             </Form.Group>
-            <Form.Group controlId="formEventEnd" className="mt-3">
-              <Form.Label>End Date</Form.Label>
+            <Form.Group controlId="formEventEndDate">
+              <Form.Label>Data Fine</Form.Label>
               <Form.Control
                 type="datetime-local"
                 value={newEvent.endDate}
-                onChange={(e) => setNewEvent({ ...newEvent, endDate: e.target.value })}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, endDate: e.target.value })
+                }
               />
             </Form.Group>
-            <Form.Group controlId="formEventLocation" className="mt-3">
-              <Form.Label>Location</Form.Label>
+            <Form.Group controlId="formEventLocation">
+              <Form.Label>Luogo</Form.Label>
               <Form.Control
                 type="text"
+                placeholder="Inserisci il luogo"
                 value={newEvent.location}
-                onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, location: e.target.value })
+                }
               />
             </Form.Group>
-            <Form.Group controlId="formEventAllDay" className="mt-3">
-              <Form.Check
-                type="checkbox"
-                label="All Day"
-                checked={newEvent.isAllDay}
-                onChange={(e) => setNewEvent({ ...newEvent, isAllDay: e.target.checked })}
+            <Form.Group controlId="formEventRecurrence">
+              <Form.Label>Ricorrenza</Form.Label>
+              <Form.Control
+                as="select"
+                value={newEvent.recurrence}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, recurrence: e.target.value })
+                }
+              >
+                <option value="">Nessuna</option>
+                <option value="daily">Giornaliera</option>
+                <option value="weekly">Settimanale</option>
+                <option value="monthly">Mensile</option>
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="formEventNotifications">
+              <Form.Label>Notifiche</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci le notifiche"
+                value={newEvent.notifications}
+                onChange={(e) =>
+                  setNewEvent({
+                    ...newEvent,
+                    notifications: e.target.value.split(','),
+                  })
+                }
               />
             </Form.Group>
+            <Button variant="primary" type="submit">
+              Aggiungi Evento
+            </Button>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+      </Modal>
+
+      {/* Modal per aggiungere un'attività */}
+      <Modal show={showTaskModal} onHide={() => setShowTaskModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Aggiungi Attività</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleTaskSubmit}>
+            <Form.Group controlId="formTaskTitle">
+              <Form.Label>Titolo</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci il titolo"
+                value={newTask.title}
+                onChange={(e) =>
+                  setNewTask({ ...newTask, title: e.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="formTaskDeadline">
+              <Form.Label>Scadenza</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={newTask.deadline}
+                onChange={(e) =>
+                  setNewTask({ ...newTask, deadline: e.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="formTaskNotifications">
+              <Form.Label>Notifiche</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Inserisci le notifiche"
+                value={newTask.notifications}
+                onChange={(e) =>
+                  setNewTask({
+                    ...newTask,
+                    notifications: e.target.value.split(','),
+                  })
+                }
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Aggiungi Attività
+            </Button>
+          </Form>
+        </Modal.Body>
       </Modal>
     </Container>
   );
 };
 
-export default Calendar;
+export default CalendarComponent;

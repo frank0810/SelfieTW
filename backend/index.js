@@ -1,12 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const eventsRouter = require('./routes/event');
-const tasksRouter = require('./routes/task');
+const eventsRoutes = require('./routes/event');
+const tasksRoutes = require('./routes/task');
 const userRouter = require('./routes/user');
 const noteRoutes = require('./routes/note');
-//const { scheduleNotifications } = require('./notifications');
+const notificationScheduler = require('./notificationScheduler'); 
 
 dotenv.config();
 
@@ -15,13 +16,15 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use('/events', eventsRouter);
-app.use('/tasks', tasksRouter);
+app.use('/events', eventsRoutes);
+app.use('/tasks', tasksRoutes);
 app.use('/user', userRouter);
 app.use('/notes', noteRoutes);
 app.use('/images', express.static('images'));
 
-//scheduleNotifications();
+// Pianifica le notifiche
+notificationScheduler.scheduleEventNotifications();
+// notificationScheduler.scheduleTaskNotifications();
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 

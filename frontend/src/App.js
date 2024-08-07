@@ -8,6 +8,7 @@ import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
 import PomodoroView from './components/PomodoroView/PomodoroView';
 import Note from './components/Note'; 
+import CalendarComponent from './components/Calendar';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/pomodoro" element={<PomodoroView />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/notes" element={<Note />} />
+            <Route path="/calendar" element={<CalendarComponent />} />
           </Route>
         </Routes>
       </div>

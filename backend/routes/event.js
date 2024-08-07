@@ -1,24 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const Event = require('../models/Event');
+const { 
+  createEvent, 
+  getEvents, 
+  updateEvent, 
+  deleteEvent, 
+  getEventById 
+} = require('../controllers/eventController');
 
-router.post('/events', async (req, res) => {
-  const event = new Event(req.body);
-  try {
-    await event.save();
-    res.status(201).send(event);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-router.get('/events', async (req, res) => {
-  try {
-    const events = await Event.find({ userId: req.user._id });
-    res.send(events);
-  } catch (error) {
-    res.status(500).send(error);
-  }
-});
+// Rotte per la gestione degli eventi
+router.post('/', createEvent); // Creazione di un nuovo evento
+router.get('/', getEvents); // Ottenere tutti gli eventi dell'utente
+router.get('/:id', getEventById); // Ottenere un evento specifico tramite ID
+router.put('/:id', updateEvent); // Aggiornare un evento esistente
+router.delete('/:id', deleteEvent); // Cancellare un evento
 
 module.exports = router;
