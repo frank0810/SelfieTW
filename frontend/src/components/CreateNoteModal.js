@@ -8,11 +8,11 @@ const CreateNoteModal = ({ show, handleClose, handleCreate }) => {
 
     const onCreate = () => {
         handleCreate({
-            title,
-            category,
+            title: title || undefined, // Il caso di titolo vuoto e di categoria vuota lo gestisce il server
+            category: category || undefined, 
             text
         });
-        window.location.reload()
+        window.location.reload();
     };
 
     return (
