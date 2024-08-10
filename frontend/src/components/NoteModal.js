@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const NoteModal = ({ show, handleClose, note, handleSave }) => {
+const NoteModal = ({ show, handleClose, note, handleSave, handleDuplicate }) => {
     const [title, setTitle] = useState(note.title);
     const [category, setCategory] = useState(note.category);
     const [text, setText] = useState(note.text);
@@ -15,6 +15,14 @@ const NoteModal = ({ show, handleClose, note, handleSave }) => {
         });
     };
 
+    const onDuplicate = () => {
+        handleDuplicate({
+            title: `${title} Copia`,
+            category,
+            text
+        });
+    };
+
     return (
         <Modal show={show} onHide={handleClose} size="lg">
             <Modal.Header closeButton>
@@ -23,7 +31,7 @@ const NoteModal = ({ show, handleClose, note, handleSave }) => {
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="formTitle">
-                        <Form.Label style ={{fontWeight: "bold"}}>Titolo</Form.Label>
+                        <Form.Label style={{ fontWeight: "bold" }}>Titolo</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Inserisci titolo"
@@ -32,7 +40,7 @@ const NoteModal = ({ show, handleClose, note, handleSave }) => {
                         />
                     </Form.Group>
                     <Form.Group controlId="formCategory">
-                        <Form.Label style ={{fontWeight: "bold"}} >Categoria</Form.Label>
+                        <Form.Label style={{ fontWeight: "bold" }}>Categoria</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Inserisci categoria"
@@ -41,7 +49,7 @@ const NoteModal = ({ show, handleClose, note, handleSave }) => {
                         />
                     </Form.Group>
                     <Form.Group controlId="formText">
-                        <Form.Label style ={{fontWeight: "bold"}}>Testo</Form.Label>
+                        <Form.Label style={{ fontWeight: "bold" }}>Testo</Form.Label>
                         <Form.Control
                             as="textarea"
                             rows={20}
@@ -53,10 +61,14 @@ const NoteModal = ({ show, handleClose, note, handleSave }) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
+            <Button variant="primary" onClick={onDuplicate}>
+                    Duplica Nota
+                </Button>
                 <Button variant="secondary" onClick={handleClose}>
                     Annulla modifiche
                 </Button>
-                <Button variant="primary" onClick={onSave}>
+
+                <Button variant="success" onClick={onSave}>
                     Salva modifiche
                 </Button>
             </Modal.Footer>

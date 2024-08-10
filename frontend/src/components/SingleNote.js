@@ -52,16 +52,36 @@ const SingleNote = ({ id, title, text, category, createdAt, updatedAt }) => {
         }
     };
 
+    const handleDuplicate = async (duplicateNote) => {
+        try {
+            const response = await fetch(`http://localhost:3000/notes/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(duplicateNote)
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            window.location.reload();
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    };
 
     const truncatedText = text && text.length > 500 ? `${text.substring(0, 500)}...` : text || 'No text available';
 
     return (
         <>
             <Card className="mb-3" style={{ maxWidth: '80%', margin: 'auto' }}>
-                <Card.Header style={{color:"#0d6efd", fontStyle:"oblique"}}>{category}</Card.Header>
+                <Card.Header style={{ color: "#0d6efd", fontStyle: "oblique" }}>{category}</Card.Header>
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
-                    <Card.Text  style={{ height: 'auto' }}>{truncatedText}</Card.Text>
+                    <Card.Text style={{ height: 'auto' }}>{truncatedText}</Card.Text>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -81,6 +101,7 @@ const SingleNote = ({ id, title, text, category, createdAt, updatedAt }) => {
                 handleClose={handleClose}
                 note={{ id, title, text, category }}
                 handleSave={handleSave}
+                handleDuplicate={handleDuplicate}
             />
         </>
     );
