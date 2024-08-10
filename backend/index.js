@@ -7,7 +7,8 @@ const eventsRoutes = require('./routes/event');
 const tasksRoutes = require('./routes/task');
 const userRouter = require('./routes/user');
 const noteRoutes = require('./routes/note');
-const notificationScheduler = require('./notificationScheduler'); 
+const { scheduleNotifications } = require('./notificationManager'); 
+
 
 dotenv.config();
 
@@ -21,10 +22,9 @@ app.use('/tasks', tasksRoutes);
 app.use('/user', userRouter);
 app.use('/notes', noteRoutes);
 app.use('/images', express.static('images'));
+//app.use('/notifications', notificationRoutes);
 
-// Pianifica le notifiche
-notificationScheduler.scheduleEventNotifications();
-// notificationScheduler.scheduleTaskNotifications();
+scheduleNotifications();
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 

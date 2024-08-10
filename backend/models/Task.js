@@ -1,16 +1,24 @@
 const mongoose = require('mongoose');
 
-// Definizione dello schema per le attività
 const taskSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  deadline: { type: Date, required: true }, // Scadenza per il completamento dell'attività
-  isCompleted: { type: Boolean, default: false }, // Stato di completamento dell'attività
+  description: { type: String, required: true },
+  deadline: { type: Date, required: true },
+  isCompleted: { type: Boolean, default: false },
+  isOverdue: { type: Boolean, default: false },
+  priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
   notifications: [{
     method: { type: String, enum: ['system', 'alert', 'email', 'whatsapp'] },
-    advance: { type: Number },
-    repeat: { type: Number }
+    urgencyLevels: [{ timeBeforeDeadline: Number }]
   }],
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
+});
+
+taskSchema.pre('save', function (next) {
+  const now = new Date();
+  if (this.deadline < now && !this.isCompleted) {
+    this.isOverdue = true;
+  }
+  next();
 });
 
 module.exports = mongoose.model('Task', taskSchema);

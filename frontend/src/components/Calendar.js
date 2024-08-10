@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Navbar, Nav, Button, Modal, Form } from 'react-bootstrap';
-import Calendar from 'react-calendar'; 
-import 'react-calendar/dist/Calendar.css'; 
-import { Link } from 'react-router-dom';
+import { Container, Button, Modal, Form, Row, Col } from 'react-bootstrap';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import Navbar from './Navbar'; 
+import './CalendarStyles.css';
 
 const CalendarComponent = () => {
   const [events, setEvents] = useState([]);
@@ -14,8 +15,8 @@ const CalendarComponent = () => {
 
   const [newEvent, setNewEvent] = useState({
     title: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: '',
+    endDate: '',
     location: '',
     recurrence: '',
     notifications: [],
@@ -23,7 +24,7 @@ const CalendarComponent = () => {
 
   const [newTask, setNewTask] = useState({
     title: '',
-    deadline: new Date(),
+    deadline: '',
     notifications: [],
   });
 
@@ -56,8 +57,16 @@ const CalendarComponent = () => {
       await axios.post('/events', newEvent);
       fetchEvents();
       setShowEventModal(false);
+      setNewEvent({
+        title: '',
+        startDate: '',
+        endDate: '',
+        location: '',
+        recurrence: '',
+        notifications: [],
+      });
     } catch (error) {
-      console.error("Errore nella creazione dell'evento:", error);
+      console.error('Errore nella creazione dell\'evento:', error);
     }
   };
 
@@ -67,43 +76,46 @@ const CalendarComponent = () => {
       await axios.post('/tasks', newTask);
       fetchTasks();
       setShowTaskModal(false);
+      setNewTask({
+        title: '',
+        deadline: '',
+        notifications: [],
+      });
     } catch (error) {
-      console.error("Errore nella creazione dell'attività:", error);
+      console.error('Errore nella creazione dell\'attività:', error);
     }
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
   };
 
   return (
     <Container>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand>Calendario</Navbar.Brand>
-        <Nav className="mr-auto">
-          <Link to="/calendar" className="nav-link">Calendario</Link> {/* Link per il calendario */}
-          <Button onClick={() => setShowEventModal(true)}>Aggiungi Evento</Button>
-          <Button onClick={() => setShowTaskModal(true)}>Aggiungi Attività</Button>
-        </Nav>
-      </Navbar>
+      <Navbar />
 
-      <Calendar
-        onChange={setSelectedDate}
-        value={selectedDate}
-        tileContent={({ date, view }) => (
-          <div>
-            {events.map(
-              (event) =>
-                event.startDate <= date &&
-                event.endDate >= date && (
-                  <div key={event._id}>{event.title}</div>
-                )
+      <Row className="justify-content-center mt-4">
+        <Col xs={12} md={8}>
+          <Calendar
+            onChange={handleDateChange}
+            value={selectedDate}
+            tileContent={({ date, view }) => (
+              <div>
+                {view === 'month' && events.map(event => (
+                  new Date(event.startDate) <= date && new Date(event.endDate) >= date && (
+                    <div key={event._id} className="event-marker">{event.title}</div>
+                  )
+                ))}
+                {view === 'month' && tasks.map(task => (
+                  new Date(task.deadline).toDateString() === date.toDateString() && (
+                    <div key={task._id} className="task-marker">{task.title}</div>
+                  )
+                ))}
+              </div>
             )}
-            {tasks.map(
-              (task) =>
-                task.deadline.toDateString() === date.toDateString() && (
-                  <div key={task._id}>{task.title}</div>
-                )
-            )}
-          </div>
-        )}
-      />
+          />
+        </Col>
+      </Row>
 
       {/* Modal per aggiungere un evento */}
       <Modal show={showEventModal} onHide={() => setShowEventModal(false)}>
@@ -118,9 +130,7 @@ const CalendarComponent = () => {
                 type="text"
                 placeholder="Inserisci il titolo"
                 value={newEvent.title}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, title: e.target.value })
-                }
+                onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
               />
             </Form.Group>
             <Form.Group controlId="formEventStartDate">
@@ -128,9 +138,7 @@ const CalendarComponent = () => {
               <Form.Control
                 type="datetime-local"
                 value={newEvent.startDate}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, startDate: e.target.value })
-                }
+                onChange={e => setNewEvent({ ...newEvent, startDate: e.target.value })}
               />
             </Form.Group>
             <Form.Group controlId="formEventEndDate">
@@ -138,9 +146,7 @@ const CalendarComponent = () => {
               <Form.Control
                 type="datetime-local"
                 value={newEvent.endDate}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, endDate: e.target.value })
-                }
+                onChange={e => setNewEvent({ ...newEvent, endDate: e.target.value })}
               />
             </Form.Group>
             <Form.Group controlId="formEventLocation">
@@ -149,9 +155,7 @@ const CalendarComponent = () => {
                 type="text"
                 placeholder="Inserisci il luogo"
                 value={newEvent.location}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, location: e.target.value })
-                }
+                onChange={e => setNewEvent({ ...newEvent, location: e.target.value })}
               />
             </Form.Group>
             <Form.Group controlId="formEventRecurrence">
@@ -159,9 +163,7 @@ const CalendarComponent = () => {
               <Form.Control
                 as="select"
                 value={newEvent.recurrence}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, recurrence: e.target.value })
-                }
+                onChange={e => setNewEvent({ ...newEvent, recurrence: e.target.value })}
               >
                 <option value="">Nessuna</option>
                 <option value="daily">Giornaliera</option>
@@ -170,17 +172,12 @@ const CalendarComponent = () => {
               </Form.Control>
             </Form.Group>
             <Form.Group controlId="formEventNotifications">
-              <Form.Label>Notifiche</Form.Label>
+              <Form.Label>Notifiche (separate da virgola)</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Inserisci le notifiche"
-                value={newEvent.notifications}
-                onChange={(e) =>
-                  setNewEvent({
-                    ...newEvent,
-                    notifications: e.target.value.split(','),
-                  })
-                }
+                value={newEvent.notifications.join(', ')}
+                onChange={e => setNewEvent({ ...newEvent, notifications: e.target.value.split(',').map(n => n.trim()) })}
               />
             </Form.Group>
             <Button variant="primary" type="submit">
@@ -203,9 +200,7 @@ const CalendarComponent = () => {
                 type="text"
                 placeholder="Inserisci il titolo"
                 value={newTask.title}
-                onChange={(e) =>
-                  setNewTask({ ...newTask, title: e.target.value })
-                }
+                onChange={e => setNewTask({ ...newTask, title: e.target.value })}
               />
             </Form.Group>
             <Form.Group controlId="formTaskDeadline">
@@ -213,23 +208,16 @@ const CalendarComponent = () => {
               <Form.Control
                 type="datetime-local"
                 value={newTask.deadline}
-                onChange={(e) =>
-                  setNewTask({ ...newTask, deadline: e.target.value })
-                }
+                onChange={e => setNewTask({ ...newTask, deadline: e.target.value })}
               />
             </Form.Group>
             <Form.Group controlId="formTaskNotifications">
-              <Form.Label>Notifiche</Form.Label>
+              <Form.Label>Notifiche (separate da virgola)</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Inserisci le notifiche"
-                value={newTask.notifications}
-                onChange={(e) =>
-                  setNewTask({
-                    ...newTask,
-                    notifications: e.target.value.split(','),
-                  })
-                }
+                value={newTask.notifications.join(', ')}
+                onChange={e => setNewTask({ ...newTask, notifications: e.target.value.split(',').map(n => n.trim()) })}
               />
             </Form.Group>
             <Button variant="primary" type="submit">
