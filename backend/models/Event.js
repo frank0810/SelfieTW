@@ -15,7 +15,7 @@ const eventSchema = new mongoose.Schema({
     until: { type: Date } // Data di fine ripetizione
   },
   notifications: [{
-    method: { type: String, enum: ['system', 'alert', 'email', 'whatsapp'] }, // Metodo di notifica
+    method: { type: String, enum: ['system', 'alert', 'email'] }, // Metodo di notifica
     advance: { type: Number }, // Anticipo in minuti
     repeat: { type: Number } // Numero di ripetizioni della notifica
   }],
