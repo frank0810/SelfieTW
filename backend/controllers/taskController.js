@@ -4,7 +4,7 @@ const Task = require('../models/Task');
 const createTask = async (req, res) => {
   const task = new Task({
     ...req.body,
-    userId: req.user._id
+    userId: req.user._id // Assegna l'attività all'utente autenticato
   });
 
   try {
@@ -57,7 +57,7 @@ const updateTask = async (req, res) => {
   }
 };
 
-// Cancellare un'attività
+// Eliminare un'attività
 const deleteTask = async (req, res) => {
   const { id } = req.params;
   try {
@@ -71,4 +71,10 @@ const deleteTask = async (req, res) => {
   }
 };
 
-module.exports = { createTask, getTasks, getTaskById, updateTask, deleteTask };
+module.exports = {
+  createTask,
+  getTasks,
+  getTaskById,
+  updateTask,
+  deleteTask
+};

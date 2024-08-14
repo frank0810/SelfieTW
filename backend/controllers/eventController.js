@@ -57,7 +57,7 @@ const updateEvent = async (req, res) => {
   }
 };
 
-// Cancellare un evento
+// Eliminare un evento
 const deleteEvent = async (req, res) => {
   const { id } = req.params;
   try {
@@ -71,4 +71,10 @@ const deleteEvent = async (req, res) => {
   }
 };
 
-module.exports = { createEvent, getEvents, getEventById, updateEvent, deleteEvent };
+module.exports = {
+  createEvent,
+  getEvents,
+  getEventById,
+  updateEvent,
+  deleteEvent
+};

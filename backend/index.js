@@ -9,7 +9,6 @@ const userRouter = require('./routes/user');
 const noteRoutes = require('./routes/note');
 const { scheduleNotifications } = require('./notificationManager'); 
 
-
 dotenv.config();
 
 const app = express();
@@ -22,7 +21,6 @@ app.use('/tasks', tasksRoutes);
 app.use('/user', userRouter);
 app.use('/notes', noteRoutes);
 app.use('/images', express.static('images'));
-//app.use('/notifications', notificationRoutes);
 
 scheduleNotifications();
 

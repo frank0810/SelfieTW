@@ -7,7 +7,7 @@ const taskSchema = new mongoose.Schema({
   isOverdue: { type: Boolean, default: false },
   priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
   notifications: [{
-    method: { type: String, enum: ['system', 'alert', 'email', 'whatsapp'] },
+    method: { type: String, enum: ['system', 'alert', 'email'] },
     urgencyLevels: [{ timeBeforeDeadline: Number }]
   }],
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }

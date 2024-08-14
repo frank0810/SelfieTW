@@ -1,17 +1,5 @@
 require('dotenv').config(); // Carica le variabili d'ambiente dal file .env
-
 const nodemailer = require('nodemailer');
-const twilio = require('twilio');
-
-// Verifica che le credenziali Twilio siano presenti
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
-if (!accountSid || !authToken) {
-  throw new Error('Twilio credentials (Account SID and Auth Token) are required');
-}
-
-const client = twilio(accountSid, authToken);
 
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
@@ -48,24 +36,24 @@ const sendAlertNotification = (message) => {
   alert(message);
 };
 
-const sendNotification = async (userId, message, method) => {
-  // Recupera l'utente per ottenere dettagli di contatto
-  const user = await User.findById(userId);
-  if (!user) return console.error('Utente non trovato');
+// const sendNotification = async (userId, message, method) => {
+//   // Recupera l'utente per ottenere dettagli di contatto
+//   const user = await User.findById(userId);
+//   if (!user) return console.error('Utente non trovato');
 
-  switch (method) {
-    case 'system':
-      sendSystemNotification('Reminder', message);
-      break;
-    case 'alert':
-      sendAlertNotification(message);
-      break;
-    case 'email':
-      sendEmailNotification(user.email, 'Reminder', message);
-      break;
-  }
-};
+//   switch (method) {
+//     case 'system':
+//       sendSystemNotification('Reminder', message);
+//       break;
+//     case 'alert':
+//       sendAlertNotification(message);
+//       break;
+//     case 'email':
+//       sendEmailNotification(user.email, 'Reminder', message);
+//       break;
+//   }
+// };
 
-module.exports = {
-  sendNotification,
-};
+// module.exports = {
+//   sendNotification,
+// };

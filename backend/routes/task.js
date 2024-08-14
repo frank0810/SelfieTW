@@ -1,18 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { 
-  createTask, 
-  getTasks, 
-  updateTask, 
-  deleteTask, 
-  getTaskById 
-} = require('../controllers/taskController');
+const taskController = require('../controllers/taskController');
+const authController = require('../controllers/authController');
 
-// Rotte per la gestione delle attività
-router.post('/', createTask);
-router.get('/', getTasks);
-router.get('/:id', getTaskById);
-router.put('/:id', updateTask);
-router.delete('/:id', deleteTask);
+router.post('/tasks', authController.auth, taskController.createTask);
+router.get('/tasks', authController.auth, taskController.getTasks);
+router.get('/tasks/:id', authController.auth, taskController.getTaskById);
+router.patch('/tasks/:id', authController.auth, taskController.updateTask);
+router.delete('/tasks/:id', authController.auth, taskController.deleteTask);
 
 module.exports = router;
