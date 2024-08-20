@@ -1,0 +1,21 @@
+.time-machine-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: rgba(252, 60, 60, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    border-color: rgb(0, 0, 0);
+    border: solid 1px;
+}
+
+.time-machine-container .current-time-display {
+    margin-top: 10px;
+}
+
+.time-machine-container button {
+    margin: 5px 0;
+}
