@@ -1,34 +1,51 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react'; 
 
-// Crea il contesto
 const TimeMachineContext = createContext();
 
-// Hook personalizzato per accedere al contesto
+//per accedere al contesto
 export const useTimeMachine = () => useContext(TimeMachineContext);
 
-// Provider del contesto
 export const TimeMachineProvider = ({ children }) => {
   const [virtualTime, setVirtualTime] = useState(new Date());
   const [isRealTime, setIsRealTime] = useState(true);
+  const [offset, setOffset] = useState(0); //differenza tra tempo reale e tempo virtuale
+  const intervalRef = useRef(null); // Per memorizzare il riferimento all'intervallo
 
+  // Funzione per calcolare l'ora virtuale aggiornata
+  const updateVirtualTime = () => {
+    setVirtualTime(new Date(Date.now() + offset)); //il tempo virtuale lo calcolo facendo ADESSO+OFFSET, 
+                                                   //  così, quando cambia ADESSO, cambio anche il virtuale (serve per far scorrere il tempo)
+  };
+  
   const travelInTime = (newDate) => {
     setIsRealTime(false);
-    setVirtualTime(newDate);
+    const newOffset = newDate.getTime() - Date.now(); //calcolo l'offset
+    setOffset(newOffset);
   };
+
 
   const resetToRealTime = () => {
     setIsRealTime(true);
-    setVirtualTime(new Date());
+    setOffset(0); 
+    setVirtualTime(new Date()); 
   };
 
-  useEffect(() => {
-    if (isRealTime) {
-      const interval = setInterval(() => {
-        setVirtualTime(new Date());
-      }, 1000); // Aggiornamento ogni secondo
-      return () => clearInterval(interval);
+  useEffect(() => { //eseguito ogni qual volta cambia isRealTime oppure cambio l'offset
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
     }
-  }, [isRealTime]);
+
+    if (isRealTime) {
+      intervalRef.current = setInterval(() => {
+        setVirtualTime(new Date());
+      }, 1000); //aggiorno ogni secondo
+    } else {
+      //aggiorna ogni secondo, ma con l'offset
+      intervalRef.current = setInterval(updateVirtualTime, 1000);
+    }
+
+    return () => clearInterval(intervalRef.current); //quando smonto
+  }, [isRealTime, offset]);
 
   return (
     <TimeMachineContext.Provider value={{ virtualTime, travelInTime, resetToRealTime }}>
