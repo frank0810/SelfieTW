@@ -24,7 +24,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<PrivateRoute />}>
               <Route path="/" element={<><TimeMachine /> <Home /></>} />
-              <Route path="/pomodoro" element={<><TimeMachine /> <PomodoroView /></>} />
+              <Route path="/pomodoro" element={ <PomodoroView />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/notes" element={<Note />} />
               <Route path="/calendar" element={<><TimeMachine /> <CalendarComponent /></>} />

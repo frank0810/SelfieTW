@@ -19,7 +19,9 @@ const userSchema = new Schema({
   lastPomodoro: { type: lastPomodoroSchema, default: null },
   birthday: { type: Date, required: false }, 
   profilePic: { type: String, required: false, default: '/images/profile-pic.jpg' },
-  userNotes: [{ type: Schema.Types.ObjectId, ref: 'Note' }]
+  userNotes: [{ type: Schema.Types.ObjectId, ref: 'Note' }],
+  userEvents: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
+  userTasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }]
 });
 
 
