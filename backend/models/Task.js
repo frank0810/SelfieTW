@@ -6,7 +6,7 @@ const taskSchema = new mongoose.Schema({
   deadline: { type: Date, required: true },
   isCompleted: { type: Boolean, default: false },
   isOverdue: { type: Boolean, default: false },
-  priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
+  //priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
   // notifications: [{
   //   method: { type: String, enum: ['system', 'alert', 'email'] },
   //   urgencyLevels: [{ timeBeforeDeadline: Number }]
