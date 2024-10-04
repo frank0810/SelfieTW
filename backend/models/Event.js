@@ -15,6 +15,8 @@ const eventSchema = new mongoose.Schema({
   }]*/
 
  //TODO RIPETIZIONI
+  //frequency,
+  //repeatCount
 
 });
 

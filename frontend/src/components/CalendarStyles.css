@@ -16,7 +16,15 @@
     margin-top: 2px;
   }
   
+  .calendar-container {
+    width: 100%;
+    height: 100%;
+    max-width: 1000px; 
+    margin: 0 auto;
+  }
+
   .react-calendar {
+    font-size: 1.1rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
@@ -44,5 +52,11 @@
   .react-calendar__tile:hover {
     background-color: #f8f9fa;
     border-radius: 8px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
   }
   
