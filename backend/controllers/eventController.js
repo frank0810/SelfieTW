@@ -1,9 +1,9 @@
-const Event = require('../models/Event');
 const User = require('../models/user.model');
+const Event = require('../models/Event');
 const jwt = require('jsonwebtoken');
 
 // Creazione di un nuovo evento
-const createEvent = async (req, res) => {
+exports.createEvent = async (req, res) => {
   const authHeader = req.headers.authorization;
   const { title, startDate, startTime, endDate, endTime, location, isAllDay } = req.body;
 
@@ -52,9 +52,9 @@ const createEvent = async (req, res) => {
 
 
 // Ottenere un evento specifico tramite ID
-const getEventById = async (req, res) => {
+exports.getEventById = async (req, res) => {
   const authHeader = req.headers.authorization;
-  const { eventID } = req.params;
+  const eventId = req.params.eventId;
 
   if (!authHeader) {
     return res.status(401).json({ message: 'No token provided' });
@@ -66,13 +66,14 @@ const getEventById = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
 
-    const event = await Event.findById(eventID);
+    const event = await Event.findById(eventId);
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
 
     res.json({ event });
   } catch (error) {
+    console.error(error);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ message: 'Invalid token' });
     }
@@ -81,7 +82,7 @@ const getEventById = async (req, res) => {
 };
 
 // Aggiornare un evento esistente
-const updateEvent = async (req, res) => {
+exports.updateEvent = async (req, res) => {
   const authHeader = req.headers.authorization;
   const eventId = req.params.eventId;
   const { title, startDate, startTime, endDate, endTime, location, isAllDay } = req.body;
@@ -130,7 +131,7 @@ const updateEvent = async (req, res) => {
 };
 
 // Eliminare un evento
-const deleteEvent = async (req, res) => {
+exports.deleteEvent = async (req, res) => {
   const authHeader = req.headers.authorization;
   const eventId = req.params.eventId;
 
@@ -161,16 +162,10 @@ const deleteEvent = async (req, res) => {
       res.status(404).json({ message: 'event not found in user\'s events' });
     }
   } catch (error) {
+    console.error(error);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ message: 'Invalid token' });
     }
     res.status(500).json({ message: 'Server error' });
   }
-};
-
-module.exports = {
-  createEvent,
-  getEventById,
-  updateEvent,
-  deleteEvent
 };

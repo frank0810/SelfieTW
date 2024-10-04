@@ -26,16 +26,17 @@ exports.createTask = async (req, res) => {
       description,
       deadline,
       isCompleted,
-      isOverdue,
+      isOverdue
     });
     await newTask.save();
 
     // Metto l'attività dentro alla lista dell'utente che l'ha creata
-    user.userTask.push(newTask._id);
+    user.userTasks.push(newTask._id);
     await user.save();
 
     res.json({ message: 'Task created successfully' });
   } catch(error){
+    console.error(error);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ message: 'Invalid token' });
     }
@@ -62,9 +63,9 @@ exports.deleteTask = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const taskIndex = user.userTask.indexOf(taskId);
+    const taskIndex = user.userTasks.indexOf(taskId);
     if (taskIndex > -1) {
-      user.userTask.splice(taskIndex, 1);
+      user.userTasks.splice(taskIndex, 1);
       await user.save();
 
       await Task.findByIdAndDelete(taskId);
@@ -74,6 +75,7 @@ exports.deleteTask = async (req, res) => {
       res.status(404).json({ message: 'Task not found in user\'s tasks' });
     }
   } catch (error) {
+    console.error(error);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ message: 'Invalid token' });
     }
@@ -101,7 +103,7 @@ exports.updateTask = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if (!user.userTask.includes(taskId)) {
+    if (!user.userTasks.includes(taskId)) {
       return res.status(403).json({ message: 'You do NOT own this task' });
     }
 
@@ -120,6 +122,7 @@ exports.updateTask = async (req, res) => {
 
     res.json({ message: 'Task updated successfully', task });
   } catch (error) {
+    console.error(error);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ message: 'Invalid token' });
     }
@@ -148,6 +151,7 @@ exports.getTaskById = async (req, res) => {
 
     res.json({ task });
   } catch (error) {
+    console.error(error);
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ message: 'Invalid token' });
     }
