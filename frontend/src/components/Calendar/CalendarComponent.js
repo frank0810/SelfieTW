@@ -6,10 +6,11 @@ import CreateEventModal from './CreateEventModal';
 import CreateTaskModal from './CreateTaskModal';
 import TaskListComponent from './TaskListComponent';
 import EventPreviewModal from './EventPreviewModal';
-import NavigationBar from './Navbar';
+import NavigationBar from '../Navbar';
 
 const CalendarComponent = () => {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showEventModal, setShowEventModal] = useState(false);
@@ -136,7 +137,7 @@ const CalendarComponent = () => {
             throw new Error('Network response was not ok');
         }
 
-        showEventModal(false);
+        setShowEventModal(false);
         window.location.reload(); 
 
     } catch (error) {
@@ -160,7 +161,7 @@ const CalendarComponent = () => {
             throw new Error('Network response was not ok');
         }
 
-        showTaskModal(false);
+        setShowTaskModal(false);
         window.location.reload(); 
 
     } catch (error) {

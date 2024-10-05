@@ -43,11 +43,20 @@ const CreateEventModal = ({ show, handleClose, handleCreate }) => {
             />
           </Form.Group>
           <Form.Group controlId="formDate">
-            <Form.Label>Data Inizio</Form.Label>
+            <Form.Label>Data di Inizio</Form.Label>
             <Form.Control
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formEndDate">
+            <Form.Label>Data di Fine</Form.Label>
+            <Form.Control
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
             />
           </Form.Group>
 
