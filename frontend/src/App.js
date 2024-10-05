@@ -8,7 +8,7 @@ import PrivateRoute from './components/PrivateRoute';
 import ProfilePage from './components/ProfilePage';
 import PomodoroView from './components/PomodoroView/PomodoroView';
 import Note from './components/Note';
-import CalendarComponent from './components/Calendar';
+import CalendarComponent from './components/Calendar/CalendarComponent';
 import TimeMachine from './components/TimeMachine';
 import { TimeMachineProvider } from './TimeMachineContext';
 import TimeMachineTest from './components/TimeMachineTest'

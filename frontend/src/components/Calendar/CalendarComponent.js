@@ -7,43 +7,29 @@ import CreateTaskModal from './CreateTaskModal';
 import TaskListComponent from './TaskListComponent';
 import EventPreviewModal from './EventPreviewModal';
 import NavigationBar from '../Navbar';
+import { useTimeMachine } from '../../TimeMachineContext';
 
 const CalendarComponent = () => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [tasks, setTasks] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showEventModal, setShowEventModal] = useState(false);
-  const [showTaskModal, setShowTaskModal] = useState(false);
-  const [showEventPreviewModal, setShowEventPreviewModal] = useState(false);
+    const { virtualTime } = useTimeMachine();
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [tasks, setTasks] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [showEventModal, setShowEventModal] = useState(false);
+    const [showTaskModal, setShowTaskModal] = useState(false);
+    const [showEventPreviewModal, setShowEventPreviewModal] = useState(false);
 
-  // Carica eventi e attività
-  useEffect(() => {
-    fetchEvents();
-    fetchTasks();
-  }, []);
+    // Carica eventi e attività
+    useEffect(() => {
+        fetchEvents();
+        fetchTasks();
+    }, [virtualTime]);
 
-  const fetchEvents = async () => {
-    const token = localStorage.getItem('token');
-    
-    try {
-        const response = await fetch('http://localhost:3000/user/getUserData', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
+    const fetchEvents = async () => {
+        const token = localStorage.getItem('token');
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json();
-        const eventIds = result.user.userEvents || [];
-
-        const eventPromises = eventIds.map(async (id) => {
-            const eventResponse = await fetch(`http://localhost:3000/events/${id}`, {
+        try {
+            const response = await fetch('http://localhost:3000/user/getUserData', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,45 +37,46 @@ const CalendarComponent = () => {
                 }
             });
 
-            if (!eventResponse.ok) {
+            if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            const event = await eventResponse.json();
+            const result = await response.json();
+            const eventIds = result.user.userEvents || [];
+            //console.log("Events:", eventIds)
 
-            return event.event;
-        });
+            const eventPromises = eventIds.map(async (id) => {
+                const eventResponse = await fetch(`http://localhost:3000/events/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
 
-        const events = await Promise.all(eventPromises);
-        setEvents(events);
-    } catch (error) {
-        console.error('There was a BAD problem with the fetch operation:', error);
-    } finally {
-        setLoading(false);
-    }
-  };
+                if (!eventResponse.ok) {
+                    throw new Error('Network response was not ok');
+                }
 
-  const fetchTasks = async () => {
-    const token = localStorage.getItem('token');
-    
-    try {
-        const response = await fetch('http://localhost:3000/user/getUserData', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
+                const event = await eventResponse.json();
+                //console.log(event.event)
+                return event.event;
+            });
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const events = await Promise.all(eventPromises);
+            setEvents(events);
+        } catch (error) {
+            console.error('There was a BAD problem with the fetch operation:', error);
+        } finally {
+            setLoading(false);
         }
+    };
 
-        const result = await response.json();
-        const taskIds = result.user.userTasks || [];
+    const fetchTasks = async () => {
+        const token = localStorage.getItem('token');
 
-        const taskPromises = taskIds.map(async (id) => {
-            const taskResponse = await fetch(`http://localhost:3000/tasks/${id}`, {
+        try {
+            const response = await fetch('http://localhost:3000/user/getUserData', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,122 +84,143 @@ const CalendarComponent = () => {
                 }
             });
 
-            if (!taskResponse.ok) {
+            if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            const task = await taskResponse.json();
+            const result = await response.json();
+            const taskIds = result.user.userTasks || [];
+            //console.log("Tasks:", taskIds)
 
-            return task.task;
-        });
+            const taskPromises = taskIds.map(async (id) => {
+                const taskResponse = await fetch(`http://localhost:3000/tasks/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
 
-        const tasks = await Promise.all(taskPromises);
-        setTasks(tasks);
-    } catch (error) {
-        console.error('There was a BAD problem with the fetch operation:', error);
-    } finally {
-        setLoading(false);
-    }
-  };
+                if (!taskResponse.ok) {
+                    throw new Error('Network response was not ok');
+                }
 
-  // Gestione selezione data nel calendario
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-    setShowEventPreviewModal(true);
-  };
+                const task = await taskResponse.json();
+                //console.log(task.task)
+                return task.task;
+            });
 
-  // Modale per creare nuovi eventi
-  const handleCreateEvent = async (newEvent) => {
-    try {
-        const response = await fetch('http://localhost:3000/events/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify(newEvent)
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const tasks = await Promise.all(taskPromises);
+            setTasks(tasks);
+        } catch (error) {
+            console.error('There was a BAD problem with the fetch operation:', error);
+        } finally {
+            setLoading(false);
         }
+    };
 
-        setShowEventModal(false);
-        window.location.reload(); 
+    // Gestione selezione data nel calendario
+    const handleDateClick = (date) => {
+        setSelectedDate(date);
+        setShowEventPreviewModal(true);
+    };
 
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    }
-  };
+    // Modale per creare nuovi eventi
+    const handleCreateEvent = async (newEvent) => {
+        console.log(newEvent)
+        try {
+            const response = await fetch('http://localhost:3000/events/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(newEvent)
+            });
 
-  // Modale per creare nuove attività
-  const handleCreateTask = async (newTask) => {
-    try {
-        const response = await fetch('http://localhost:3000/tasks/create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify(newTask)
-        });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+            setShowEventModal(false);
+            window.location.reload();
+            window.alert("Evento creato con successo")
+
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            window.alert("Errore nella creazione dell'evento")
         }
+    };
 
-        setShowTaskModal(false);
-        window.location.reload(); 
+    // Modale per creare nuove attività
+    const handleCreateTask = async (newTask) => {
+        try {
+            const response = await fetch('http://localhost:3000/tasks/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify(newTask)
+            });
 
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    }
-  };
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-  return (
-    <>
-        <NavigationBar isAuthenticated={true} />
-        <Container fluid>
-        <Row className="justify-content-center mt-4">
-            <Col xs={12} md={8} lg={3}>
-            <div className="mb-3 text-center button-group">
-                <Button variant="primary" onClick={() => setShowEventModal(true)}>
-                Crea Evento
-                </Button>
-                <Button variant="secondary" onClick={() => setShowTaskModal(true)} className="ml-2">
-                Crea Attività
-                </Button>
-            </div>
-            <div className="calendar-container">
-                <Calendar onChange={handleDateClick} value={selectedDate} />
-            </div>
-            </Col>
-        </Row>
+            setShowTaskModal(false);
+            window.location.reload();
 
-        {/* Task List sotto il calendario */}
-        <Row className="mt-4">
-            <TaskListComponent tasks={tasks} />
-        </Row>
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    };
 
-        {/* Modali */}
-        <CreateEventModal
-            show={showEventModal}
-            handleClose={() => setShowEventModal(false)}
-            handleCreate={handleCreateEvent}
-        />
-        <CreateTaskModal
-            show={showTaskModal}
-            handleClose={() => setShowTaskModal(false)}
-            handleCreate={handleCreateTask}
-        />
-        <EventPreviewModal
-            show={showEventPreviewModal}
-            handleClose={() => setShowEventPreviewModal(false)}
-            events={events.filter(event => new Date(event.startDate).toDateString() === selectedDate.toDateString())}
-        />
-        </Container>
-    </>
-  );
+    return (
+        <>
+            <NavigationBar isAuthenticated={true} />
+            <Container fluid>
+                <Row className="justify-content-center mt-4">
+                    <Col xs={12} md={8} lg={3}>
+                        <div className="mb-3 text-center button-group">
+                            <Button variant="primary" onClick={() => setShowEventModal(true)}>
+                                Crea Evento
+                            </Button>
+                            <Button variant="secondary" onClick={() => setShowTaskModal(true)} className="ml-2">
+                                Crea Attività
+                            </Button>
+                        </div>
+                        <div className="calendar-container">
+                            <Calendar onChange={handleDateClick} value={selectedDate} />
+                        </div>
+                    </Col>
+                </Row>
+
+                {/* Task List sotto il calendario */}
+                <Row className="mt-4">
+                    <TaskListComponent tasks={tasks} />
+                </Row>
+
+                {/* Modali */}
+                <CreateEventModal
+                    show={showEventModal}
+                    handleClose={() => setShowEventModal(false)}
+                    handleCreate={handleCreateEvent}
+                />
+                <CreateTaskModal
+                    show={showTaskModal}
+                    handleClose={() => setShowTaskModal(false)}
+                    handleCreate={handleCreateTask}
+                />
+                <EventPreviewModal
+                    selectedDate={selectedDate}
+                    show={showEventPreviewModal}
+                    handleClose={() => setShowEventPreviewModal(false)}
+                    events={events.filter(event => new Date(event.startDate).toDateString() === selectedDate.toDateString())}
+                />
+            </Container>
+        </>
+    );
 };
 
 export default CalendarComponent;

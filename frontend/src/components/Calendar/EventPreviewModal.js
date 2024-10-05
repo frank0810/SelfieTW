@@ -24,8 +24,9 @@ const EventPreviewModal = ({ show, handleClose, selectedDate, events }) => {
                   <p><strong>Tutto il giorno</strong></p>
                 ) : (
                   <p>
-                    <strong>Inizio:</strong> {new Date(event.startDate).toLocaleTimeString()} <br />
-                    <strong>Fine:</strong> {new Date(event.endDate).toLocaleTimeString()}
+                    <strong>Data di Fine:</strong> {event.endDate.slice(0,10)} <br/>
+                    <strong>Orario di Inizio:</strong> {event.startTime} <br />
+                    <strong>Orario di Fine:</strong> {event.endTime}
                   </p>
                 )}
                 {event.location && <p><strong>Luogo:</strong> {event.location}</p>}

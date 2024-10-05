@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { useTimeMachine } from '../../TimeMachineContext';
 
 const CreateEventModal = ({ show, handleClose, handleCreate }) => {
+  const { virtualTime } = useTimeMachine();
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -11,6 +13,12 @@ const CreateEventModal = ({ show, handleClose, handleCreate }) => {
   const [isAllDay, setIsAllDay] = useState(false);
   //const [frequency, setFrequency] = useState('');
   //const [repeatCount, setRepeatCount] = useState('');
+
+  useEffect(() => {
+    setStartTime(virtualTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+    setEndTime(virtualTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+}, []);
+
 
   const onCreate = () => {
     handleCreate({
