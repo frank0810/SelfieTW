@@ -8,6 +8,7 @@ import TaskListComponent from './TaskListComponent';
 import EventPreviewModal from './EventPreviewModal';
 import NavigationBar from '../Navbar';
 import { useTimeMachine } from '../../TimeMachineContext';
+import './CalendarStyles.css';
 
 const CalendarComponent = () => {
     const { virtualTime } = useTimeMachine();
@@ -174,6 +175,15 @@ const CalendarComponent = () => {
         }
     };
 
+     // Controlla se la data ha eventi o scadenze di attività
+     const hasEventsOrTasks = (date) => {
+        const dateString = date.toDateString();  // Usa la rappresentazione locale della data
+        return (
+            events.some(event => new Date(event.startDate).toDateString() === dateString) ||
+            tasks.some(task => new Date(task.deadline).toDateString() === dateString)
+        );
+    };
+
     return (
         <>
             <NavigationBar isAuthenticated={true} />
@@ -181,7 +191,11 @@ const CalendarComponent = () => {
                 <Row className="justify-content-center mt-4">
                     <Col xs={12} md={8} lg={3}>
                         <div className="calendar-container">
-                            <Calendar onChange={handleDateClick} value={selectedDate} />
+                            <Calendar
+                                onChange={handleDateClick}
+                                value={selectedDate}
+                                tileContent={({ date }) => hasEventsOrTasks(date) ? <div className="highlight"></div> : null}
+                            />
                         </div>
                     </Col>
                 </Row>
@@ -209,6 +223,7 @@ const CalendarComponent = () => {
                     show={showEventPreviewModal}
                     handleClose={() => setShowEventPreviewModal(false)}
                     events={events}
+                    tasks={tasks}
                     openEventModal={openEventModal}  // Passa la funzione per aprire il modal degli eventi
                     openTaskModal={openTaskModal}    // Passa la funzione per aprire il modal delle attività
                 />

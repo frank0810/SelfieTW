@@ -1,0 +1,12 @@
+.calendar-container .highlight {
+    background-color: blue;
+    color: white;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+  
