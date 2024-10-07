@@ -129,10 +129,10 @@ const SingleTaskComponent = ({ task, fetchTasks }) => {
               />
             </Form.Group>
 
-            <Button variant="primary" onClick={handleEditTask}>
+            <Button variant="primary" onClick={handleEditTask} className="me-3 mt-3">
               Salva Modifiche
             </Button>
-            <Button variant="danger" onClick={handleDeleteTask} className="ml-2">
+            <Button variant="danger" onClick={handleDeleteTask} className="mt-3">
               Elimina Attività
             </Button>
           </Form>
