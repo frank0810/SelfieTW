@@ -175,6 +175,50 @@ const CalendarComponent = () => {
         }
     };
 
+    const handleDeleteEvent = async (eventId) => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`http://localhost:3000/events/delete/${eventId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            window.alert("Evento eliminato con successo");
+            fetchEvents(); // Ricarica gli eventi
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    };
+
+    const handleDeleteTask = async (taskId) => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch(`http://localhost:3000/tasks/delete/${taskId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            window.alert("Attività eliminata con successo");
+            fetchTasks(); // Ricarica le attività
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+    };
+
      // Controlla se la data ha eventi o scadenze di attività
      const hasEventsOrTasks = (date) => {
         const dateString = date.toDateString();  // Usa la rappresentazione locale della data
@@ -191,7 +235,7 @@ const CalendarComponent = () => {
                 <Row className="justify-content-center mt-4">
                     <Col xs={12} md={8} lg={3}>
                         <div className="calendar-container">
-                            <Calendar
+                            <Calendar className="calendar"
                                 onChange={handleDateClick}
                                 value={selectedDate}
                                 tileContent={({ date }) => hasEventsOrTasks(date) ? <div className="highlight"></div> : null}
@@ -226,6 +270,8 @@ const CalendarComponent = () => {
                     tasks={tasks}
                     openEventModal={openEventModal}  // Passa la funzione per aprire il modal degli eventi
                     openTaskModal={openTaskModal}    // Passa la funzione per aprire il modal delle attività
+                    handleDeleteEvent={handleDeleteEvent}  // Passa la funzione di eliminazione evento
+                    handleDeleteTask={handleDeleteTask}    // Passa la funzione di eliminazione attività
                 />
             </Container>
         </>
