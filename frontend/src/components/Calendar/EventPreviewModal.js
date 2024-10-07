@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, ListGroup } from 'react-bootstrap';
 
-const EventPreviewModal = ({ show, handleClose, selectedDate, events }) => {
+const EventPreviewModal = ({ show, handleClose, selectedDate, events, openEventModal, openTaskModal }) => {
   // Filtra gli eventi per la data selezionata
   const eventsForSelectedDate = events.filter(event => {
     const eventStartDate = new Date(event.startDate).toDateString();
@@ -15,6 +15,13 @@ const EventPreviewModal = ({ show, handleClose, selectedDate, events }) => {
         <Modal.Title>Eventi per {new Date(selectedDate).toLocaleDateString()}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {/* Pulsanti per creare eventi e attività */}
+        <div className="d-flex justify-content-around mb-3">
+          <Button variant="primary" onClick={openEventModal}>Crea Evento</Button>
+          <Button variant="secondary" onClick={openTaskModal}>Crea Attività</Button>
+        </div>
+        
+        {/* Lista degli eventi per la data selezionata */}
         {eventsForSelectedDate.length > 0 ? (
           <ListGroup>
             {eventsForSelectedDate.map(event => (

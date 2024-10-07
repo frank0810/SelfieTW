@@ -12,7 +12,6 @@ import { useTimeMachine } from '../../TimeMachineContext';
 const CalendarComponent = () => {
     const { virtualTime } = useTimeMachine();
     const [events, setEvents] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [tasks, setTasks] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [showEventModal, setShowEventModal] = useState(false);
@@ -43,7 +42,6 @@ const CalendarComponent = () => {
 
             const result = await response.json();
             const eventIds = result.user.userEvents || [];
-            //console.log("Events:", eventIds)
 
             const eventPromises = eventIds.map(async (id) => {
                 const eventResponse = await fetch(`http://localhost:3000/events/${id}`, {
@@ -59,7 +57,6 @@ const CalendarComponent = () => {
                 }
 
                 const event = await eventResponse.json();
-                //console.log(event.event)
                 return event.event;
             });
 
@@ -67,8 +64,6 @@ const CalendarComponent = () => {
             setEvents(events);
         } catch (error) {
             console.error('There was a BAD problem with the fetch operation:', error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -90,7 +85,6 @@ const CalendarComponent = () => {
 
             const result = await response.json();
             const taskIds = result.user.userTasks || [];
-            //console.log("Tasks:", taskIds)
 
             const taskPromises = taskIds.map(async (id) => {
                 const taskResponse = await fetch(`http://localhost:3000/tasks/${id}`, {
@@ -106,7 +100,6 @@ const CalendarComponent = () => {
                 }
 
                 const task = await taskResponse.json();
-                //console.log(task.task)
                 return task.task;
             });
 
@@ -114,8 +107,6 @@ const CalendarComponent = () => {
             setTasks(tasks);
         } catch (error) {
             console.error('There was a BAD problem with the fetch operation:', error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -125,9 +116,20 @@ const CalendarComponent = () => {
         setShowEventPreviewModal(true);
     };
 
+    // Apre il modal per creare nuovi eventi
+    const openEventModal = () => {
+        setShowEventPreviewModal(false);  // Chiude l'anteprima degli eventi
+        setShowEventModal(true);          // Apre il modal per creare eventi
+    };
+
+    // Apre il modal per creare nuove attività
+    const openTaskModal = () => {
+        setShowEventPreviewModal(false);  // Chiude l'anteprima degli eventi
+        setShowTaskModal(true);           // Apre il modal per creare attività
+    };
+
     // Modale per creare nuovi eventi
     const handleCreateEvent = async (newEvent) => {
-        console.log(newEvent)
         try {
             const response = await fetch('http://localhost:3000/events/create', {
                 method: 'POST',
@@ -144,11 +146,8 @@ const CalendarComponent = () => {
 
             setShowEventModal(false);
             window.location.reload();
-            window.alert("Evento creato con successo")
-
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            window.alert("Errore nella creazione dell'evento")
         }
     };
 
@@ -170,7 +169,6 @@ const CalendarComponent = () => {
 
             setShowTaskModal(false);
             window.location.reload();
-
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
         }
@@ -182,14 +180,6 @@ const CalendarComponent = () => {
             <Container fluid>
                 <Row className="justify-content-center mt-4">
                     <Col xs={12} md={8} lg={3}>
-                        <div className="mb-3 text-center button-group">
-                            <Button variant="primary" onClick={() => setShowEventModal(true)}>
-                                Crea Evento
-                            </Button>
-                            <Button variant="secondary" onClick={() => setShowTaskModal(true)} className="ml-2">
-                                Crea Attività
-                            </Button>
-                        </div>
                         <div className="calendar-container">
                             <Calendar onChange={handleDateClick} value={selectedDate} />
                         </div>
@@ -206,17 +196,21 @@ const CalendarComponent = () => {
                     show={showEventModal}
                     handleClose={() => setShowEventModal(false)}
                     handleCreate={handleCreateEvent}
+                    defaultStartDate={selectedDate}  // Imposta la data selezionata come data di default
                 />
                 <CreateTaskModal
                     show={showTaskModal}
                     handleClose={() => setShowTaskModal(false)}
                     handleCreate={handleCreateTask}
+                    defaultDeadline={selectedDate}  // Imposta la data selezionata come scadenza di default
                 />
                 <EventPreviewModal
                     selectedDate={selectedDate}
                     show={showEventPreviewModal}
                     handleClose={() => setShowEventPreviewModal(false)}
-                    events={events.filter(event => new Date(event.startDate).toDateString() === selectedDate.toDateString())}
+                    events={events}
+                    openEventModal={openEventModal}  // Passa la funzione per aprire il modal degli eventi
+                    openTaskModal={openTaskModal}    // Passa la funzione per aprire il modal delle attività
                 />
             </Container>
         </>
