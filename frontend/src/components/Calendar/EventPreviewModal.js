@@ -37,29 +37,6 @@ const EventPreviewModal = ({ show, handleClose, selectedDate, events, tasks, ope
               <ListGroup.Item key={event._id} className="mb-3">
                 <SingleEventPreview event={event}></SingleEventPreview>
               </ListGroup.Item>
-              // <ListGroup.Item key={event._id} className="mb-3">
-              //   <h5>{event.title}</h5>
-              //   <p><strong>Tipo:</strong> Evento</p>
-              //   <Row>
-              //     <Col>
-              //       {event.isAllDay ? (
-              //         <p><strong>Tutto il giorno</strong></p>
-              //       ) : (
-              //         <p>
-              //           <strong>Data di Fine:</strong> {event.endDate.slice(0, 10)} <br />
-              //           <strong>Orario di Inizio:</strong> {event.startTime} <br />
-              //           <strong>Orario di Fine:</strong> {event.endTime}
-              //         </p>
-              //       )}
-              //       {event.location && <p><strong>Luogo:</strong> {event.location}</p>}
-              //     </Col>
-              //     <Col className="text-end">
-              //       <Button  variant="warning" className="me-2">Modifica</Button>
-              //       <Button  variant="danger" onClick={() => handleDeleteEvent(event._id)}>Elimina</Button>
-              //     </Col>
-              //   </Row>
-
-              // </ListGroup.Item>
             ))}
           </ListGroup>
         ) : (
