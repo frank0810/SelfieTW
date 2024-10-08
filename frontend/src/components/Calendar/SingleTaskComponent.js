@@ -16,6 +16,7 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
         },
         body: JSON.stringify({ isCompleted: true})  // Cambia lo stato a completata
       });
+      window.location.reload()
 
       if (response.ok) {
         setIsCompleted(true);  // Aggiorna lo stato localmente
@@ -73,8 +74,9 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
   };
 
   // Logica per determinare lo stato dell'attività (Completata, Scaduta, In corso)
+
   const isTaskOverdue = new Date(task.deadline) < new Date(virtualTime) && !editedTask.isCompleted;
-  const taskStatus = editedTask.isCompleted ? 'Completata' : isTaskOverdue ? 'Scaduta' : 'In corso';
+  const taskStatus = editedTask.isCompleted ? 'Completata' : isTaskOverdue ? 'In Ritardo' : 'In corso';
 
   return (
     <>

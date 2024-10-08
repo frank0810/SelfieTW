@@ -1,5 +1,7 @@
 import React from 'react';
-import { Modal, Button, ListGroup, Row, Col } from 'react-bootstrap'; 
+import { Modal, Button, ListGroup, Row, Col } from 'react-bootstrap';
+import SingleTaskPreview from './SingleTaskPreview.js'
+import SingleEventPreview from './SingleEventPreview.js'
 
 const EventPreviewModal = ({ show, handleClose, selectedDate, events, tasks, openEventModal, openTaskModal, handleDeleteEvent, handleDeleteTask }) => {
   const selectedDateString = new Date(selectedDate).toDateString();
@@ -33,28 +35,31 @@ const EventPreviewModal = ({ show, handleClose, selectedDate, events, tasks, ope
           <ListGroup>
             {eventsForSelectedDate.map(event => (
               <ListGroup.Item key={event._id} className="mb-3">
-                <h5>{event.title}</h5>
-                <p><strong>Tipo:</strong> Evento</p>
-                <Row>
-                  <Col>
-                    {event.isAllDay ? (
-                      <p><strong>Tutto il giorno</strong></p>
-                    ) : (
-                      <p>
-                        <strong>Data di Fine:</strong> {event.endDate.slice(0, 10)} <br />
-                        <strong>Orario di Inizio:</strong> {event.startTime} <br />
-                        <strong>Orario di Fine:</strong> {event.endTime}
-                      </p>
-                    )}
-                    {event.location && <p><strong>Luogo:</strong> {event.location}</p>}
-                  </Col>
-                  <Col className="text-end">
-                    <Button  variant="warning" className="me-2">Modifica</Button>
-                    <Button  variant="danger" onClick={() => handleDeleteEvent(event._id)}>Elimina</Button>
-                  </Col>
-                </Row>
-                
+                <SingleEventPreview event={event}></SingleEventPreview>
               </ListGroup.Item>
+              // <ListGroup.Item key={event._id} className="mb-3">
+              //   <h5>{event.title}</h5>
+              //   <p><strong>Tipo:</strong> Evento</p>
+              //   <Row>
+              //     <Col>
+              //       {event.isAllDay ? (
+              //         <p><strong>Tutto il giorno</strong></p>
+              //       ) : (
+              //         <p>
+              //           <strong>Data di Fine:</strong> {event.endDate.slice(0, 10)} <br />
+              //           <strong>Orario di Inizio:</strong> {event.startTime} <br />
+              //           <strong>Orario di Fine:</strong> {event.endTime}
+              //         </p>
+              //       )}
+              //       {event.location && <p><strong>Luogo:</strong> {event.location}</p>}
+              //     </Col>
+              //     <Col className="text-end">
+              //       <Button  variant="warning" className="me-2">Modifica</Button>
+              //       <Button  variant="danger" onClick={() => handleDeleteEvent(event._id)}>Elimina</Button>
+              //     </Col>
+              //   </Row>
+
+              // </ListGroup.Item>
             ))}
           </ListGroup>
         ) : (
@@ -66,18 +71,7 @@ const EventPreviewModal = ({ show, handleClose, selectedDate, events, tasks, ope
           <ListGroup>
             {tasksForSelectedDate.map(task => (
               <ListGroup.Item key={task._id} className="mb-3">
-                <h5>{task.title}</h5>
-                <p><strong>Tipo:</strong> Attività</p>
-                <Row>
-                  <Col>
-                    <p><strong>Scadenza:</strong> {task.deadline.slice(0, 10)}</p>
-                    {task.description && <p><strong>Descrizione:</strong> {task.description}</p>}
-                  </Col>
-                  <Col className="text-end">
-                    <Button  variant="warning" className="me-2">Modifica</Button>
-                    <Button  variant="danger" onClick={() => handleDeleteTask(task._id)}>Elimina</Button>
-                  </Col>
-                </Row>      
+                <SingleTaskPreview task={task}></SingleTaskPreview>
               </ListGroup.Item>
             ))}
           </ListGroup>
@@ -85,11 +79,7 @@ const EventPreviewModal = ({ show, handleClose, selectedDate, events, tasks, ope
           <p>Nessuna attività per questa data.</p>
         )}
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Chiudi
-        </Button>
-      </Modal.Footer>
+
     </Modal>
   );
 };

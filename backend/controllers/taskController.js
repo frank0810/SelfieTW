@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 exports.createTask = async (req, res) => {
   const authHeader = req.headers.authorization;
-  const { title, description, deadline, isCompleted, isOverdue } = req.body;
+  const { title, description, deadline, isCompleted } = req.body;
 
   if (!authHeader) {
     return res.status(401).json({ message: 'No token provided' });
@@ -25,8 +25,7 @@ exports.createTask = async (req, res) => {
       title, 
       description,
       deadline,
-      isCompleted,
-      isOverdue
+      isCompleted
     });
     await newTask.save();
 
@@ -86,7 +85,7 @@ exports.deleteTask = async (req, res) => {
 exports.updateTask = async (req, res) => {
   const authHeader = req.headers.authorization;
   const taskId = req.params.taskId;
-  const { title, description, deadline, isCompleted, isOverdue } = req.body;
+  const { title, description, deadline, isCompleted } = req.body;
 
   if (!authHeader) {
     return res.status(401).json({ message: 'No token provided' });
@@ -115,12 +114,12 @@ exports.updateTask = async (req, res) => {
     if (title) task.title = title;
     if (description) task.description = description;
     if (deadline) task.deadline = deadline;
-    if (isCompleted) task.isCompleted = isCompleted;
-    if (isOverdue) task.isOverdue = isOverdue;
-    
+    task.isCompleted = isCompleted;
+  
     await task.save();
 
     res.json({ message: 'Task updated successfully', task });
+    console.log(task)
   } catch (error) {
     console.error(error);
     if (error.name === 'JsonWebTokenError') {

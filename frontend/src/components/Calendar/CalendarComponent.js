@@ -246,7 +246,7 @@ const CalendarComponent = () => {
 
                 {/* Task List sotto il calendario */}
                 <Row className="mt-4">
-                    <TaskListComponent tasks={tasks} fetchTasks={fetchTasks} />
+                    <TaskListComponent tasks={tasks} fetchTasks={fetchTasks} virtualTime={virtualTime} />
                 </Row>
 
                 {/* Modali */}
