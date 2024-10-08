@@ -2,7 +2,7 @@ import React from 'react';
 import { ListGroup, Row, Col } from 'react-bootstrap';
 import SingleTaskComponent from './SingleTaskComponent';
 
-const TaskListComponent = ({ tasks }) => {
+const TaskListComponent = ({ tasks, fetchTasks, virtualTime }) => {
   return (
     <div className="text-center">
       <h2 className="mb-4">Attività</h2>
@@ -17,7 +17,7 @@ const TaskListComponent = ({ tasks }) => {
           </Row>
         </ListGroup.Item>
         {tasks.map((task) => (
-          <SingleTaskComponent key={task._id} task={task} fetchTasks={() => {}} />
+          <SingleTaskComponent key={task._id} task={task} fetchTasks={fetchTasks} />
         ))}
       </ListGroup>
     </div>

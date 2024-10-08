@@ -6,7 +6,6 @@ const CreateTaskModal = ({ show, handleClose, handleCreate, defaultDeadline }) =
   const [description, setDescription] = useState('');
   const [deadline, setDeadline] = useState(new Date(defaultDeadline).toLocaleDateString('en-CA'));
   const [isCompleted, setIsCompleted] = useState(false);
-  const [isOverdue, setIsOverdue] = useState(false);
 
   useEffect(() => {
     setDeadline(new Date(defaultDeadline).toLocaleDateString('en-CA'));
@@ -17,8 +16,7 @@ const CreateTaskModal = ({ show, handleClose, handleCreate, defaultDeadline }) =
       title,
       description,
       deadline,
-      isCompleted,
-      isOverdue
+      isCompleted
     });
   };
 
@@ -55,20 +53,12 @@ const CreateTaskModal = ({ show, handleClose, handleCreate, defaultDeadline }) =
               onChange={(e) => setDeadline(e.target.value)}
             />
           </Form.Group>
-          <Form.Group controlId="formIsCompleted">
-            <Form.Check
+          <Form.Group controlId="formIsCompleted" className="me-3 mt-3">
+            <Form.Switch
               type="checkbox"
               label="Attività completata"
               checked={isCompleted}
               onChange={(e) => setIsCompleted(e.target.checked)}
-            />
-          </Form.Group>
-          <Form.Group controlId="formIsOverdue">
-            <Form.Check
-              type="checkbox"
-              label="Attività scaduta"
-              checked={isOverdue}
-              onChange={(e) => setIsOverdue(e.target.checked)}
             />
           </Form.Group>
         </Form>

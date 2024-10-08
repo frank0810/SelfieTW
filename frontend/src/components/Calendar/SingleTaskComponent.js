@@ -1,36 +1,36 @@
 import React, { useState } from 'react';
 import { ListGroup, Button, Row, Col, Modal, Form } from 'react-bootstrap';
 
-const SingleTaskComponent = ({ task, fetchTasks }) => {
+const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
   const [isCompleted, setIsCompleted] = useState(task.isCompleted);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedTask, setEditedTask] = useState({ ...task });
 
   const handleCompleteTask = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/tasks/${task._id}`, {
-        method: 'PATCH',
+      const response = await fetch(`http://localhost:3000/tasks/update/${task._id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ isCompleted: true }),
+        body: JSON.stringify({ isCompleted: true})  // Cambia lo stato a completata
       });
 
       if (response.ok) {
-        setIsCompleted(true);
-        fetchTasks(); // Ricarica la lista delle attività
+        setIsCompleted(true);  // Aggiorna lo stato localmente
+        fetchTasks();  // Ricarica le attività per riflettere il cambiamento
       } else {
-        throw new Error('Network response was not ok');
+        console.error('Errore nel completamento dell\'attività');
       }
     } catch (error) {
-      console.error('Errore nel completamento dell\'attività:', error);
+      console.error('Errore nella richiesta di completamento dell\'attività:', error);
     }
   };
 
   const handleEditTask = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/tasks/${task._id}`, {
+      const response = await fetch(`http://localhost:3000/tasks/update/${task._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -41,6 +41,7 @@ const SingleTaskComponent = ({ task, fetchTasks }) => {
 
       if (response.ok) {
         setShowEditModal(false);
+        setIsCompleted(editedTask.isCompleted);  // Aggiorna lo stato nella TaskList
         fetchTasks(); // Ricarica le attività
       } else {
         throw new Error('Network response was not ok');
@@ -52,7 +53,7 @@ const SingleTaskComponent = ({ task, fetchTasks }) => {
 
   const handleDeleteTask = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/tasks/${task._id}`, {
+      const response = await fetch(`http://localhost:3000/tasks/delete/${task._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -71,8 +72,9 @@ const SingleTaskComponent = ({ task, fetchTasks }) => {
     }
   };
 
-  const isTaskOverdue = new Date(task.deadline) < new Date() && !isCompleted;
-  const taskStatus = isCompleted ? 'Completata' : isTaskOverdue ? 'Scaduta' : 'In corso';
+  // Logica per determinare lo stato dell'attività (Completata, Scaduta, In corso)
+  const isTaskOverdue = new Date(task.deadline) < new Date(virtualTime) && !editedTask.isCompleted;
+  const taskStatus = editedTask.isCompleted ? 'Completata' : isTaskOverdue ? 'Scaduta' : 'In corso';
 
   return (
     <>
@@ -126,6 +128,39 @@ const SingleTaskComponent = ({ task, fetchTasks }) => {
                 type="date"
                 value={editedTask.deadline.slice(0, 10)}
                 onChange={(e) => setEditedTask({ ...editedTask, deadline: e.target.value })}
+              />
+            </Form.Group>
+
+            {/* <Form.Group controlId="formIsCompleted">
+              <Form.Check
+                type="checkbox"
+                label="Attività completata"
+                checked={editedTask.isCompleted}
+                onChange={() => handleCheckboxChange('isCompleted')}
+              />
+            </Form.Group> */}
+
+            {/* <Form.Group controlId="formIsOverdue">
+              <Form.Check
+                type="checkbox"
+                label="Attività scaduta"
+                checked={editedTask.isOverdue}
+                onChange={() => handleCheckboxChange('isOverdue')}
+              />
+            </Form.Group> */}
+
+            <Form.Group controlId="formIsCompleted">
+              <Form.Switch
+                type="checkbox"
+                className="me-3 mt-3"
+                label="Attività completata"
+                checked={editedTask.isCompleted}
+                onChange={() => {
+                  setEditedTask(prev => ({
+                    ...prev,
+                    isCompleted: !prev.isCompleted,
+                  }));
+                }}
               />
             </Form.Group>
 
