@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useTimeMachine } from '../../TimeMachineContext';
 
-const CreateEventModal = ({ show, handleClose, handleCreate }) => {
+const CreateEventModal = ({ show, handleClose, handleCreate, defaultStartDate }) => {
   const { virtualTime } = useTimeMachine();
   const [title, setTitle] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(new Date(defaultStartDate).toLocaleDateString('en-CA')); // formato YYYY-MM-DD
+  const [endDate, setEndDate] = useState(new Date(defaultStartDate).toLocaleDateString('en-CA'));
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [location, setLocation] = useState('');
@@ -15,9 +15,11 @@ const CreateEventModal = ({ show, handleClose, handleCreate }) => {
   //const [repeatCount, setRepeatCount] = useState('');
 
   useEffect(() => {
+    setStartDate(new Date(defaultStartDate).toLocaleDateString('en-CA'));
+    setEndDate(new Date(defaultStartDate).toLocaleDateString('en-CA'));
     setStartTime(virtualTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
     setEndTime(virtualTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
-}, []);
+}, [defaultStartDate]);
 
 
   const onCreate = () => {

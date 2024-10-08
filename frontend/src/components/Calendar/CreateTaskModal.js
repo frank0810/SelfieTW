@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const CreateTaskModal = ({ show, handleClose, handleCreate }) => {
+const CreateTaskModal = ({ show, handleClose, handleCreate, defaultDeadline }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [deadline, setDeadline] = useState('');
+  const [deadline, setDeadline] = useState(new Date(defaultDeadline).toLocaleDateString('en-CA'));
   const [isCompleted, setIsCompleted] = useState(false);
   const [isOverdue, setIsOverdue] = useState(false);
+
+  useEffect(() => {
+    setDeadline(new Date(defaultDeadline).toLocaleDateString('en-CA'));
+  }, [defaultDeadline]);
 
   const onCreate = () => {
     handleCreate({
