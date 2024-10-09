@@ -9,7 +9,8 @@ const EventPreviewModal = ({ show, handleClose, selectedDate, events, tasks, ope
   // Filtra gli eventi per la data selezionata
   const eventsForSelectedDate = events.filter(event => {
     const eventStartDate = new Date(event.startDate).toDateString();
-    return eventStartDate === selectedDateString;
+    const eventEndDate = new Date(event.endDate).toDateString();
+    return new Date(eventStartDate) <= new Date(selectedDateString) && new Date(selectedDateString) <= new Date(eventEndDate);
   });
 
   // Filtra le attività per la data selezionata

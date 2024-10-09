@@ -220,11 +220,16 @@ const CalendarComponent = () => {
     };
 
      // Controlla se la data ha eventi o scadenze di attività
-     const hasEventsOrTasks = (date) => {
-        const dateString = date.toDateString();  // Usa la rappresentazione locale della data
+     // This function now checks if the date has an event, even if it is in the range between the event start and end dates
+    const hasEventsOrTasks = (date) => {
+        const dateString = date.toDateString();
         return (
-            events.some(event => new Date(event.startDate).toDateString() === dateString) ||
-            tasks.some(task => new Date(task.deadline).toDateString() === dateString)
+        events.some(event => {
+            const startDate = new Date(event.startDate).toDateString();
+            const endDate = new Date(event.endDate).toDateString();
+            return new Date(startDate) <= new Date(dateString) && new Date(dateString) <= new Date(endDate);
+        }) ||
+        tasks.some(task => new Date(task.deadline).toDateString() === dateString)
         );
     };
 

@@ -1,5 +1,6 @@
 import { Modal, Form, Button, ListGroup, Row, Col } from 'react-bootstrap';
 import React, { useState } from 'react';
+
 const SingleEventPreview = ({ event }) => {
     const [showModal, setShowModal] = useState(false);
     const [editedEvent, setEditedEvent] = useState({ ...event });
@@ -18,7 +19,6 @@ const SingleEventPreview = ({ event }) => {
 
             if (response.ok) {
                 setShowModal(false);
-
             } else {
                 throw new Error('Network response was not ok');
             }

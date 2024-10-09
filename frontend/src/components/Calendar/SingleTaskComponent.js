@@ -133,24 +133,6 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
               />
             </Form.Group>
 
-            {/* <Form.Group controlId="formIsCompleted">
-              <Form.Check
-                type="checkbox"
-                label="Attività completata"
-                checked={editedTask.isCompleted}
-                onChange={() => handleCheckboxChange('isCompleted')}
-              />
-            </Form.Group> */}
-
-            {/* <Form.Group controlId="formIsOverdue">
-              <Form.Check
-                type="checkbox"
-                label="Attività scaduta"
-                checked={editedTask.isOverdue}
-                onChange={() => handleCheckboxChange('isOverdue')}
-              />
-            </Form.Group> */}
-
             <Form.Group controlId="formIsCompleted">
               <Form.Switch
                 type="checkbox"
