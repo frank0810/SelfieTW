@@ -3,20 +3,19 @@ const mongoose = require('mongoose');
 const eventSchema = new mongoose.Schema({
   title: { type: String, required: true },
   startDate: { type: Date, required: true },
-  startTime: {type:String},
+  startTime: { type: String },
   endDate: { type: Date, required: true },
-  endTime: {type:String},
+  endTime: { type: String },
   location: { type: String },
-  isAllDay: { type: Boolean, default: false }
-  /*notifications: [{
-    method: { type: String, enum: ['system', 'alert', 'email'] },
-    advance: { type: Number },
-    repeat: { type: Number }
-  }]*/
+  isAllDay: { type: Boolean, default: false },
 
- //TODO RIPETIZIONI
-  //frequency,
-  //repeatCount
+  //TODO RIPETIZIONI
+  frequency: {
+    type: String,
+    enum: ['daily', 'weekly', 'monthly', 'yearly', 'none'],
+    default: 'none'
+  },
+  repeatUntil:{ type: Date } 
 
 });
 

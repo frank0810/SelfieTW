@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 // Creazione di un nuovo evento
 exports.createEvent = async (req, res) => {
   const authHeader = req.headers.authorization;
-  const { title, startDate, startTime, endDate, endTime, location, isAllDay } = req.body;
+  const { title, startDate, startTime, endDate, endTime, location, isAllDay, frequency, repeatUntil } = req.body;
 
   if (!authHeader) {
     return res.status(401).json({ message: 'No token provided' });
@@ -23,6 +23,7 @@ exports.createEvent = async (req, res) => {
     }
     const startDate = new Date(req.body.startDate);
     const endDate = new Date(req.body.endDate);
+    const repeatUntil = new Date(req.body.repeatUntil);
 
     const newEvent = new Event({
       title,
@@ -31,7 +32,9 @@ exports.createEvent = async (req, res) => {
       endDate,
       endTime,
       location,
-      isAllDay
+      isAllDay,
+      frequency,
+      repeatUntil
     });
     console.log(newEvent);
     await newEvent.save();
@@ -85,7 +88,7 @@ exports.getEventById = async (req, res) => {
 exports.updateEvent = async (req, res) => {
   const authHeader = req.headers.authorization;
   const eventId = req.params.eventId;
-  const { title, startDate, startTime, endDate, endTime, location, isAllDay } = req.body;
+  const { title, startDate, startTime, endDate, endTime, location, isAllDay, frequency, repeatUntil  } = req.body;
 
   if (!authHeader) {
     return res.status(401).json({ message: 'No token provided' });
@@ -117,7 +120,9 @@ exports.updateEvent = async (req, res) => {
     if (endDate) event.endDate = endDate;
     if (endTime) event.endTime = endTime;
     if (location) event.location = location;
-    if (isAllDay) event.isAllDay = isAllDay;
+    event.isAllDay = isAllDay;
+    if(frequency) event.frequency = frequency;
+    if (repeatUntil) event.repeatUntil = repeatUntil;
 
     await event.save();
 

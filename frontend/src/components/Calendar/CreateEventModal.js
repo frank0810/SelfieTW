@@ -11,8 +11,8 @@ const CreateEventModal = ({ show, handleClose, handleCreate, defaultStartDate })
   const [endTime, setEndTime] = useState('');
   const [location, setLocation] = useState('');
   const [isAllDay, setIsAllDay] = useState(false);
-  //const [frequency, setFrequency] = useState('');
-  //const [repeatCount, setRepeatCount] = useState('');
+  const [frequency, setFrequency] = useState('none');
+  const [repeatUntil, setRepeatUntil] = useState(''); //DA GESTIRE: ripetizione infinita
 
   useEffect(() => {
     setStartDate(new Date(defaultStartDate).toLocaleDateString('en-CA'));
@@ -30,9 +30,9 @@ const CreateEventModal = ({ show, handleClose, handleCreate, defaultStartDate })
       startTime: isAllDay ? null : startTime,
       endTime: isAllDay ? null : endTime,
       location,
-      isAllDay
-      //frequency,
-      //repeatCount
+      isAllDay,
+      frequency,
+      repeatUntil: frequency != 'none' ? repeatUntil : null
     });
   };
 
@@ -111,30 +111,32 @@ const CreateEventModal = ({ show, handleClose, handleCreate, defaultStartDate })
             />
           </Form.Group>
 
-          {/* <Form.Group controlId="formFrequency">
+          <Form.Group controlId="formFrequency">
             <Form.Label>Frequenza</Form.Label>
             <Form.Control
               as="select"
               value={frequency}
               onChange={(e) => setFrequency(e.target.value)}
             >
-              <option value="">Nessuna</option>
+              <option value="none">Mai</option>
               <option value="daily">Giornaliera</option>
               <option value="weekly">Settimanale</option>
               <option value="monthly">Mensile</option>
-              <option value="custom">Personalizzata</option>
+              <option value="yearly">Annuale</option>
             </Form.Control>
           </Form.Group>
 
+          {frequency != 'none' && (
           <Form.Group controlId="formRepeatCount">
-            <Form.Label>Numero di Ripetizioni</Form.Label>
+            <Form.Label>Ripeti fino a:</Form.Label>
             <Form.Control
-              type="number"
-              placeholder="Numero di ripetizioni"
-              value={repeatCount}
-              onChange={(e) => setRepeatCount(e.target.value)}
+              type="date"
+              value={repeatUntil}
+              onChange={(e) => setRepeatUntil(e.target.value)}
             />
-          </Form.Group> */}
+          </Form.Group>
+          )}
+
         </Form>
       </Modal.Body>
       <Modal.Footer>
