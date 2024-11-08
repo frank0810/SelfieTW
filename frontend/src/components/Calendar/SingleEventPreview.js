@@ -1,4 +1,4 @@
-import { Modal, Form, Button, ListGroup, Row, Col } from 'react-bootstrap';
+import { Modal, Form, Button, ListGroup, Row, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
 import React, { useState } from 'react';
 
 const SingleEventPreview = ({ event }) => {
@@ -104,12 +104,28 @@ const SingleEventPreview = ({ event }) => {
                     {event.location && <p><strong>Luogo:</strong> {event.location}</p>}
                 </Col>
                 <Col className="text-end">
-                    <Button onClick={() => setShowModal(true)} variant="warning" className="me-2">Modifica</Button>
-                    <Button variant="danger" onClick={() => handleDeleteEvent(event._id)}>Elimina</Button>
-                    {/* Mostra il bottone Elimina Occorrenza se l'evento ha una frequenza */}
-                    {event.frequency && event.frequency !== 'none' && (
-                        <Button variant="secondary" onClick={handleExcludeOccurrence} className="mt-2">
-                            Elimina Occorrenza
+                    <Button onClick={() => setShowModal(true)} variant="warning" className="me-2">
+                        Modifica
+                    </Button>
+
+                    {event.frequency && event.frequency !== 'none' ? (
+                        <Dropdown as={ButtonGroup}>
+                            <Dropdown.Toggle variant="danger" id="dropdown-basic">
+                                Elimina
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => handleDeleteEvent(event._id)}>
+                                    Elimina Evento
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={handleExcludeOccurrence}>
+                                    Elimina Occorrenza
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    ) : (
+                        <Button variant="danger" onClick={() => handleDeleteEvent(event._id)}>
+                            Elimina
                         </Button>
                     )}
                 </Col>
