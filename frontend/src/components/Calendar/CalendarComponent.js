@@ -29,7 +29,7 @@ const CalendarComponent = () => {
 
     const fetchEvents = async () => {
         const token = localStorage.getItem('token');
-
+    
         try {
             const response = await fetch('http://localhost:3000/user/getUserData', {
                 method: 'GET',
@@ -38,14 +38,14 @@ const CalendarComponent = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-
+    
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
+    
             const result = await response.json();
             const eventIds = result.user.userEvents || [];
-
+    
             const eventPromises = eventIds.map(async (id) => {
                 const eventResponse = await fetch(`http://localhost:3000/events/${id}`, {
                     method: 'GET',
@@ -54,21 +54,74 @@ const CalendarComponent = () => {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-
+    
                 if (!eventResponse.ok) {
                     throw new Error('Network response was not ok');
                 }
-
+    
                 const event = await eventResponse.json();
-                return event.event;
+    
+                // Calcolo e formatto le date
+                const startDate = new Date(event.event.startDate);
+                const endDate = new Date(event.event.endDate);
+    
+                const formattedEvent = {
+                    ...event.event,
+                    startDate: startDate.toISOString().slice(0, 10), // Formato YYYY-MM-DD
+                    endDate: endDate.toISOString().slice(0, 10) // Formato YYYY-MM-DD
+                };
+                
+                // Gestisci la lista delle esclusioni separatamente per ogni occorrenza
+                if (formattedEvent.frequency !== 'none') {
+                    const repetitions = [];
+                    let currentDate = new Date(formattedEvent.startDate);
+                
+                    const excludedDates = Array.isArray(formattedEvent.excludedDates)
+                        ? formattedEvent.excludedDates.map(date => new Date(date).toISOString().slice(0, 10))
+                        : [];  // Imposta un array vuoto se excludedDates è null o undefined
+                
+                    while (currentDate <= new Date(formattedEvent.repeatUntil)) {
+                        const formattedCurrentDate = currentDate.toISOString().slice(0, 10);
+                
+                        // Verifica se la data corrente è in excludedDates
+                        if (!excludedDates.includes(formattedCurrentDate)) {
+                            // Solo aggiungi la ripetizione se non è esclusa
+                            repetitions.push({
+                                ...formattedEvent,
+                                startDate: formattedCurrentDate,
+                                endDate: formattedCurrentDate
+                            });
+                        }
+                
+                        // Aggiorna la data in base alla frequenza
+                        if (formattedEvent.frequency === 'daily') {
+                            currentDate.setDate(currentDate.getDate() + 1);
+                        } else if (formattedEvent.frequency === 'weekly') {
+                            currentDate.setDate(currentDate.getDate() + 7);
+                        } else if (formattedEvent.frequency === 'monthly') {
+                            currentDate.setMonth(currentDate.getMonth() + 1);
+                        } else if (formattedEvent.frequency === 'yearly') {
+                            currentDate.setFullYear(currentDate.getFullYear() + 1);
+                        }
+                    }
+                
+                    return repetitions; // Aggiungi tutte le ripetizioni
+                }
+                
+                return [formattedEvent];
+                
             });
-
+    
             const events = await Promise.all(eventPromises);
-            setEvents(events);
+
+    
+            // Unisci tutte le ripetizioni in un unico array
+            setEvents(events.flat());
         } catch (error) {
             console.error('There was a BAD problem with the fetch operation:', error);
         }
     };
+    
 
     const fetchTasks = async () => {
         const token = localStorage.getItem('token');
@@ -133,6 +186,12 @@ const CalendarComponent = () => {
 
     // Modale per creare nuovi eventi
     const handleCreateEvent = async (newEvent) => {
+        // Controllo se `frequency` è impostato e `repeatUntil` è vuoto
+        if (newEvent.frequency !== 'none' && !newEvent.repeatUntil) {
+            alert('Seleziona una data di fine per gli eventi con ripetizioni.');
+            return; // Interrompi la funzione se la condizione non è soddisfatta
+        }
+    
         try {
             const response = await fetch('http://localhost:3000/events/create', {
                 method: 'POST',
@@ -142,11 +201,11 @@ const CalendarComponent = () => {
                 },
                 body: JSON.stringify(newEvent)
             });
-
+    
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
+    
             setShowEventModal(false);
             window.location.reload();
         } catch (error) {

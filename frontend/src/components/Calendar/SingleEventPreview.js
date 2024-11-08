@@ -15,9 +15,9 @@ const SingleEventPreview = ({ event }) => {
                 },
                 body: JSON.stringify(editedEvent),
             });
-            window.location.reload()
 
             if (response.ok) {
+                window.location.reload();
                 setShowModal(false);
             } else {
                 throw new Error('Network response was not ok');
@@ -38,7 +38,7 @@ const SingleEventPreview = ({ event }) => {
             });
 
             if (response.ok) {
-                setShowModal(false)
+                setShowModal(false);
             } else {
                 throw new Error('Network response was not ok');
             }
@@ -46,6 +46,45 @@ const SingleEventPreview = ({ event }) => {
             console.error('Errore nella cancellazione dell\'evento:', error);
         }
     };
+
+    // Aggiungi la data alla lista delle esclusioni
+    const handleExcludeOccurrence = async () => {
+        try {
+            // Se excludedDates non è definito o null, inizializzalo come array vuoto
+            const updatedExcludedDates = Array.isArray(editedEvent.excludedDates) ? editedEvent.excludedDates : [];
+            
+            // Aggiungi la startDate alla lista di excludedDates solo se non è già presente
+            const newExcludedDate = editedEvent.startDate;
+            if (!updatedExcludedDates.includes(newExcludedDate)) {
+                updatedExcludedDates.push(newExcludedDate); // Aggiungi la startDate solo se non è già presente
+            }
+            
+            // Crea l'oggetto evento da inviare all'API con solo il campo excludedDates aggiornato
+            const updatedEvent = { 
+                excludedDates: updatedExcludedDates // Solo il campo excludedDates viene aggiornato
+            };
+    
+            // Invia l'aggiornamento all'API per l'evento specifico
+            const response = await fetch(`http://localhost:3000/events/update/${event._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify(updatedEvent),
+            });
+    
+            if (response.ok) {
+                setShowModal(false);
+                window.location.reload(); // Ricarica per riflettere il cambiamento
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        } catch (error) {
+            console.error('Errore nell\'eliminazione dell\'occorrenza:', error);
+        }
+    };
+    
 
     return (
         <ListGroup.Item key={event._id} className="mb-3">
@@ -57,20 +96,25 @@ const SingleEventPreview = ({ event }) => {
                         <p><strong>Tutto il giorno</strong></p>
                     ) : (
                         <p>
-
                             <strong>Orario di Inizio:</strong> {event.startTime} <br />
                             <strong>Orario di Fine:</strong> {event.endTime}
                         </p>
                     )}
-                    {<p><strong>Data di Fine:</strong> {event.endDate.slice(0, 10)}</p>}
+                    <p><strong>Data di Fine:</strong> {event.endDate.slice(0, 10)}</p>
                     {event.location && <p><strong>Luogo:</strong> {event.location}</p>}
-
                 </Col>
                 <Col className="text-end">
                     <Button onClick={() => setShowModal(true)} variant="warning" className="me-2">Modifica</Button>
                     <Button variant="danger" onClick={() => handleDeleteEvent(event._id)}>Elimina</Button>
+                    {/* Mostra il bottone Elimina Occorrenza se l'evento ha una frequenza */}
+                    {event.frequency && event.frequency !== 'none' && (
+                        <Button variant="secondary" onClick={handleExcludeOccurrence} className="mt-2">
+                            Elimina Occorrenza
+                        </Button>
+                    )}
                 </Col>
             </Row>
+
             <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modifica Evento</Modal.Title>
@@ -155,8 +199,7 @@ const SingleEventPreview = ({ event }) => {
                 </Modal.Body>
             </Modal>
         </ListGroup.Item>
-
-    )
-}
+    );
+};
 
 export default SingleEventPreview;

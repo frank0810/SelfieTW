@@ -15,7 +15,8 @@ const eventSchema = new mongoose.Schema({
     enum: ['daily', 'weekly', 'monthly', 'yearly', 'none'],
     default: 'none'
   },
-  repeatUntil:{ type: Date } 
+  repeatUntil:{ type: Date },
+  excludedDates: [{type: Date}]
 
 });
 

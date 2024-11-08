@@ -24,6 +24,7 @@ exports.createEvent = async (req, res) => {
     const startDate = new Date(req.body.startDate);
     const endDate = new Date(req.body.endDate);
     const repeatUntil = new Date(req.body.repeatUntil);
+    const excludedDates = [];
 
     const newEvent = new Event({
       title,
@@ -34,7 +35,8 @@ exports.createEvent = async (req, res) => {
       location,
       isAllDay,
       frequency,
-      repeatUntil
+      repeatUntil, 
+      excludedDates
     });
     console.log(newEvent);
     await newEvent.save();
@@ -88,7 +90,7 @@ exports.getEventById = async (req, res) => {
 exports.updateEvent = async (req, res) => {
   const authHeader = req.headers.authorization;
   const eventId = req.params.eventId;
-  const { title, startDate, startTime, endDate, endTime, location, isAllDay, frequency, repeatUntil  } = req.body;
+  const { title, startDate, startTime, endDate, endTime, location, isAllDay, frequency, repeatUntil, excludedDates } = req.body;
 
   if (!authHeader) {
     return res.status(401).json({ message: 'No token provided' });
@@ -111,9 +113,10 @@ exports.updateEvent = async (req, res) => {
 
     const event = await Event.findById(eventId);
     if (!event) {
-      return res.status(404).json({ message: 'event not found' });
+      return res.status(404).json({ message: 'Event not found' });
     }
 
+    // Aggiornamento dei campi se sono presenti nella richiesta
     if (title) event.title = title;
     if (startDate) event.startDate = startDate;
     if (startTime) event.startTime = startTime;
@@ -121,12 +124,24 @@ exports.updateEvent = async (req, res) => {
     if (endTime) event.endTime = endTime;
     if (location) event.location = location;
     event.isAllDay = isAllDay;
-    if(frequency) event.frequency = frequency;
+    if (frequency) event.frequency = frequency;
     if (repeatUntil) event.repeatUntil = repeatUntil;
 
+    // Aggiunta della data a excludedDates
+    if (excludedDates) {
+      if (Array.isArray(event.excludedDates)) {
+        excludedDates.forEach(date => {
+          if (!event.excludedDates.includes(date)) {
+            event.excludedDates.push(date); // Aggiungi solo la data che non è presente
+          }
+        });
+      } else {
+        event.excludedDates = [...excludedDates]; // Se non è un array, creane uno nuovo
+      }
+    }
     await event.save();
 
-    res.json({ message: 'event updated successfully', event });
+    res.json({ message: 'Event updated successfully', event });
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({ message: 'Invalid token' });
