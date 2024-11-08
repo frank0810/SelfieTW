@@ -34,11 +34,19 @@ const EventPreviewModal = ({ show, handleClose, selectedDate, events, tasks, ope
         {/* Lista degli eventi per la data selezionata */}
         {eventsForSelectedDate.length > 0 ? (
           <ListGroup>
-            {eventsForSelectedDate.map(event => (
-              <ListGroup.Item key={event._id} className="mb-3">
-                <SingleEventPreview event={event}></SingleEventPreview>
-              </ListGroup.Item>
-            ))}
+            {eventsForSelectedDate.map(event => {
+              let timeType = 'intermediate';
+              if (new Date(event.startDate).toDateString() === selectedDateString) {
+                timeType = 'start';
+              } else if (new Date(event.endDate).toDateString() === selectedDateString) {
+                timeType = 'end';
+              }
+              return (
+                <ListGroup.Item key={event._id} className="mb-3">
+                  <SingleEventPreview event={event} timeType={timeType} />
+                </ListGroup.Item>
+              );
+            })}
           </ListGroup>
         ) : (
           <p>Nessun evento per questa data.</p>

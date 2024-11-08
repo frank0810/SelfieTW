@@ -1,9 +1,13 @@
 import { Modal, Form, Button, ListGroup, Row, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
 import React, { useState } from 'react';
 
-const SingleEventPreview = ({ event }) => {
+const SingleEventPreview = ({ event, timeType }) => {
     const [showModal, setShowModal] = useState(false);
     const [editedEvent, setEditedEvent] = useState({ ...event });
+
+    // Gestisce gli orari basati su timeType (giorno di inizio, fine o intermedio)
+    const displayStartTime = timeType === 'start' ? event.startTime : '00:00';
+    const displayEndTime = timeType === 'end' ? event.endTime : '23:59';
 
     const handleEditEvent = async () => {
         try {
@@ -96,8 +100,8 @@ const SingleEventPreview = ({ event }) => {
                         <p><strong>Tutto il giorno</strong></p>
                     ) : (
                         <p>
-                            <strong>Orario di Inizio:</strong> {event.startTime} <br />
-                            <strong>Orario di Fine:</strong> {event.endTime}
+                            <strong>Orario di Inizio:</strong> {displayStartTime} <br />
+                            <strong>Orario di Fine:</strong> {displayEndTime}
                         </p>
                     )}
                     <p><strong>Data di Fine:</strong> {event.endDate.slice(0, 10)}</p>
