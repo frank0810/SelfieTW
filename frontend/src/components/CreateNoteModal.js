@@ -7,12 +7,18 @@ const CreateNoteModal = ({ show, handleClose, handleCreate }) => {
     const [text, setText] = useState('');
 
     const onCreate = () => {
+        if (!title.trim() || !category.trim()) {
+            alert('Titolo e Categoria non possono essere vuoti.');
+            return;
+        }
+
         handleCreate({
-            title: title || undefined, // Il caso di titolo vuoto e di categoria vuota lo gestisce il server
-            category: category || undefined, 
+            title,
+            category,
             text
         });
-        window.location.reload();
+        handleClose(); // Chiude il modal dopo la creazione
+        window.location.reload(); // Ricarica la pagina
     };
 
     return (
@@ -26,8 +32,9 @@ const CreateNoteModal = ({ show, handleClose, handleCreate }) => {
                         <Form.Label>Titolo</Form.Label>
                         <Form.Control
                             type="text"
-                            placeholder="Inserisci titolo"
+                            placeholder="Inserisci titolo (max 50 caratteri)"
                             value={title}
+                            maxLength={50} // Limita il numero massimo di caratteri a 50
                             onChange={(e) => setTitle(e.target.value)}
                         />
                     </Form.Group>

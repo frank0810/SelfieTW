@@ -4,60 +4,27 @@ import { Container, Row, Col, Button, Dropdown, DropdownButton } from 'react-boo
 import NavigationBar from './Navbar';
 import CreateNoteModal from './CreateNoteModal';
 
+import { fetchUserNotes } from '../utils'; 
+
 const Note = () => {
     const [notes, setNotes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [sortOption, setSortOption] = useState('title'); // State to track the current sorting option
+    const [sortOption, setSortOption] = useState('title');
 
     useEffect(() => {
-        const fetchUserNotes = async () => {
-            const token = localStorage.getItem('token');
-
+        const loadNotes = async () => {
             try {
-                const response = await fetch('http://localhost:3000/user/getUserData', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const result = await response.json();
-                const noteIds = result.user.userNotes || [];
-
-                const notePromises = noteIds.map(async (id) => {
-                    const noteResponse = await fetch(`http://localhost:3000/notes/${id}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    if (!noteResponse.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-
-                    const note = await noteResponse.json();
-
-                    return note.note;
-                });
-
-                const notes = await Promise.all(notePromises);
-                setNotes(notes);
+                const userNotes = await fetchUserNotes(); 
+                setNotes(userNotes);
             } catch (error) {
-                console.error('There was a BAD problem with the fetch operation:', error);
+                console.error('Errore nel caricamento delle note:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchUserNotes();
+        loadNotes();
     }, []);
 
     // Sorting functions

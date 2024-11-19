@@ -5,14 +5,15 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import NavigationBar from './Navbar';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState(''); // Cambiato email a username
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', { email, password });
+      // Modifica: invia username e password invece di email
+      const response = await axios.post('http://localhost:3000/auth/login', { username, password });
       localStorage.setItem('token', response.data.token);
       navigate('/');
     } catch (error) {
@@ -28,13 +29,13 @@ const Login = () => {
           <Col md={6}>
             <h1 className="text-center">Login</h1>
             <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
+              <Form.Group controlId="formBasicUsername">
+                <Form.Label>Username</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </Form.Group>

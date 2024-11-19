@@ -98,11 +98,8 @@ const Timers = ({ cicles, studyTime, relaxTime }) => {
         throw new Error('Network response was obviously not ok');
       }
 
-      const result = await response.json();
-
     } catch (error) {
       console.error('There was a problem:', error);
-      alert('Pomdoro completato, ma aggiornamento dei dati fallito (update error)');
     }
   };
 
