@@ -4,12 +4,13 @@ import HomeCard from '../HomeCard';
 import pomodoroLogo from '../../imgs/pomodoro_logo.png';
 import noteLogo from '../../imgs/note_logo.png';
 import calendarioLogo from '../../imgs/calendario_logo.png';
-import {fetchUserNotes} from '../../utils'; // Assumendo che la funzione sia in una utility separata
+import { fetchUserNotes, fetchUserEvents } from '../../utils';
 import './Home.css';
 
 const Home = () => {
   const [lastPomodoro, setLastPomodoro] = useState(null);
-  const [recentNote, setRecentNote] = useState(null); // Per memorizzare la nota più recente
+  const [recentNote, setRecentNote] = useState(null);
+  const [todaysEvents, setTodaysEvents] = useState([]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -55,24 +56,56 @@ const Home = () => {
 
     const fetchRecentNote = async () => {
       try {
-        const notes = await fetchUserNotes(); // Ottiene tutte le note dell'utente
+        const notes = await fetchUserNotes();
 
         if (notes.length === 0) {
           setRecentNote(null); // Se non ci sono note
           return;
         }
 
-        // Trova la nota più recente ordinando per createdAt
         const sortedNotes = notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setRecentNote(sortedNotes[0]); // Imposta la nota più recente
+        setRecentNote(sortedNotes[0]);
       } catch (error) {
         console.error('Errore nel recupero delle note:', error);
       }
     };
 
+    const fetchTodaysEvents = async () => {
+      try {
+        const events = await fetchUserEvents();
+
+        if (events.length === 0) {
+          setTodaysEvents(null);
+          return;
+        }
+
+        let te = []
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        for (const e of events) {
+          const startDate = new Date(e.startDate);
+          const endDate = new Date(e.endDate);
+          startDate.setHours(0, 0, 0, 0);
+          endDate.setHours(0, 0, 0, 0);
+
+          if (startDate <= today && today <= endDate) {
+            te.push(e.title);
+          }
+        }
+
+        setTodaysEvents(te);
+      } catch (error) {
+        console.error('Errore nel recupero degli eventi:', error);
+      }
+
+    };
+
     fetchLastPomodoro();
     fetchRecentNote();
+    fetchTodaysEvents();
   }, []);
+
 
   return (
     <>
@@ -95,8 +128,8 @@ const Home = () => {
           ImgUrl={noteLogo}
           CardDescription='Crea note personalizzate per tenere traccia delle tue idee'
           Data={recentNote !== null
-            ? `${recentNote.title} (creata il ${formatDate(recentNote.createdAt)})` 
-            : 'Non ci sono note.'} 
+            ? `${recentNote.title} (creata il ${formatDate(recentNote.createdAt)})`
+            : 'Non ci sono note.'}
         />
         <HomeCard
           Category='Calendario'
@@ -104,13 +137,7 @@ const Home = () => {
           SectionLink='/calendar'
           ImgUrl={calendarioLogo}
           CardDescription='Tiene traccia delle tue attività con il calendario personalizzato'
-        />
-        <HomeCard
-          Category='Pomodoro'
-          Title='Ok, title'
-          SectionLink='/pomodoro'
-          ImgUrl={pomodoroLogo}
-          CardDescription='Utilizza il metodo Pomodoro per suddividere il tuo tempo in cicli Studio - Relax'
+          Data={`Eventi di oggi: ${todaysEvents}`}
         />
       </div>
     </>
