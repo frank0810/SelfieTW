@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import Calendar from 'react-calendar';
+import EventListPreview from './EventListPreview';
 import 'react-calendar/dist/Calendar.css';
 import CreateEventModal from './CreateEventModal';
 import CreateTaskModal from './CreateTaskModal';
@@ -29,7 +30,7 @@ const CalendarComponent = () => {
 
     const fetchEvents = async () => {
         const token = localStorage.getItem('token');
-    
+
         try {
             const response = await fetch('http://localhost:3000/user/getUserData', {
                 method: 'GET',
@@ -38,14 +39,14 @@ const CalendarComponent = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-    
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-    
+
             const result = await response.json();
             const eventIds = result.user.userEvents || [];
-    
+
             const eventPromises = eventIds.map(async (id) => {
                 const eventResponse = await fetch(`http://localhost:3000/events/${id}`, {
                     method: 'GET',
@@ -54,35 +55,35 @@ const CalendarComponent = () => {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-    
+
                 if (!eventResponse.ok) {
                     throw new Error('Network response was not ok');
                 }
-    
+
                 const event = await eventResponse.json();
-    
+
                 // Calcolo e formatto le date
                 const startDate = new Date(event.event.startDate);
                 const endDate = new Date(event.event.endDate);
-    
+
                 const formattedEvent = {
                     ...event.event,
                     startDate: startDate.toISOString().slice(0, 10), // Formato YYYY-MM-DD
                     endDate: endDate.toISOString().slice(0, 10) // Formato YYYY-MM-DD
                 };
-                
+
                 // Gestisci la lista delle esclusioni separatamente per ogni occorrenza
                 if (formattedEvent.frequency !== 'none') {
                     const repetitions = [];
                     let currentDate = new Date(formattedEvent.startDate);
-                
+
                     const excludedDates = Array.isArray(formattedEvent.excludedDates)
                         ? formattedEvent.excludedDates.map(date => new Date(date).toISOString().slice(0, 10))
                         : [];  // Imposta un array vuoto se excludedDates è null o undefined
-                
+
                     while (currentDate <= new Date(formattedEvent.repeatUntil)) {
                         const formattedCurrentDate = currentDate.toISOString().slice(0, 10);
-                
+
                         // Verifica se la data corrente è in excludedDates
                         if (!excludedDates.includes(formattedCurrentDate)) {
                             // Solo aggiungi la ripetizione se non è esclusa
@@ -92,7 +93,7 @@ const CalendarComponent = () => {
                                 endDate: formattedCurrentDate
                             });
                         }
-                
+
                         // Aggiorna la data in base alla frequenza
                         if (formattedEvent.frequency === 'daily') {
                             currentDate.setDate(currentDate.getDate() + 1);
@@ -104,24 +105,24 @@ const CalendarComponent = () => {
                             currentDate.setFullYear(currentDate.getFullYear() + 1);
                         }
                     }
-                
+
                     return repetitions; // Aggiungi tutte le ripetizioni
                 }
-                
+
                 return [formattedEvent];
-                
+
             });
-    
+
             const events = await Promise.all(eventPromises);
 
-    
+
             // Unisci tutte le ripetizioni in un unico array
             setEvents(events.flat());
         } catch (error) {
             console.error('There was a BAD problem with the fetch operation:', error);
         }
     };
-    
+
 
     const fetchTasks = async () => {
         const token = localStorage.getItem('token');
@@ -191,7 +192,7 @@ const CalendarComponent = () => {
             alert('Seleziona una data di fine per gli eventi con ripetizioni.');
             return; // Interrompi la funzione se la condizione non è soddisfatta
         }
-    
+
         try {
             const response = await fetch('http://localhost:3000/events/create', {
                 method: 'POST',
@@ -201,11 +202,11 @@ const CalendarComponent = () => {
                 },
                 body: JSON.stringify(newEvent)
             });
-    
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-    
+
             setShowEventModal(false);
             window.location.reload();
         } catch (error) {
@@ -280,17 +281,17 @@ const CalendarComponent = () => {
         }
     };
 
-     // Controlla se la data ha eventi o scadenze di attività
-     // This function now checks if the date has an event, even if it is in the range between the event start and end dates
+    // Controlla se la data ha eventi o scadenze di attività
+    // This function now checks if the date has an event, even if it is in the range between the event start and end dates
     const hasEventsOrTasks = (date) => {
         const dateString = date.toDateString();
         return (
-        events.some(event => {
-            const startDate = new Date(event.startDate).toDateString();
-            const endDate = new Date(event.endDate).toDateString();
-            return new Date(startDate) <= new Date(dateString) && new Date(dateString) <= new Date(endDate);
-        }) ||
-        tasks.some(task => new Date(task.deadline).toDateString() === dateString)
+            events.some(event => {
+                const startDate = new Date(event.startDate).toDateString();
+                const endDate = new Date(event.endDate).toDateString();
+                return new Date(startDate) <= new Date(dateString) && new Date(dateString) <= new Date(endDate);
+            }) ||
+            tasks.some(task => new Date(task.deadline).toDateString() === dateString)
         );
     };
 
@@ -313,6 +314,10 @@ const CalendarComponent = () => {
                 {/* Task List sotto il calendario */}
                 <Row className="mt-4">
                     <TaskListComponent tasks={tasks} fetchTasks={fetchTasks} virtualTime={virtualTime} />
+                </Row>
+
+                <Row className="mt-4">
+                    <EventListPreview events={events} />
                 </Row>
 
                 {/* Modali */}
