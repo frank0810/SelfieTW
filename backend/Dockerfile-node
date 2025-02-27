@@ -4,17 +4,27 @@ FROM node:latest
 # Crea e imposta la directory di lavoro nel contenitore
 WORKDIR /usr/src/app
 
-# Copia il file package.json e package-lock.json nella directory di lavoro
-COPY package*.json ./
-
-# Installa le dipendenze
+# Copia il backend
+COPY backend/package*.json ./
 RUN npm install
+COPY backend ./
 
-# Copia il codice sorgente nella directory di lavoro
-COPY . .
+# Spostati nella cartella frontend
+WORKDIR /usr/src/app/frontend
 
-# Esponi la porta 3000 (o la porta che stai utilizzando nel tuo server)
+# Copia tutto il frontend, non solo package.json!
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend ./
+
+# Costruisci il frontend
+RUN npm run build
+
+# Torna alla root per eseguire il backend
+WORKDIR /usr/src/app
+
+# Esponi la porta del server
 EXPOSE 3000
 
-# Avvia il tuo server quando il contenitore viene eseguito
+# Avvia il server quando il contenitore viene eseguito
 CMD ["node", "index.js"]

@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -32,8 +33,14 @@ connection.once('open', () => {
 });
 
 const authRouter = require('./routes/auth');
-
 app.use('/auth', authRouter);
+
+// Serve il frontend in produzione
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
