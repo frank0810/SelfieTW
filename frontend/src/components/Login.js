@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import NavigationBar from './Navbar';
 
 const Login = () => {
-  const [username, setUsername] = useState(''); // Cambiato email a username
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Modifica: invia username e password invece di email
       const response = await axios.post('http://localhost:3000/auth/login', { username, password });
       localStorage.setItem('token', response.data.token);
       navigate('/');
     } catch (error) {
-      console.error('Login error:', error);
+      setError(error.response?.data?.message || 'Login error');
     }
   };
 
@@ -28,6 +28,7 @@ const Login = () => {
         <Row className="justify-content-md-center mt-5">
           <Col md={6}>
             <h1 className="text-center">Login</h1>
+            {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="formBasicUsername">
                 <Form.Label>Username</Form.Label>
@@ -56,7 +57,7 @@ const Login = () => {
               </Button>
             </Form>
             <div className="mt-3">
-              <span>Don't have an account? </span>
+              <span>Don't you have an account? </span>
               <Link to="/register">Register here</Link>
             </div>
           </Col>

@@ -11,7 +11,7 @@ const lastPomodoroSchema = new Schema({
 });
 
 const userSchema = new Schema({
-  username: { type: String, required: false },
+  username: { type: String, required: false, unique: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
