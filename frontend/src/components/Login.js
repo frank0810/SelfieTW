@@ -57,8 +57,8 @@ const Login = () => {
               </Button>
             </Form>
             <div className="mt-3">
-              <span>Don't you have an account? </span>
-              <Link to="/register">Register here</Link>
+              <span>Non hai un account?</span>
+              <Link to="/register">Registrati qui!</Link>
             </div>
           </Col>
         </Row>

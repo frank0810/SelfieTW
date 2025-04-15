@@ -31,14 +31,14 @@ const Register = () => {
       <Container id="login-container">
         <Row className="justify-content-md-center mt-5">
           <Col md={6}>
-            <h1 className="text-center">Sign Up</h1>
+            <h1 className="text-center">Registrati</h1>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={handleSubmit}>
               <Form.Group controlId="formFirstName">
-                <Form.Label>First Name</Form.Label>
+                <Form.Label>Nome</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter first name"
+                  placeholder="Inserisci Nome"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   required
@@ -47,10 +47,10 @@ const Register = () => {
 
 
               <Form.Group controlId="formLastName" className="mt-3">
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label>Cognome</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter last name"
+                  placeholder="Inserisci Cognome"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   required
@@ -61,7 +61,7 @@ const Register = () => {
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="email"
-                  placeholder="Enter email"
+                  placeholder="Inserisci email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -72,7 +72,7 @@ const Register = () => {
                 <Form.Label>Username</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter username"
+                  placeholder="Inserisci username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
@@ -83,7 +83,7 @@ const Register = () => {
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
-                  placeholder="Enter password"
+                  placeholder="Inserisci password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -91,7 +91,7 @@ const Register = () => {
               </Form.Group>
 
               <Button variant="primary" type="submit" className="mt-3">
-                Sign Up
+                Registrati
               </Button>
             </Form>
           </Col>
