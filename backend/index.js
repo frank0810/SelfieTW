@@ -36,11 +36,12 @@ const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
 // Serve il frontend in produzione
-app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

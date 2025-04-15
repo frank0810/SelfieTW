@@ -1,30 +1,16 @@
-# Usa un'immagine Node.js come base
 FROM node:latest
 
-# Crea e imposta la directory di lavoro nel contenitore
 WORKDIR /usr/src/app
 
-# Copia il backend
-COPY backend/package*.json ./
-RUN npm install
-COPY backend ./
+# Backend setup
+COPY backend/package*.json ./backend/
+RUN cd backend && npm install
 
-# Spostati nella cartella frontend
-WORKDIR /usr/src/app/frontend
+# Frontend setup
+COPY frontend/package*.json ./frontend/
+RUN cd frontend && npm install
 
-# Copia tutto il frontend, non solo package.json!
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend ./
-
-# Costruisci il frontend
-RUN npm run build
-
-# Torna alla root per eseguire il backend
-WORKDIR /usr/src/app
-
-# Esponi la porta del server
 EXPOSE 3000
 
-# Avvia il server quando il contenitore viene eseguito
-CMD ["node", "index.js"]
+# Avvio del container
+CMD sh -c "cd /usr/src/app/frontend && npm run build && cd /usr/src/app/backend && node index.js"

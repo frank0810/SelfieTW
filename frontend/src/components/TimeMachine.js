@@ -28,7 +28,7 @@ const TimeMachine = () => {
 
             <Modal show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Viaggia nel Tempo</Modal.Title>
+                    <Modal.Title>Viaggia nel Tempo!</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
