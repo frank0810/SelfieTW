@@ -37,7 +37,7 @@
 }
 
 
-@media (max-width: 767px) {
+@media (max-width: 800px) {
     .time-machine-container {
         padding: 5px;
     }
