@@ -137,7 +137,19 @@ const Home = () => {
           SectionLink='/calendar'
           ImgUrl={calendarioLogo}
           CardDescription='Tiene traccia delle tue attività con il calendario personalizzato'
-          Data={`Eventi di oggi: ${todaysEvents}`}
+          Data={
+            Array.isArray(todaysEvents) && todaysEvents.length > 0
+              ? (
+                <ul style={{ paddingLeft: '1.2em', marginBottom: 0 }}>
+                  {todaysEvents.map((title, index) => (
+                    <li key={index}>
+                      {title.length > 35 ? `${title.slice(0, 35)}...` : title}
+                    </li>
+                  ))}
+                </ul>
+              )
+              : 'Nessun evento per oggi.'
+          }
         />
       </div>
     </>

@@ -12,6 +12,10 @@ const CreateTaskModal = ({ show, handleClose, handleCreate, defaultDeadline }) =
   }, [defaultDeadline]);
 
   const onCreate = () => {
+    if (!title.trim() || !description.trim()) {
+      alert('I campi "Titolo" e "Descrizione" non possono essere vuoti.');
+      return;
+    }
     handleCreate({
       title,
       description,
