@@ -24,9 +24,9 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<PrivateRoute />}>
               <Route path="/" element={<><TimeMachine /> <Home /></>} />
-              <Route path="/pomodoro" element={ <PomodoroView />} />
+              <Route path="/pomodoro" element={ <><TimeMachine /><PomodoroView /></>} />
               <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/notes" element={<Note />} />
+              <Route path="/notes" element={<><TimeMachine /><Note /></>} />
               <Route path="/calendar" element={<><TimeMachine /> <CalendarComponent /></>} />
               <Route path="/testing" element={<><TimeMachine /> <TimeMachineTest /></>} />
             </Route>
