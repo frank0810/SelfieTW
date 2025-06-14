@@ -66,7 +66,7 @@ const ProfilePage = () => {
         throw new Error('Network response was not ok :(');
       }
 
-      const result = await response.json();
+      //const result = await response.json();
       alert('Immagine del profilo aggiornata con successo!');
       setUserData({ ...userData, profilePic: imagePath });
       setShowModal(false); // Chiudi la finestra modale dopo aver selezionato un'immagine
@@ -92,7 +92,7 @@ const ProfilePage = () => {
         throw new Error('Network response was not ok :(');
       }
 
-      const result = await response.json();
+      //const result = await response.json();
       alert('Username aggiornato con successo!');
       setUserData({ ...userData, username: newUsername });
       setShowUsernameModal(false); // Chiudi la modale dopo aver aggiornato l'username
@@ -118,7 +118,7 @@ const ProfilePage = () => {
         throw new Error('Network response was not ok :(');
       }
 
-      const result = await response.json();
+      // const result = await response.json();
       alert('Data di nascita aggiornata con successo!');
       setUserData({ ...userData, birthday: newBirthday });
       setShowBirthdayModal(false); // Chiudi la modale dopo aver aggiornato la data di nascita
