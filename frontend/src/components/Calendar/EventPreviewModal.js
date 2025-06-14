@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, ListGroup, Row, Col } from 'react-bootstrap';
+import { Modal, Button, ListGroup } from 'react-bootstrap';
 import SingleTaskPreview from './SingleTaskPreview.js'
 import SingleEventPreview from './SingleEventPreview.js'
 

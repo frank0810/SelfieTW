@@ -32,7 +32,7 @@ const CreateEventModal = ({ show, handleClose, handleCreate, defaultStartDate })
       location,
       isAllDay,
       frequency,
-      repeatUntil: frequency != 'none' ? repeatUntil : null
+      repeatUntil: frequency !== 'none' ? repeatUntil : null
     });
   };
 
@@ -126,7 +126,7 @@ const CreateEventModal = ({ show, handleClose, handleCreate, defaultStartDate })
             </Form.Control>
           </Form.Group>
 
-          {frequency != 'none' && (
+          {frequency !== 'none' && (
           <Form.Group controlId="formRepeatCount">
             <Form.Label>Ripeti fino a:</Form.Label>
             <Form.Control
