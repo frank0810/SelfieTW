@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import NavigationBar from '../Navbar';
+//import NavigationBar from '../Navbar';
 import HomeCard from '../HomeCard';
 import pomodoroLogo from '../../imgs/pomodoro_logo.png';
 import noteLogo from '../../imgs/note_logo.png';
 import calendarioLogo from '../../imgs/calendario_logo.png';
 import { fetchUserNotes, fetchUserEvents } from '../../utils';
 import './Home.css';
+import ResponsiveNavbar from '../NavBar/ResponsiveNavbar'; // Assuming you have a responsive navbar component
 
 const Home = () => {
   const [lastPomodoro, setLastPomodoro] = useState(null);
@@ -109,7 +110,8 @@ const Home = () => {
 
   return (
     <>
-      <NavigationBar isAuthenticated={true} />
+      {/* <NavigationBar isAuthenticated={true} /> */}
+      <ResponsiveNavbar isAuthenticated={true} />
       <div className='container'>
         <HomeCard
           Category='Pomodoro'

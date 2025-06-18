@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-import NavigationBar from './Navbar';
+//import NavigationBar from './Navbar';
+import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -27,7 +28,8 @@ const Login = () => {
 
   return (
     <>
-      <NavigationBar isAuthenticated={false} />
+      {/* <NavigationBar isAuthenticated={false} /> */}
+      <ResponsiveNavbar isAuthenticated={true} />
       <Container id="login-container">
         <Row className="justify-content-md-center mt-5">
           <Col md={6}>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import SingleNote from './SingleNote';
 import { Container, Row, Col, Button, Dropdown, DropdownButton } from 'react-bootstrap';
-import NavigationBar from './Navbar';
+//import NavigationBar from './Navbar';
 import CreateNoteModal from './CreateNoteModal';
 
 import { fetchUserNotes } from '../utils'; 
+import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
 
 const Note = () => {
     const [notes, setNotes] = useState([]);
@@ -78,7 +79,8 @@ const Note = () => {
 
     return (
         <>
-            <NavigationBar isAuthenticated={true} />
+            {/* <NavigationBar isAuthenticated={true} /> */}
+            <ResponsiveNavbar isAuthenticated={true} />
             <Container>
                 <div className='row'>
                     <h1 className="text-center">Note</h1>

@@ -4,7 +4,8 @@ import PomodoroCustom from '../PomodoroCustom/PomodoroCustom';
 import PomodoroCustom2 from '../PomodoroCustom/PomodoroCustom2';
 import pomodoroLogo from '../../imgs/pomodoro_logo.png';
 import './PomodoroView.css';
-import NavigationBar from '../Navbar';
+//import NavigationBar from '../Navbar';
+import ResponsiveNavbar from '../NavBar/ResponsiveNavbar';
 
 const PomodoroView = () => {
   const [showCustom, setShowCustom] = useState(true);
@@ -18,7 +19,8 @@ const PomodoroView = () => {
 
   return (
     <>
-    <NavigationBar isAuthenticated={true} />
+    {/* <NavigationBar isAuthenticated={true} /> */}
+    <ResponsiveNavbar isAuthenticated={true} />
     <div className="pomodoro-view">
       <div className="title">
         <img src={pomodoroLogo} alt="Pomodoro" id="logo" />

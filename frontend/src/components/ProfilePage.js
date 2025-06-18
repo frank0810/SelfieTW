@@ -8,8 +8,9 @@ import {
   MDBCardBody,
   MDBCardImage,
 } from 'mdb-react-ui-kit';
-import NavigationBar from './Navbar';
+//import NavigationBar from './Navbar';
 import { Row, Col, Image, Modal, Button, Form } from 'react-bootstrap';
+import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -150,7 +151,8 @@ const ProfilePage = () => {
 
   return (
     <section>
-      <NavigationBar isAuthenticated={true} />
+      {/* <NavigationBar isAuthenticated={true} /> */}
+      <ResponsiveNavbar isAuthenticated={true} />
       <MDBContainer className="py-5">
         <MDBRow>
           <MDBCol lg="12">

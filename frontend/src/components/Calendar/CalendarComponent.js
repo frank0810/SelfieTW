@@ -7,9 +7,10 @@ import CreateEventModal from './CreateEventModal';
 import CreateTaskModal from './CreateTaskModal';
 import TaskListComponent from './TaskListComponent';
 import EventPreviewModal from './EventPreviewModal';
-import NavigationBar from '../Navbar';
+//import NavigationBar from '../Navbar';
 import { useTimeMachine } from '../../TimeMachineContext';
 import './CalendarStyles.css';
+import ResponsiveNavbar from '../NavBar/ResponsiveNavbar';
 
 const CalendarComponent = () => {
     const { virtualTime } = useTimeMachine();
@@ -297,7 +298,8 @@ const CalendarComponent = () => {
 
     return (
         <>
-            <NavigationBar isAuthenticated={true} />
+            {/* <NavigationBar isAuthenticated={true} /> */}
+            <ResponsiveNavbar isAuthenticated={true} />
             <Container fluid>
                 <Row className="justify-content-center mt-4">
                     <Col xs={12} md={8} lg={3}>
