@@ -60,7 +60,7 @@ const Login = () => {
                 Login
               </Button>
             </Form>
-            <div className="mt-3">
+            <div className="text-center mt-3">
               <span>Non hai un account?</span>
               <Link to="/register">Registrati qui!</Link>
             </div>

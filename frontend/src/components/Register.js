@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import NavigationBar from './Navbar';
@@ -98,6 +98,10 @@ const Register = () => {
                 Registrati
               </Button>
             </Form>
+            <p className="text-center mt-3">
+              <span>Hai già un account?</span> 
+              <Link to="/login">Accedi</Link>
+            </p>
           </Col>
         </Row>
       </Container>
