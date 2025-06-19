@@ -23,20 +23,21 @@ const MobileNavbar = ({ isAuthenticated }) => {
       </Navbar.Brand>
       {isAuthenticated && (
         <>
-      <Navbar.Toggle aria-controls="mobile-navbar" />
-      
-      <Navbar.Collapse id="mobile-navbar">
+        <Navbar.Toggle aria-controls="mobile-navbar" />
+        
+        <Navbar.Collapse id="mobile-navbar">
 
-          <Nav className="w-100">
-            <Nav.Link as={Link} to="/pomodoro">Pomodoro</Nav.Link>
-            <Nav.Link as={Link} to="/calendar">Calendario</Nav.Link>
-            <Nav.Link as={Link} to="/notes">Note</Nav.Link>
-            <Nav.Link as={Link} to="/profile">Profilo</Nav.Link>
-            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-          </Nav>
-       
-      </Navbar.Collapse>
-      </>)}
+            <Nav className="w-100">
+              <Nav.Link as={Link} to="/pomodoro">Pomodoro</Nav.Link>
+              <Nav.Link as={Link} to="/calendar">Calendario</Nav.Link>
+              <Nav.Link as={Link} to="/notes">Note</Nav.Link>
+              <Nav.Link as={Link} to="/profile">Profilo</Nav.Link>
+              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+            </Nav>
+        
+        </Navbar.Collapse>
+        </>
+      )}
     </Navbar>
   );
 };

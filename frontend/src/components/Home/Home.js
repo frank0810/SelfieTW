@@ -6,12 +6,14 @@ import noteLogo from '../../imgs/note_logo.png';
 import calendarioLogo from '../../imgs/calendario_logo.png';
 import { fetchUserNotes, fetchUserEvents } from '../../utils';
 import './Home.css';
-import ResponsiveNavbar from '../NavBar/ResponsiveNavbar'; // Assuming you have a responsive navbar component
+import ResponsiveNavbar from '../NavBar/ResponsiveNavbar'; 
+import { useTimeMachine } from '../../TimeMachineContext';
 
 const Home = () => {
   const [lastPomodoro, setLastPomodoro] = useState(null);
   const [recentNote, setRecentNote] = useState(null);
   const [todaysEvents, setTodaysEvents] = useState([]);
+  const { virtualTime } = useTimeMachine();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -81,8 +83,10 @@ const Home = () => {
         }
 
         let te = []
-        let today = new Date();
-        today.setHours(0, 0, 0, 0);
+        //let today = new Date();
+        //today.setHours(0, 0, 0, 0);
+        const today = virtualTime;
+        today.setHours(0, 0, 0, 0); // Imposta l'ora a mezzanotte per il confronto
 
         for (const e of events) {
           const startDate = new Date(e.startDate);
@@ -105,7 +109,7 @@ const Home = () => {
     fetchLastPomodoro();
     fetchRecentNote();
     fetchTodaysEvents();
-  }, []);
+  }, [virtualTime]);
 
 
   return (
