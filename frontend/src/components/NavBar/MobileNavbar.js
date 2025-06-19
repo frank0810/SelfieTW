@@ -21,11 +21,12 @@ const MobileNavbar = ({ isAuthenticated }) => {
         />
         SelfieApp
       </Navbar.Brand>
-      
+      {isAuthenticated && (
+        <>
       <Navbar.Toggle aria-controls="mobile-navbar" />
       
       <Navbar.Collapse id="mobile-navbar">
-        {isAuthenticated && (
+
           <Nav className="w-100">
             <Nav.Link as={Link} to="/pomodoro">Pomodoro</Nav.Link>
             <Nav.Link as={Link} to="/calendar">Calendario</Nav.Link>
@@ -33,8 +34,9 @@ const MobileNavbar = ({ isAuthenticated }) => {
             <Nav.Link as={Link} to="/profile">Profilo</Nav.Link>
             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
           </Nav>
-        )}
+       
       </Navbar.Collapse>
+      </>)}
     </Navbar>
   );
 };
