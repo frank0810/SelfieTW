@@ -1,0 +1,24 @@
+CODICE:
+Pulizia CODICE
+Testare responsività
+Warning Vari
+(Aggiungere ripetizioni personalizzate)
+Manca l'intestazione degli eventi di OGGI e della SETTIMANA
+MOBILE FIRST:
+    Migliorare aspetto registrazione e Login
+    Provare a mettere immagini invece di descrizione
+    Toggle: un po' di padding a dx
+    Pomodoro:
+        centrato
+        Bottoni bootstrap
+    Mettere a posto lista attività ed eventi
+
+
+DEPLOYMENT:
+Caricare file aggiornati sulle macchine
+Deployare
+Popolare il DB con le cose richieste
+
+RELAZIONE
+Directory Sources e README.txt
+Breve descrizione scritta
