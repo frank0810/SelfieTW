@@ -1,0 +1,17 @@
+CODICE:
+Pulizia CODICE
+Testare responsività
+Time Machine: Interazione con la HOME
+Warning Vari
+(Aggiungere ripetizioni personalizzate)
+(Mobile First)
+
+DEPLOYMENT:
+Caricare file aggiornati sulle macchine
+Deployare
+Popolare il DB con le cose richieste
+
+RELAZIONE
+Directory Sources e README.txt
+Breve descrizione scritta
+
