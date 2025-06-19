@@ -33,7 +33,7 @@ const Register = () => {
   return (
     <>
       {/* <NavigationBar isAuthenticated={false} /> */}
-      <ResponsiveNavbar isAuthenticated={true} />
+      <ResponsiveNavbar isAuthenticated={false} />
       <Container id="login-container">
         <Row className="justify-content-md-center mt-5">
           <Col md={6}>
