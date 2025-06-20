@@ -3,7 +3,7 @@ Pulizia CODICE
 Testare responsività
 Warning Vari
 (Aggiungere ripetizioni personalizzate)
-Manca l'intestazione degli eventi di OGGI e della SETTIMANA
+Sistemare visual e dettagli Calendar
 MOBILE FIRST:
     Migliorare aspetto registrazione e Login
     Provare a mettere immagini invece di descrizione

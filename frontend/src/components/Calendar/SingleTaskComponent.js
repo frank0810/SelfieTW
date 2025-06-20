@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { ListGroup, Button, Row, Col, Modal, Form } from 'react-bootstrap';
+import { ListGroup, Button, Row, Col, Modal, Form, Alert, Spinner } from 'react-bootstrap';
 
 const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
   const [isCompleted, setIsCompleted] = useState(task.isCompleted);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedTask, setEditedTask] = useState({ ...task });
+  const [error, setError] = useState('');
+  const [loading] = useState(false);
 
   const handleCompleteTask = async () => {
     try {
@@ -101,43 +103,46 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
       {/* Modal di modifica */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Modifica Attività</Modal.Title>
+          <Modal.Title>✏️ Modifica Attività</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {error && <Alert variant="danger" onClose={() => setError('')} dismissible>{error}</Alert>}
           <Form>
-            <Form.Group controlId="formTitle">
+            <Form.Group className="mb-3" controlId="formTitle">
               <Form.Label>Titolo</Form.Label>
               <Form.Control
                 type="text"
+                placeholder="Inserisci il titolo dell'attività"
                 value={editedTask.title}
                 onChange={(e) => setEditedTask({ ...editedTask, title: e.target.value })}
+                isInvalid={!!error && !editedTask.title.trim()}
               />
             </Form.Group>
 
-            <Form.Group controlId="formDescription">
+            <Form.Group className="mb-3" controlId="formDescription">
               <Form.Label>Descrizione</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
+                placeholder="Inserisci una descrizione"
                 value={editedTask.description}
                 onChange={(e) => setEditedTask({ ...editedTask, description: e.target.value })}
               />
             </Form.Group>
 
-            <Form.Group controlId="formDeadline">
-              <Form.Label>Data di Scadenza</Form.Label>
+            <Form.Group className="mb-3"controlId="formDeadline">
+              <Form.Label>Scadenza</Form.Label>
               <Form.Control
                 type="date"
                 value={editedTask.deadline.slice(0, 10)}
                 onChange={(e) => setEditedTask({ ...editedTask, deadline: e.target.value })}
+                isInvalid={!!error && !editedTask.deadline}
               />
             </Form.Group>
 
-            <Form.Group controlId="formIsCompleted">
+            <Form.Group className="mb-4" controlId="formIsCompleted">
               <Form.Switch
-                type="checkbox"
-                className="me-3 mt-3"
-                label="Attività completata"
+                label="✅ Attività completata"
                 checked={editedTask.isCompleted}
                 onChange={() => {
                   setEditedTask(prev => ({
@@ -147,13 +152,24 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
                 }}
               />
             </Form.Group>
-
-            <Button variant="primary" onClick={handleEditTask} className="me-3 mt-3">
-              Salva Modifiche
-            </Button>
-            <Button variant="danger" onClick={handleDeleteTask} className="mt-3">
-              Elimina Attività
-            </Button>
+            
+            <div className="d-flex justify-content-between">
+              <Button 
+                variant="primary" 
+                onClick={handleEditTask} 
+                disabled={loading}
+              >
+                {loading ? <Spinner size="sm" className="me-2" /> : '💾 '}
+                Salva Modifiche
+              </Button>
+              <Button 
+                variant="danger" 
+                onClick={handleDeleteTask} 
+                disabled={loading}
+              >
+                ❌ Elimina Attività
+              </Button>
+            </div>
           </Form>
         </Modal.Body>
       </Modal>
