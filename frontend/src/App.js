@@ -11,7 +11,6 @@ import Note from './components/Note';
 import CalendarComponent from './components/Calendar/CalendarComponent';
 import TimeMachine from './components/TimeMachine';
 import { TimeMachineProvider } from './TimeMachineContext';
-import TimeMachineTest from './components/TimeMachineTest'
 
 const App = () => {
   return (
@@ -28,7 +27,6 @@ const App = () => {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/notes" element={<><TimeMachine /><Note /></>} />
               <Route path="/calendar" element={<><TimeMachine /> <CalendarComponent /></>} />
-              <Route path="/testing" element={<><TimeMachine /> <TimeMachineTest /></>} />
             </Route>
           </Routes>
         </div>
