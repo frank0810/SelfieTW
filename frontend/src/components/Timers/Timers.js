@@ -104,7 +104,7 @@ const Timers = ({ cicles, studyTime, relaxTime }) => {
   };
 
 
-  const formatTime = (seconds) => {//GPT
+  const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     const formattedMinutes = String(minutes).padStart(2, '0');

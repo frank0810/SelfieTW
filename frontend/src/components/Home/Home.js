@@ -114,7 +114,7 @@ const Home = () => {
 
   return (
     <>
-      {/* <NavigationBar isAuthenticated={true} /> */}
+
       <ResponsiveNavbar isAuthenticated={true} />
       <div className='container'>
         <HomeCard

@@ -7,7 +7,6 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // Gestione errori centralizzata
     const handleApiError = (error, operation) => {
         console.error(`Errore nella ${operation} dell'attività:`, error);
         setError(`Errore nella ${operation} dell'attività. Riprova più tardi.`);

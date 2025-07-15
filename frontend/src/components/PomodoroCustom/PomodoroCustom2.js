@@ -14,18 +14,16 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
     };
 
     const handleStudyTimeChange = (e) => {
-        setStudyTime(parseInt(e.target.value, 10)); // Converte il valore in un numero intero
-    };
+        setStudyTime(parseInt(e.target.value, 10)); 
 
     const handleRelaxTimeChange = (e) => {
-        setRelaxTime(parseInt(e.target.value, 10)); // Converte il valore in un numero intero
+        setRelaxTime(parseInt(e.target.value, 10)); 
     };
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setShowTimers(true);
-        //onSubmit(cicles);
         setShowForm(false)
         setShowStandard(false);
         setShowCustom(false);

@@ -8,7 +8,6 @@ import {
   MDBCardBody,
   MDBCardImage,
 } from 'mdb-react-ui-kit';
-//import NavigationBar from './Navbar';
 import { Row, Col, Image, Modal, Button, Form } from 'react-bootstrap';
 import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
 

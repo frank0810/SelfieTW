@@ -7,7 +7,6 @@ import CreateEventModal from './CreateEventModal';
 import CreateTaskModal from './CreateTaskModal';
 import TaskListComponent from './TaskListComponent';
 import EventPreviewModal from './EventPreviewModal';
-//import NavigationBar from '../Navbar';
 import { useTimeMachine } from '../../TimeMachineContext';
 import './CalendarStyles.css';
 import ResponsiveNavbar from '../NavBar/ResponsiveNavbar';
@@ -70,7 +69,7 @@ const CalendarComponent = () => {
                 const formattedEvent = {
                     ...event.event,
                     startDate: startDate.toISOString().slice(0, 10), // Formato YYYY-MM-DD
-                    endDate: endDate.toISOString().slice(0, 10) // Formato YYYY-MM-DD
+                    endDate: endDate.toISOString().slice(0, 10) 
                 };
 
                 // Gestisci la lista delle esclusioni separatamente per ogni occorrenza
@@ -283,7 +282,6 @@ const CalendarComponent = () => {
     };
 
     // Controlla se la data ha eventi o scadenze di attività
-    // This function now checks if the date has an event, even if it is in the range between the event start and end dates
     const hasEventsOrTasks = (date) => {
         const dateString = date.toDateString();
         return (
@@ -298,7 +296,6 @@ const CalendarComponent = () => {
 
     return (
         <>
-            {/* <NavigationBar isAuthenticated={true} /> */}
             <ResponsiveNavbar isAuthenticated={true} />
             <Container fluid>
                 <Row className="justify-content-center mt-4">
@@ -313,7 +310,6 @@ const CalendarComponent = () => {
                     </Col>
                 </Row>
 
-                {/* Task List sotto il calendario */}
                 <Row className="mt-4">
                     <TaskListComponent tasks={tasks} fetchTasks={fetchTasks} virtualTime={virtualTime} />
                 </Row>
@@ -322,18 +318,18 @@ const CalendarComponent = () => {
                     <EventListPreview events={events} />
                 </Row>
 
-                {/* Modali */}
+
                 <CreateEventModal
                     show={showEventModal}
                     handleClose={() => setShowEventModal(false)}
                     handleCreate={handleCreateEvent}
-                    defaultStartDate={selectedDate}  // Imposta la data selezionata come data di default
+                    defaultStartDate={selectedDate} 
                 />
                 <CreateTaskModal
                     show={showTaskModal}
                     handleClose={() => setShowTaskModal(false)}
                     handleCreate={handleCreateTask}
-                    defaultDeadline={selectedDate}  // Imposta la data selezionata come scadenza di default
+                    defaultDeadline={selectedDate}  
                 />
                 <EventPreviewModal
                     selectedDate={selectedDate}
@@ -341,10 +337,10 @@ const CalendarComponent = () => {
                     handleClose={() => setShowEventPreviewModal(false)}
                     events={events}
                     tasks={tasks}
-                    openEventModal={openEventModal}  // Passa la funzione per aprire il modal degli eventi
-                    openTaskModal={openTaskModal}    // Passa la funzione per aprire il modal delle attività
-                    handleDeleteEvent={handleDeleteEvent}  // Passa la funzione di eliminazione evento
-                    handleDeleteTask={handleDeleteTask}    // Passa la funzione di eliminazione attività
+                    openEventModal={openEventModal} 
+                    openTaskModal={openTaskModal}   
+                    handleDeleteEvent={handleDeleteEvent} 
+                    handleDeleteTask={handleDeleteTask}    
                 />
             </Container>
         </>

@@ -48,8 +48,7 @@ exports.getUserPomodoro = async (req, res) => {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  const token = authHeader.split(' ')[1]; // Devo prendere solo la parte dopo "Bearer"
-
+  const token = authHeader.split(' ')[1]; 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;

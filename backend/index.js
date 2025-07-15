@@ -35,7 +35,6 @@ connection.once('open', () => {
 const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
-// Serve il frontend in produzione
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 app.get('*', (req, res) => {

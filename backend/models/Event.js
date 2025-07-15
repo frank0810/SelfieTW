@@ -9,7 +9,6 @@ const eventSchema = new mongoose.Schema({
   location: { type: String },
   isAllDay: { type: Boolean, default: false },
 
-  //TODO RIPETIZIONI
   frequency: {
     type: String,
     enum: ['daily', 'weekly', 'monthly', 'yearly', 'none'],

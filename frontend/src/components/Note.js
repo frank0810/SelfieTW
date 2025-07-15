@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SingleNote from './SingleNote';
 import { Container, Row, Col, Button, Dropdown, DropdownButton } from 'react-bootstrap';
-//import NavigationBar from './Navbar';
 import CreateNoteModal from './CreateNoteModal';
 
 import { fetchUserNotes } from '../utils'; 
@@ -28,7 +27,6 @@ const Note = () => {
         loadNotes();
     }, []);
 
-    // Sorting functions
     const sortNotes = (notes, option) => {
         switch (option) {
             case 'title':
@@ -64,7 +62,7 @@ const Note = () => {
             }
 
             setShowCreateModal(false);
-            window.location.reload(); // Refresh notes after creation
+            window.location.reload(); 
 
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
@@ -79,7 +77,6 @@ const Note = () => {
 
     return (
         <>
-            {/* <NavigationBar isAuthenticated={true} /> */}
             <ResponsiveNavbar isAuthenticated={true} />
             <Container>
                 <div className='row'>

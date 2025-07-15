@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-//import NavigationBar from './Navbar';
 import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
 
 const Register = () => {
@@ -18,7 +17,6 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        //'http://localhost:3000/auth/register',
         '/auth/register',
         { firstName, lastName, email, username, password }
       );
@@ -32,7 +30,6 @@ const Register = () => {
 
   return (
     <>
-      {/* <NavigationBar isAuthenticated={false} /> */}
       <ResponsiveNavbar isAuthenticated={false} />
       <Container id="login-container">
         <Row className="justify-content-md-center mt-5">

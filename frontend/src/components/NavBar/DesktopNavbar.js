@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
-import logo from '../../imgs/logo.png'; // Adjust the path as necessary
+import logo from '../../imgs/logo.png'; 
 
 const DesktopNavbar = ({ isAuthenticated }) => {
   const navigate = useNavigate();

@@ -100,7 +100,7 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
         </Row>
       </ListGroup.Item>
 
-      {/* Modal di modifica */}
+
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>✏️ Modifica Attività</Modal.Title>

@@ -15,7 +15,6 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        //'http://localhost:3000/auth/login',
         '/auth/login',
         { username, password }
       );
@@ -28,7 +27,6 @@ const Login = () => {
 
   return (
     <>
-      {/* <NavigationBar isAuthenticated={false} /> */}
       <ResponsiveNavbar isAuthenticated={false} />
       <Container id="login-container">
         <Row className="justify-content-md-center mt-5">
