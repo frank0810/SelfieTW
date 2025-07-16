@@ -1,17 +1,16 @@
 CODICE:
-Pulizia CODICE
+Pulizia CODICE 
 Testare responsività
 Warning Vari
 (Aggiungere ripetizioni personalizzate)
-Sistemare visual e dettagli Calendar
+aggiungere un ora a endTime sugli eventi
+modificare UX eventi come fatto per TAsk
 MOBILE FIRST:
-    Migliorare aspetto registrazione e Login
     Provare a mettere immagini invece di descrizione
     Toggle: un po' di padding a dx
     Pomodoro:
         centrato
         Bottoni bootstrap
-    Mettere a posto lista attività ed eventi
 
 
 DEPLOYMENT:
