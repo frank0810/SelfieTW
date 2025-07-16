@@ -14,7 +14,8 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
     };
 
     const handleStudyTimeChange = (e) => {
-        setStudyTime(parseInt(e.target.value, 10)); 
+        setStudyTime(parseInt(e.target.value, 10));
+    };
 
     const handleRelaxTimeChange = (e) => {
         setRelaxTime(parseInt(e.target.value, 10)); 
@@ -85,6 +86,6 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
             {showTimers && <Timers cicles={cicles} studyTime={studyTime} relaxTime={relaxTime} />}
         </div>
     );
-};
 }
+
 export default PomodoroCustom2;
