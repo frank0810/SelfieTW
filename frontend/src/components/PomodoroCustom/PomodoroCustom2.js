@@ -86,5 +86,5 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
         </div>
     );
 };
-
+}
 export default PomodoroCustom2;
