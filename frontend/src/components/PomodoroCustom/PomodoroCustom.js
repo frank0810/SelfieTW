@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import Timers from '../Timers/Timers';
 import './PomodoroCustom.css';
 
@@ -166,7 +167,7 @@ return (
                     />
                     </label>
                 </div>
-                <button className="pomodoro-button" type="submit">Calcola proposte</button>
+                <Button variant="primary" type="submit">Calcola proposte</Button>
             </form>
         )}
         {showProposals && showForm &&(
@@ -208,7 +209,7 @@ return (
                         </label>
                     )}
                 </div>
-                <button className="pomodoro-button" type= "submit" >Inizia</button>
+                <Button variant="success" type="submit">Inizia</Button>
             </form>
 
         )}

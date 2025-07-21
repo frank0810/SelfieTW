@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import Timers from '../Timers/Timers';
 import './PomodoroCustom.css';
 
@@ -21,7 +22,6 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
         setRelaxTime(parseInt(e.target.value, 10)); 
     };
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setShowTimers(true);
@@ -38,24 +38,22 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
             </p>
             {showForm && <form onSubmit={handleSubmit}>
                 <div>
-                    <div style={{display:'flex'}}>
-                    <label style={{width:'auto'}}>
-                        Numero di cicli:
-
-                    </label >
-                    <input
-                        type="number"
-                        value={cicles}
-                        onChange={handleCiclesChange}
-                        min="1"
-                        max="15"
-                        required
-                    />
+                    <div className="input-group">
+                        <label>
+                            Numero di cicli:
+                        </label>
+                        <input
+                            type="number"
+                            value={cicles}
+                            onChange={handleCiclesChange}
+                            min="1"
+                            max="15"
+                            required
+                        />
                     </div>
-                    <div style={{display:'flex'}}>
-                        <label style={{width:'auto'}}>
+                    <div className="input-group">
+                        <label>
                             Minuti di studio: 
-
                         </label>
                         <input
                             type="number"
@@ -66,8 +64,8 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
                             required
                         />
                     </div>
-                    <div style={{display:'flex'}}>
-                        <label style={{width:'auto'}}>
+                    <div className="input-group">
+                        <label>
                             Minuti di relax:
                         </label>
                         <input
@@ -80,7 +78,7 @@ const PomodoroCustom2 = ({ setShowStandard, setShowCustom }) => {
                         />
                     </div>
                 </div>
-                <button className="pomodoro-button" type="submit">Inizia</button>
+                <Button variant="success" type="submit">Inizia</Button>
             </form>}
 
             {showTimers && <Timers cicles={cicles} studyTime={studyTime} relaxTime={relaxTime} />}

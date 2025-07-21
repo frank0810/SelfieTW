@@ -6,11 +6,7 @@ Warning Vari
 aggiungere un ora a endTime sugli eventi
 modificare UX eventi come fatto per TAsk
 MOBILE FIRST:
-    Provare a mettere immagini invece di descrizione
     Toggle: un po' di padding a dx
-    Pomodoro:
-        centrato
-        Bottoni bootstrap
 
 
 DEPLOYMENT:
