@@ -3,9 +3,6 @@ Pulizia CODICE
 Testare responsività
 Warning Vari
 (Aggiungere ripetizioni personalizzate)
-MOBILE FIRST:
-    Toggle: un po' di padding a dx
-
 
 DEPLOYMENT:
 Caricare file aggiornati sulle macchine
