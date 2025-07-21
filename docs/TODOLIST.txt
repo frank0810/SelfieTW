@@ -3,8 +3,6 @@ Pulizia CODICE
 Testare responsività
 Warning Vari
 (Aggiungere ripetizioni personalizzate)
-aggiungere un ora a endTime sugli eventi
-modificare UX eventi come fatto per TAsk
 MOBILE FIRST:
     Toggle: un po' di padding a dx
 

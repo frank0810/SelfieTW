@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert, Spinner } from 'react-bootstrap';
 
 const CreateTaskModal = ({ show, handleClose, handleCreate, defaultDeadline }) => {
