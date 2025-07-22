@@ -1,7 +1,9 @@
+import { API_BASE_URL } from './config/api.js';
+
 export const fetchUserNotes = async () => {
     const token = localStorage.getItem('token');
     try {
-        const response = await fetch('http://localhost:3000/user/getUserData', {
+        const response = await fetch(`${API_BASE_URL}/user/getUserData`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -17,7 +19,7 @@ export const fetchUserNotes = async () => {
         const noteIds = result.user.userNotes || [];
 
         const notePromises = noteIds.map(async (id) => {
-            const noteResponse = await fetch(`http://localhost:3000/notes/${id}`, {
+            const noteResponse = await fetch(`${API_BASE_URL}/notes/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +45,7 @@ export const fetchUserNotes = async () => {
 export const fetchUserEvents = async () => {
     const token = localStorage.getItem('token');
     try {
-        const response = await fetch('http://localhost:3000/user/getUserData', {
+        const response = await fetch(`${API_BASE_URL}/user/getUserData`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,7 +61,7 @@ export const fetchUserEvents = async () => {
         const eventIDs = result.user.userEvents || [];
 
         const eventPromises = eventIDs.map(async (id) => {
-            const eventResponse = await fetch(`http://localhost:3000/events/${id}`, {
+            const eventResponse = await fetch(`${API_BASE_URL}/events/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
