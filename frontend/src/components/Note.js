@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SingleNote from './SingleNote';
 import { Container, Row, Col, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import CreateNoteModal from './CreateNoteModal';
+import { API_BASE_URL } from './config/api.js';
 
 import { fetchUserNotes } from '../utils'; 
 import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
@@ -48,7 +49,7 @@ const Note = () => {
 
     const handleCreate = async (newNote) => {
         try {
-            const response = await fetch('http://localhost:3000/notes/create', {
+            const response = await fetch(`${API_BASE_URL}/notes/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
