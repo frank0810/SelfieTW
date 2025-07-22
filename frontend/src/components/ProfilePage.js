@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   MDBCol,
   MDBContainer,
@@ -10,6 +10,7 @@ import {
 } from 'mdb-react-ui-kit';
 import { Row, Col, Image, Modal, Button, Form } from 'react-bootstrap';
 import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
+import { API_BASE_URL } from './config/api.js';
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -25,7 +26,7 @@ const ProfilePage = () => {
       const token = localStorage.getItem('token');
 
       try {
-        const response = await fetch('http://localhost:3000/user/getUserData', {
+        const response = await fetch(`${API_BASE_URL}/user/getUserData`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const ProfilePage = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch('http://localhost:3000/user/updateProfilePic', {
+      const response = await fetch(`${API_BASE_URL}/user/updateProfilePic`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -66,10 +67,9 @@ const ProfilePage = () => {
         throw new Error('Network response was not ok :(');
       }
 
-      //const result = await response.json();
       alert('Immagine del profilo aggiornata con successo!');
       setUserData({ ...userData, profilePic: imagePath });
-      setShowModal(false); // Chiudi la finestra modale dopo aver selezionato un'immagine
+      setShowModal(false); 
     } catch (error) {
       console.error('Errore durante l\'aggiornamento dell\'immagine del profilo:', error);
     }
@@ -79,7 +79,7 @@ const ProfilePage = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch('http://localhost:3000/user/updateUsername', {
+      const response = await fetch(`${API_BASE_URL}/user/updateUsername`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -92,10 +92,9 @@ const ProfilePage = () => {
         throw new Error('Network response was not ok :(');
       }
 
-      //const result = await response.json();
       alert('Username aggiornato con successo!');
       setUserData({ ...userData, username: newUsername });
-      setShowUsernameModal(false); // Chiudi la modale dopo aver aggiornato l'username
+      setShowUsernameModal(false); 
     } catch (error) {
       console.error('Errore durante l\'aggiornamento dell\'username:', error);
     }
@@ -105,7 +104,7 @@ const ProfilePage = () => {
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch('http://localhost:3000/user/updateBirthday', {
+      const response = await fetch(`${API_BASE_URL}/user/updateBirthday`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -118,10 +117,9 @@ const ProfilePage = () => {
         throw new Error('Network response was not ok :(');
       }
 
-      // const result = await response.json();
       alert('Data di nascita aggiornata con successo!');
       setUserData({ ...userData, birthday: newBirthday });
-      setShowBirthdayModal(false); // Chiudi la modale dopo aver aggiornato la data di nascita
+      setShowBirthdayModal(false); 
     } catch (error) {
       console.error('Errore durante l\'aggiornamento della data di nascita:', error);
     }
@@ -136,12 +134,11 @@ const ProfilePage = () => {
   const handleShowBirthdayModal = () => setShowBirthdayModal(true);
   const handleCloseBirthdayModal = () => setShowBirthdayModal(false);
 
-  // Se il caricamento è in corso, mostra un indicatore di caricamento
   if (loading) {
     return <div>Caricamento...</div>;
   }
 
-  const profilePicUrl = userData?.profilePic ? `http://localhost:3000${userData.profilePic}` : '/default-profile-pic.jpg';
+  const profilePicUrl = userData?.profilePic ? `${API_BASE_URL}${userData.profilePic}` : '/default-profile-pic.jpg';
   const birthday = userData?.birthday
     ? new Date(userData.birthday).toLocaleDateString('it-IT')
     : 'Non specificato';
@@ -150,7 +147,6 @@ const ProfilePage = () => {
 
   return (
     <section>
-      {/* <NavigationBar isAuthenticated={true} /> */}
       <ResponsiveNavbar isAuthenticated={true} />
       <MDBContainer className="py-5">
         <MDBRow>
@@ -235,7 +231,7 @@ const ProfilePage = () => {
           <Row className="justify-content-center">
             <Col xs={6} md={4} className="d-flex justify-content-center mb-2">
               <Image
-                src="http://localhost:3000/images/profile-pic.jpg"
+                src={`${API_BASE_URL}/images/profile-pic.jpg`}
                 thumbnail
                 rounded
                 style={{ width: '100px', height: '100px', cursor: 'pointer' }}
@@ -244,7 +240,7 @@ const ProfilePage = () => {
             </Col>
             <Col xs={6} md={4} className="d-flex justify-content-center mb-2">
               <Image
-                src="http://localhost:3000/images/profile-pic2.jpg"
+                src={`${API_BASE_URL}/images/profile-pic2.jpg`}
                 thumbnail
                 rounded
                 style={{ width: '100px', height: '100px', cursor: 'pointer' }}
@@ -255,7 +251,7 @@ const ProfilePage = () => {
           <Row className="justify-content-center">
             <Col xs={6} md={4} className="d-flex justify-content-center mb-2">
               <Image
-                src="http://localhost:3000/images/profile-pic3.jpg"
+                src={`${API_BASE_URL}/images/profile-pic3.jpg`}
                 thumbnail
                 rounded
                 style={{ width: '100px', height: '100px', cursor: 'pointer' }}
@@ -264,7 +260,7 @@ const ProfilePage = () => {
             </Col>
             <Col xs={6} md={4} className="d-flex justify-content-center mb-2">
               <Image
-                src="http://localhost:3000/images/profile-pic4.jpg"
+                src={`${API_BASE_URL}/images/profile-pic4.jpg`}
                 thumbnail
                 rounded
                 style={{ width: '100px', height: '100px', cursor: 'pointer' }}
@@ -275,7 +271,7 @@ const ProfilePage = () => {
           <Row className="justify-content-center">
             <Col xs={6} md={4} className="d-flex justify-content-center mb-2">
               <Image
-                src="http://localhost:3000/images/profile-pic5.jpg"
+                src={`${API_BASE_URL}/images/profile-pic5.jpg`}
                 thumbnail
                 rounded
                 style={{ width: '100px', height: '100px', cursor: 'pointer' }}
@@ -284,7 +280,7 @@ const ProfilePage = () => {
             </Col>
             <Col xs={6} md={4} className="d-flex justify-content-center mb-2">
               <Image
-                src="http://localhost:3000/images/profile-pic6.jpg"
+                src={`${API_BASE_URL}/images/profile-pic6.jpg`}
                 thumbnail
                 rounded
                 style={{ width: '100px', height: '100px', cursor: 'pointer' }}

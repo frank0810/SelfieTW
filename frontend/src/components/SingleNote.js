@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import NoteModal from './NoteModal';
+import { API_BASE_URL } from './config/api.js';
 
 const SingleNote = ({ id, title, text, category, createdAt, updatedAt }) => {
     const [showModal, setShowModal] = useState(false);
@@ -13,7 +14,7 @@ const SingleNote = ({ id, title, text, category, createdAt, updatedAt }) => {
 
     const handleSave = async (updatedNote) => {
         try {
-            const response = await fetch(`http://localhost:3000/notes/update/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/notes/update/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,7 +35,7 @@ const SingleNote = ({ id, title, text, category, createdAt, updatedAt }) => {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/notes/delete/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/notes/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,7 +55,7 @@ const SingleNote = ({ id, title, text, category, createdAt, updatedAt }) => {
 
     const handleDuplicate = async (duplicateNote) => {
         try {
-            const response = await fetch(`http://localhost:3000/notes/create`, {
+            const response = await fetch(`${API_BASE_URL}/notes/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

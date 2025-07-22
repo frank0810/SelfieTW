@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTimeMachine } from '../TimeMachineContext';
 import { Button, Form, Modal } from 'react-bootstrap';
 import './TimeMachine.css';
@@ -17,7 +17,6 @@ const TimeMachine = () => {
         handleClose();
     };
 
-    // Sto in mobile mode?!
     useEffect(() => {
         if (window.innerWidth < 768) {
             setIsMinimized(true);
