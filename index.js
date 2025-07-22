@@ -1,0 +1,2 @@
+
+require('./backend/index.js');

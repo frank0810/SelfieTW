@@ -10,7 +10,7 @@ RUN cd backend && npm install
 COPY frontend/package*.json ./frontend/
 RUN cd frontend && npm install
 
-EXPOSE 3000
+EXPOSE 8000
 
 # Avvio del container
 CMD sh -c "cd /usr/src/app/frontend && npm run build && cd /usr/src/app/backend && node index.js"

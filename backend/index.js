@@ -13,7 +13,7 @@ const noteRoutes = require('./routes/note');
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(express.json());
@@ -25,7 +25,7 @@ app.use('/images', express.static('images'));
 
 //scheduleNotifications();
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGODB_URI ||  'mongodb://site232452:ahB4ha7j@mongo_site232452:27017/site232452', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const connection = mongoose.connection;
 connection.once('open', () => {
