@@ -11,7 +11,7 @@ const noteRoutes = require('./routes/note');
 //const { scheduleNotifications } = require('./notificationManager'); 
 
 dotenv.config();
-
+console.log('MONGODB_URI:', process.env.MONGODB_URI);
 const app = express();
 const port = process.env.PORT || 8000;
 
@@ -25,7 +25,7 @@ app.use('/images', express.static('images'));
 
 //scheduleNotifications();
 
-mongoose.connect(process.env.MONGODB_URI ||  'mongodb://site232452:ahB4ha7j@mongo_site232452:27017/site232452', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGODB_URI ||  'mongodb://site232452:ahB4ha7j@mongo_site232452:27017', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -35,12 +35,19 @@ connection.once('open', () => {
 const authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
+console.log('__dirname:', __dirname);
+
+const frontendBuildPath = path.join(__dirname, 'frontend', 'build');
+const indexPath = path.join(frontendBuildPath, 'index.html');
+
+console.log('Serving static files from:', frontendBuildPath);
+console.log('Index.html path:', indexPath);
+
+app.use(express.static(frontendBuildPath));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+  res.sendFile(indexPath);
 });
-
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
