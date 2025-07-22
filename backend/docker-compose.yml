@@ -3,12 +3,12 @@ version: '3.8'
 services:
   mongo:
     image: mongo:latest
-    container_name: selfie-mongodb
+    container_name: mongo_site232452  # Cambiato per match con .env
     ports:
       - 27017:27017
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_ROOT_USERNAME: site232452
+      MONGO_INITDB_ROOT_PASSWORD: ahB4ha7j
     volumes:
       - ./data/db:/data/db  
     restart: unless-stopped
@@ -19,12 +19,13 @@ services:
       dockerfile: backend/Dockerfile-node  
     container_name: node-server
     ports:
-      - 8000:3000  
+      - 8000:8000  
     restart: unless-stopped
     environment:
+      PORT: 8000
       MONGODB_URI: ${MONGODB_URI}
       JWT_SECRET: ${JWT_SECRET}
-      PORT: 3000 
+      NODE_ENV: production  # Aggiunto per usare configurazione production
     env_file:
       - .env
     depends_on:
