@@ -5,9 +5,8 @@ import { useTimeMachine } from '../../TimeMachineContext';
 const EventListPreview = ({ events }) => {
   const { virtualTime } = useTimeMachine();
 
-  // Funzione per filtrare gli eventi del giorno corrente - (questa funzione è 100% CHATGPT)
   const getTodaysEvents = (events, currentDate) => {
-    const today = currentDate.toISOString().slice(0, 10); // Formato YYYY-MM-DD
+    const today = currentDate.toISOString().slice(0, 10);
     return events.filter(event => {
       const eventStart = new Date(event.startDate).toISOString().slice(0, 10);
       const eventEnd = new Date(event.endDate).toISOString().slice(0, 10);
@@ -15,7 +14,6 @@ const EventListPreview = ({ events }) => {
     });
   };
 
-  // Funzione per filtrare gli eventi della settimana corrente - (questa funzione è 100% CHATGPT)
   const getWeeklyEvents = (events, currentDate) => {
     const startOfWeek = new Date(currentDate);
     startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Lunedì
