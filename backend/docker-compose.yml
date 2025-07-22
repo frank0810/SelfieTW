@@ -19,11 +19,12 @@ services:
       dockerfile: backend/Dockerfile-node  
     container_name: node-server
     ports:
-      - 3000:3000
+      - 8000:3000  
     restart: unless-stopped
     environment:
       MONGODB_URI: ${MONGODB_URI}
       JWT_SECRET: ${JWT_SECRET}
+      PORT: 3000 
     env_file:
       - .env
     depends_on:
