@@ -17,9 +17,7 @@ const Login = () => {
         '/auth/login',
         { username, password }
       );
-      console.log("Salvo il token:", response.data.token);
       localStorage.setItem('token', response.data.token);
-      console.log("Token salvato:", localStorage.getItem('token'));
       navigate('/');
     } catch (error) {
       setError(error.response?.data?.message || 'Login error');

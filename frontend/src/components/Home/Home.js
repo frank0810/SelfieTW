@@ -30,7 +30,6 @@ const Home = () => {
   useEffect(() => {
     const fetchLastPomodoro = async () => {
       const token = localStorage.getItem('token');
-      console.log('Fetch verso:', `${API_BASE_URL}/user/getUserPomodoro`)
 
       try {
         const response = await fetch(`${API_BASE_URL}/user/getUserPomodoro`, {

@@ -11,7 +11,6 @@ import {
 import { Row, Col, Image, Modal, Button, Form } from 'react-bootstrap';
 import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
 import { API_BASE_URL } from '../config/api.js';
-
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -178,28 +177,28 @@ const ProfilePage = () => {
               <MDBCardBody>
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText style={{ height:'2em'}}>Nome</MDBCardText>
+                    <MDBCardText style={{ height:'2em', display: 'block '}}>Nome</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted" style={{ height:'2em'}}>{userData?.firstName + ' ' + userData?.lastName}</MDBCardText>
+                    <MDBCardText className="text-muted" style={{ height:'2em', display: 'block '}}>{userData?.firstName + ' ' + userData?.lastName}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText style={{ height:'2em'}}>Email</MDBCardText>
+                    <MDBCardText style={{ height:'2em', display: 'block '}}>Email</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted" style={{ height:'2em'}}>{userData?.email}</MDBCardText>
+                    <MDBCardText className="text-muted" style={{ height:'2em', display: 'block '}}>{userData?.email}</MDBCardText>
                   </MDBCol>
                 </MDBRow>
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText style={{ height:'2em'}}>Username</MDBCardText>
+                    <MDBCardText style={{ height:'2em', display: 'block '}}>Username</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted" style={{ height:'2em'}}>{username}</MDBCardText>
+                    <MDBCardText className="text-muted" style={{ height:'2em', display: 'block '}}>{username}</MDBCardText>
                     <Button variant="link" onClick={handleShowUsernameModal} style={{margin: 0, padding: 0, fontSize: '0.85em'}}>
                       Modifica Username
                     </Button>
@@ -208,10 +207,10 @@ const ProfilePage = () => {
                 <hr />
                 <MDBRow>
                   <MDBCol sm="3">
-                    <MDBCardText style={{ height:'2em'}}>Data di Nascita</MDBCardText>
+                    <MDBCardText style={{ height:'2em', display: 'block '}}>Data di Nascita</MDBCardText>
                   </MDBCol>
                   <MDBCol sm="9">
-                    <MDBCardText className="text-muted" style={{ height:'2em'}}>{birthday}</MDBCardText>
+                    <MDBCardText className="text-muted" style={{ height:'2em', display: 'block '}}>{birthday}</MDBCardText>
                     <Button variant="link" onClick={handleShowBirthdayModal} style={{margin: 0, padding: 0, fontSize: '0.85em'}}>
                       Modifica Data di Nascita
                     </Button>

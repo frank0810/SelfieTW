@@ -11,7 +11,6 @@ const noteRoutes = require('./routes/note');
 //const { scheduleNotifications } = require('./notificationManager'); 
 
 dotenv.config();
-console.log('MONGODB_URI:', process.env.MONGODB_URI);
 const app = express();
 const port = process.env.PORT || 8000;
 
@@ -45,6 +44,7 @@ console.log('Serving static files from:', frontendBuildPath);
 console.log('Index.html path:', indexPath);
 
 app.use(express.static(frontendBuildPath));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.get('*', (req, res) => {
   res.sendFile(indexPath);
