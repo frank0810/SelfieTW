@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import SingleNote from './SingleNote';
 import { Container, Row, Col, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import CreateNoteModal from './CreateNoteModal';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../config/api.js';
 
 import { fetchUserNotes } from '../utils'; 
 import ResponsiveNavbar from './NavBar/ResponsiveNavbar';

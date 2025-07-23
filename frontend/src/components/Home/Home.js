@@ -7,7 +7,7 @@ import { fetchUserNotes, fetchUserEvents } from '../../utils';
 import './Home.css';
 import ResponsiveNavbar from '../NavBar/ResponsiveNavbar'; 
 import { useTimeMachine } from '../../TimeMachineContext';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../../config/api.js';
 
 const Home = () => {
   const [lastPomodoro, setLastPomodoro] = useState(null);
@@ -30,6 +30,7 @@ const Home = () => {
   useEffect(() => {
     const fetchLastPomodoro = async () => {
       const token = localStorage.getItem('token');
+      console.log('Fetch verso:', `${API_BASE_URL}/user/getUserPomodoro`)
 
       try {
         const response = await fetch(`${API_BASE_URL}/user/getUserPomodoro`, {

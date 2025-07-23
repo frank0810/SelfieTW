@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import NoteModal from './NoteModal';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../config/api.js';
 
 const SingleNote = ({ id, title, text, category, createdAt, updatedAt }) => {
     const [showModal, setShowModal] = useState(false);

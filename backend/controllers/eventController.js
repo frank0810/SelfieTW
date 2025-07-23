@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const Event = require('../models/Event');
 const jwt = require('jsonwebtoken');
+const JWT_SECRET = 'your_jwt_secret'; 
 
 // Creazione di un nuovo evento
 exports.createEvent = async (req, res) => {
@@ -14,28 +15,28 @@ exports.createEvent = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    const startDate = new Date(req.body.startDate);
-    const endDate = new Date(req.body.endDate);
-    const repeatUntil = new Date(req.body.repeatUntil);
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+    const repeatUntilObj = new Date(repeatUntil);
     const excludedDates = [];
 
     const newEvent = new Event({
       title,
-      startDate,
+      startDate: startDateObj,
       startTime,
-      endDate,
+      endDate: endDateObj,
       endTime,
       location,
       isAllDay,
       frequency,
-      repeatUntil, 
+      repeatUntil: repeatUntilObj,
       excludedDates
     });
     console.log(newEvent);
@@ -43,7 +44,6 @@ exports.createEvent = async (req, res) => {
 
     user.userEvents.push(newEvent._id);
     await user.save();
-
 
     res.json({ message: 'Event created successfully' });
   } catch (error) {
@@ -54,7 +54,6 @@ exports.createEvent = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 // Ottenere un evento specifico tramite ID
 exports.getEventById = async (req, res) => {
@@ -68,7 +67,7 @@ exports.getEventById = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const event = await Event.findById(eventId);
@@ -99,7 +98,7 @@ exports.updateEvent = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
@@ -132,11 +131,11 @@ exports.updateEvent = async (req, res) => {
       if (Array.isArray(event.excludedDates)) {
         excludedDates.forEach(date => {
           if (!event.excludedDates.includes(date)) {
-            event.excludedDates.push(date); // Aggiungi solo la data che non è presente
+            event.excludedDates.push(date);
           }
         });
       } else {
-        event.excludedDates = [...excludedDates]; // Se non è un array, creane uno nuovo
+        event.excludedDates = [...excludedDates];
       }
     }
     await event.save();
@@ -162,7 +161,7 @@ exports.deleteEvent = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);

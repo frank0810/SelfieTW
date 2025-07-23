@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Modal, Form, Button, ListGroup, Row, Col, Dropdown, Alert, Spinner, Badge } from 'react-bootstrap';
 import { useTimeMachine } from '../../TimeMachineContext';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../../config/api.js';
 
 const SingleEventPreview = ({ event, timeType, onEventUpdate, onEventDelete }) => {
     const { virtualTime } = useTimeMachine();

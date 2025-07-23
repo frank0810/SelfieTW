@@ -1,9 +1,9 @@
 const config = {
   development: {
-    API_BASE_URL: 'http://localhost:8000'  
+    API_BASE_URL: 'http://localhost:8000'
   },
   production: {
-    API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'https://site232452.gocker.com'
+    API_BASE_URL: process.env.REACT_APP_API_BASE_URL || 'http://site232452.tw.cs.unibo.it'
   }
 };
 

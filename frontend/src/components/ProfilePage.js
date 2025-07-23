@@ -10,7 +10,7 @@ import {
 } from 'mdb-react-ui-kit';
 import { Row, Col, Image, Modal, Button, Form } from 'react-bootstrap';
 import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../config/api.js';
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);

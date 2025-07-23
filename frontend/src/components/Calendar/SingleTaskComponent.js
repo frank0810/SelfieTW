@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ListGroup, Button, Row, Col, Modal, Form, Alert, Spinner } from 'react-bootstrap';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../../config/api.js';
 
 const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
   const [isCompleted, setIsCompleted] = useState(task.isCompleted);

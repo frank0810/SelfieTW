@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './Timers.css';
 import studioImg from '../../imgs/study_time.png';
 import relaxImg from '../../imgs/relax_time.webp';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../../config/api.js';
 
 const Timers = ({ cicles, studyTime, relaxTime }) => {
   const [currentCycle, setCurrentCycle] = useState(0);

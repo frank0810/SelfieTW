@@ -10,7 +10,7 @@ import EventPreviewModal from './EventPreviewModal';
 import { useTimeMachine } from '../../TimeMachineContext';
 import './CalendarStyles.css';
 import ResponsiveNavbar from '../NavBar/ResponsiveNavbar';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../../config/api.js';
 
 const CalendarComponent = () => {
     const { virtualTime } = useTimeMachine();

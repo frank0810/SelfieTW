@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Modal, Form, Button, ListGroup, Row, Col, Alert, Spinner, Badge } from 'react-bootstrap';
 import { useTimeMachine } from '../../TimeMachineContext';
-import { API_BASE_URL } from './config/api.js';
+import { API_BASE_URL } from '../../config/api.js';
 
 const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
     const { virtualTime } = useTimeMachine();
