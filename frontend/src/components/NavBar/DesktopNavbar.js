@@ -24,14 +24,12 @@ const DesktopNavbar = ({ isAuthenticated }) => {
 
       {isAuthenticated && (
         <>
-          {/* Links sinistra */}
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/pomodoro">Pomodoro</Nav.Link>
             <Nav.Link as={Link} to="/calendar">Calendario</Nav.Link>
             <Nav.Link as={Link} to="/notes">Note</Nav.Link>
           </Nav>
           
-          {/* Links destra */}
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/profile">Profilo</Nav.Link>
             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>

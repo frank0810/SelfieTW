@@ -18,6 +18,10 @@ const CreateTaskModal = ({ show, handleClose, handleCreate, defaultDeadline }) =
       setError('Il titolo è obbligatorio');
       return false;
     }
+     if (!description.trim()) {
+      setError('La descrizione è obbligatoria');
+      return false;
+    }
     if (!deadline) {
       setError('La data di scadenza è obbligatoria');
       return false;
@@ -60,11 +64,11 @@ const CreateTaskModal = ({ show, handleClose, handleCreate, defaultDeadline }) =
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formDescription">
-            <Form.Label>Descrizione</Form.Label>
+            <Form.Label>Descrizione *</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
-              placeholder="Inserisci una descrizione (opzionale)"
+              placeholder="Inserisci una descrizione"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

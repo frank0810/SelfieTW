@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
+import { API_BASE_URL } from '../config/api.js'; 
 
 function ImageSelect() {
     return (
@@ -19,7 +20,7 @@ function ImageSelect() {
                 <Container>
                     <Row>
                         <Col xs={6} md={4}>
-                            <Image src="http://localhost:3000/images/profile-pic.jpg" rounded />
+                            <Image src={`${API_BASE_URL}/images/profile-pic.jpg`} rounded />
                         </Col>
                         <Col xs={6} md={4}>
                             <Image src="holder.js/171x180" roundedCircle />
@@ -40,9 +41,3 @@ function ImageSelect() {
 }
 
 export default ImageSelect;
-
-
-
-
-
-

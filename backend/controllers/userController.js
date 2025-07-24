@@ -1,6 +1,6 @@
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
-
+const JWT_SECRET = 'your_jwt_secret'; 
 
 //UPDATE di lastPomodoro
 exports.updateLastPomodoro = async (req, res) => {
@@ -14,7 +14,7 @@ exports.updateLastPomodoro = async (req, res) => {
   const token = authHeader.split(' ')[1]; // Devo prendere solo la parte dopo "Bearer"
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
@@ -50,7 +50,7 @@ exports.getUserPomodoro = async (req, res) => {
 
   const token = authHeader.split(' ')[1]; 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
@@ -85,7 +85,7 @@ exports.updateBirthday = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
@@ -117,7 +117,7 @@ exports.updateProfilePic = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
@@ -149,7 +149,7 @@ exports.updateUsername = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
@@ -180,7 +180,7 @@ exports.getUserData = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId).select('-password');

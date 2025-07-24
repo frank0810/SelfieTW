@@ -2,12 +2,16 @@ import React, { useEffect } from 'react';
 import { ListGroup, Row, Col } from 'react-bootstrap';
 import { useTimeMachine } from '../../TimeMachineContext';
 
-const EventListPreview = ({ events }) => {
+const EventListPreview = ({ events, onEventUpdate }) => {
   const { virtualTime } = useTimeMachine();
 
-  // Funzione per filtrare gli eventi del giorno corrente - (questa funzione è 100% CHATGPT)
+  // Funzione per abbreviare il titolo
+  const abbreviateTitle = (title, maxLength = 10) => { 
+    return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
+  };
+
   const getTodaysEvents = (events, currentDate) => {
-    const today = currentDate.toISOString().slice(0, 10); // Formato YYYY-MM-DD
+    const today = currentDate.toISOString().slice(0, 10);
     return events.filter(event => {
       const eventStart = new Date(event.startDate).toISOString().slice(0, 10);
       const eventEnd = new Date(event.endDate).toISOString().slice(0, 10);
@@ -15,7 +19,6 @@ const EventListPreview = ({ events }) => {
     });
   };
 
-  // Funzione per filtrare gli eventi della settimana corrente - (questa funzione è 100% CHATGPT)
   const getWeeklyEvents = (events, currentDate) => {
     const startOfWeek = new Date(currentDate);
     startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Lunedì
@@ -44,27 +47,57 @@ const EventListPreview = ({ events }) => {
 
   return (
     <div className="text-center">
+      {/* EVENTI DI OGGI */}
       <h2 className="mb-4">Eventi di Oggi</h2>
       <ListGroup className="w-75 mx-auto">
-        <ListGroup.Item className="text-center bg-primary text-white">
+        {/* Header desktop per eventi di oggi */}
+        <ListGroup.Item className="d-none d-md-block text-center bg-primary text-white">
           <Row>
             <Col>Titolo</Col>
             <Col>Luogo</Col>
             <Col>Durata</Col>
           </Row>
         </ListGroup.Item>
+        
+        {/* Header mobile per eventi di oggi */}
+        <ListGroup.Item className="d-block d-md-none text-center bg-primary text-white">
+          <Row>
+            <Col>Titolo</Col>
+            <Col>Durata</Col>
+          </Row>
+        </ListGroup.Item>
+
         {todaysEvents.length > 0 ? (
           todaysEvents.map(event => (
             <ListGroup.Item key={event._id}>
-              <Row>
-                <Col><strong>{event.title}</strong></Col>
-                <Col>{event.location || 'Nessuna posizione'}</Col>
-                <Col>
-                  {event.startTime
-                    ? `${event.startTime} - ${event.endTime || ''}`
-                    : 'Tutto il giorno'}
-                </Col>
-              </Row>
+              {/* Vista desktop */}
+              <div className="d-none d-md-block">
+                <Row>
+                  <Col><strong>{abbreviateTitle(event.title, 10)}</strong></Col>
+                  <Col>{event.location || 'Nessuna posizione'}</Col>
+                  <Col>
+                    {event.startTime
+                      ? `${event.startTime} - ${event.endTime || ''}`
+                      : 'Tutto il giorno'}
+                  </Col>
+                </Row>
+              </div>
+              
+              {/* Vista mobile */}
+              <div className="d-block d-md-none">
+                <Row className="align-items-center">
+                  <Col>
+                    <strong>{abbreviateTitle(event.title, 7)}</strong>
+                  </Col>
+                  <Col>
+                    <small>
+                      {event.startTime
+                        ? `${event.startTime} - ${event.endTime || ''}`
+                        : 'Tutto il giorno'}
+                    </small>
+                  </Col>
+                </Row>
+              </div>
             </ListGroup.Item>
           ))
         ) : (
@@ -72,9 +105,11 @@ const EventListPreview = ({ events }) => {
         )}
       </ListGroup>
 
+      {/* EVENTI DELLA SETTIMANA */}
       <h2 className="mt-4 mb-4">Eventi della Settimana</h2>
       <ListGroup className="w-75 mx-auto">
-        <ListGroup.Item className="text-center bg-primary text-white">
+        {/* Header desktop per eventi della settimana */}
+        <ListGroup.Item className="d-none d-md-block text-center bg-primary text-white">
           <Row>
             <Col>Titolo</Col>
             <Col>Luogo</Col>
@@ -82,23 +117,55 @@ const EventListPreview = ({ events }) => {
             <Col>Durata</Col>
           </Row>
         </ListGroup.Item>
+        
+        {/* Header mobile per eventi della settimana */}
+        <ListGroup.Item className="d-block d-md-none text-center bg-primary text-white">
+          <Row>
+            <Col>Titolo</Col>
+            <Col>Giorno</Col>
+            <Col>Durata</Col>
+          </Row>
+        </ListGroup.Item>
+
         {weeklyEvents.length > 0 ? (
           weeklyEvents.map(event => {
             const eventDay = new Date(event.startDate).toLocaleDateString('it-IT', {
-              weekday: 'long', // mi dice il giorno della settimana
+              weekday: 'short', // Versione abbreviata per mobile
             });
             return (
               <ListGroup.Item key={event._id}>
-                <Row>
-                  <Col><strong>{event.title}</strong></Col>
-                  <Col>{event.location || 'Nessuna posizione'}</Col>
-                  <Col>{eventDay}</Col>
-                  <Col>
-                    {event.startTime
-                      ? `${event.startTime} - ${event.endTime || ''}`
-                      : 'Tutto il giorno'}
-                  </Col>
-                </Row>
+                {/* Vista desktop */}
+                <div className="d-none d-md-block">
+                  <Row>
+                    <Col><strong>{abbreviateTitle(event.title, 10)}</strong></Col>
+                    <Col>{event.location || 'Nessuna posizione'}</Col>
+                    <Col>{new Date(event.startDate).toLocaleDateString('it-IT', { weekday: 'long' })}</Col>
+                    <Col>
+                      {event.startTime
+                        ? `${event.startTime} - ${event.endTime || ''}`
+                        : 'Tutto il giorno'}
+                    </Col>
+                  </Row>
+                </div>
+                
+                {/* Vista mobile */}
+                <div className="d-block d-md-none">
+                  <Row className="align-items-center">
+                    <Col>
+                      <strong>{abbreviateTitle(event.title, 7)}</strong>
+                    </Col>
+                    <Col>
+                      <small>{eventDay}</small>
+                    </Col>
+                    <Col>
+                      <small>
+                        {event.startTime
+                          ? `${event.startTime.substring(0, 5)}-${event.endTime?.substring(0, 5) || ''}`
+                          : 'Tutto il giorno'}
+                      </small>
+                    </Col>
+                  </Row>
+                </div>
               </ListGroup.Item>
             );
           })

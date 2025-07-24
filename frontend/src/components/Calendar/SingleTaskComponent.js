@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ListGroup, Button, Row, Col, Modal, Form, Alert, Spinner } from 'react-bootstrap';
+import { API_BASE_URL } from '../../config/api.js';
 
 const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
   const [isCompleted, setIsCompleted] = useState(task.isCompleted);
@@ -8,21 +9,25 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
   const [error, setError] = useState('');
   const [loading] = useState(false);
 
+  const abbreviateTitle = (title, maxLength = 10) => { 
+    return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
+  }
+
   const handleCompleteTask = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/tasks/update/${task._id}`, {
+      const response = await fetch(`${API_BASE_URL}/tasks/update/${task._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ isCompleted: true})  // Cambia lo stato a completata
+        body: JSON.stringify({ isCompleted: true})  
       });
       window.location.reload()
 
       if (response.ok) {
-        setIsCompleted(true);  // Aggiorna lo stato localmente
-        fetchTasks();  // Ricarica le attività per riflettere il cambiamento
+        setIsCompleted(true);  
+        fetchTasks();  
       } else {
         console.error('Errore nel completamento dell\'attività');
       }
@@ -33,7 +38,7 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
 
   const handleEditTask = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/tasks/update/${task._id}`, {
+      const response = await fetch(`${API_BASE_URL}/tasks/update/${task._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -44,8 +49,8 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
 
       if (response.ok) {
         setShowEditModal(false);
-        setIsCompleted(editedTask.isCompleted);  // Aggiorna lo stato nella TaskList
-        fetchTasks(); // Ricarica le attività
+        setIsCompleted(editedTask.isCompleted);  
+        fetchTasks(); 
       } else {
         throw new Error('Network response was not ok');
       }
@@ -56,7 +61,7 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
 
   const handleDeleteTask = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/tasks/delete/${task._id}`, {
+      const response = await fetch(`${API_BASE_URL}/tasks/delete/${task._id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +71,7 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
 
       if (response.ok) {
         setShowEditModal(false);
-        fetchTasks(); // Ricarica le attività
+        fetchTasks(); 
       } else {
         throw new Error('Network response was not ok');
       }
@@ -76,15 +81,16 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
   };
 
   // Logica per determinare lo stato dell'attività (Completata, Scaduta, In corso)
-
   const isTaskOverdue = new Date(task.deadline) < new Date(virtualTime) && !editedTask.isCompleted;
   const taskStatus = editedTask.isCompleted ? 'Completata' : isTaskOverdue ? 'In Ritardo' : 'In corso';
 
   return (
     <>
-      <ListGroup.Item className="text-center">
+      <ListGroup.Item className="mb-2 border-0">
         <Row className="align-items-center">
-          <Col>{task.title}</Col>
+          <Col className="text-truncate" style={{maxWidth: '200px'}}>
+            <strong>{abbreviateTitle ? abbreviateTitle(task.title, 20) : task.title}</strong>
+          </Col>
           <Col>{task.deadline.slice(0, 10)}</Col>
           <Col>{taskStatus}</Col>
           <Col>

@@ -1,4 +1,3 @@
-import React from 'react';
 import useScreenSize from './useScreenSize';
 import DesktopNavbar from './DesktopNavbar';
 import MobileNavbar from './MobileNavbar';

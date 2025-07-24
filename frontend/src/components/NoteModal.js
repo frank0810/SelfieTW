@@ -7,13 +7,11 @@ const NoteModal = ({ show, handleClose, note, handleSave, handleDuplicate }) => 
     const [text, setText] = useState(note.text);
 
     const onSave = () => {
-        // Validazione per titolo e categoria non vuoti
         if (!title.trim() || !category.trim()) {
             alert('Titolo e Categoria non possono essere vuoti.');
             return;  
         }
 
-        // Salva la nota
         handleSave({
             ...note,
             title,

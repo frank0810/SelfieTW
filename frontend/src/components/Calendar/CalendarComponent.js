@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Calendar from 'react-calendar';
 import EventListPreview from './EventListPreview';
@@ -10,6 +10,7 @@ import EventPreviewModal from './EventPreviewModal';
 import { useTimeMachine } from '../../TimeMachineContext';
 import './CalendarStyles.css';
 import ResponsiveNavbar from '../NavBar/ResponsiveNavbar';
+import { API_BASE_URL } from '../../config/api.js';
 
 const CalendarComponent = () => {
     const { virtualTime } = useTimeMachine();
@@ -20,19 +21,16 @@ const CalendarComponent = () => {
     const [showTaskModal, setShowTaskModal] = useState(false);
     const [showEventPreviewModal, setShowEventPreviewModal] = useState(false);
 
-    // Carica eventi e attività
     useEffect(() => {
         fetchEvents();
         fetchTasks();
     }, [virtualTime]);
 
-    //HANDLE REPETITIONS per creare delle ripetizioni
-
     const fetchEvents = async () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch('http://localhost:3000/user/getUserData', {
+            const response = await fetch(`${API_BASE_URL}/user/getUserData`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,7 +46,7 @@ const CalendarComponent = () => {
             const eventIds = result.user.userEvents || [];
 
             const eventPromises = eventIds.map(async (id) => {
-                const eventResponse = await fetch(`http://localhost:3000/events/${id}`, {
+                const eventResponse = await fetch(`${API_BASE_URL}/events/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -62,31 +60,28 @@ const CalendarComponent = () => {
 
                 const event = await eventResponse.json();
 
-                // Calcolo e formatto le date
                 const startDate = new Date(event.event.startDate);
                 const endDate = new Date(event.event.endDate);
 
                 const formattedEvent = {
                     ...event.event,
-                    startDate: startDate.toISOString().slice(0, 10), // Formato YYYY-MM-DD
+                    startDate: startDate.toISOString().slice(0, 10), 
                     endDate: endDate.toISOString().slice(0, 10) 
                 };
 
-                // Gestisci la lista delle esclusioni separatamente per ogni occorrenza
                 if (formattedEvent.frequency !== 'none') {
                     const repetitions = [];
                     let currentDate = new Date(formattedEvent.startDate);
 
                     const excludedDates = Array.isArray(formattedEvent.excludedDates)
                         ? formattedEvent.excludedDates.map(date => new Date(date).toISOString().slice(0, 10))
-                        : [];  // Imposta un array vuoto se excludedDates è null o undefined
+                        : [];  
 
                     while (currentDate <= new Date(formattedEvent.repeatUntil)) {
                         const formattedCurrentDate = currentDate.toISOString().slice(0, 10);
 
-                        // Verifica se la data corrente è in excludedDates
-                        if (!excludedDates.includes(formattedCurrentDate)) {
-                            // Solo aggiungi la ripetizione se non è esclusa
+                        
+                        if (!excludedDates.includes(formattedCurrentDate)) {  
                             repetitions.push({
                                 ...formattedEvent,
                                 startDate: formattedCurrentDate,
@@ -94,7 +89,6 @@ const CalendarComponent = () => {
                             });
                         }
 
-                        // Aggiorna la data in base alla frequenza
                         if (formattedEvent.frequency === 'daily') {
                             currentDate.setDate(currentDate.getDate() + 1);
                         } else if (formattedEvent.frequency === 'weekly') {
@@ -106,7 +100,7 @@ const CalendarComponent = () => {
                         }
                     }
 
-                    return repetitions; // Aggiungi tutte le ripetizioni
+                    return repetitions; 
                 }
 
                 return [formattedEvent];
@@ -115,8 +109,6 @@ const CalendarComponent = () => {
 
             const events = await Promise.all(eventPromises);
 
-
-            // Unisci tutte le ripetizioni in un unico array
             setEvents(events.flat());
         } catch (error) {
             console.error('There was a BAD problem with the fetch operation:', error);
@@ -128,7 +120,7 @@ const CalendarComponent = () => {
         const token = localStorage.getItem('token');
 
         try {
-            const response = await fetch('http://localhost:3000/user/getUserData', {
+            const response = await fetch(`${API_BASE_URL}/user/getUserData`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -144,7 +136,7 @@ const CalendarComponent = () => {
             const taskIds = result.user.userTasks || [];
 
             const taskPromises = taskIds.map(async (id) => {
-                const taskResponse = await fetch(`http://localhost:3000/tasks/${id}`, {
+                const taskResponse = await fetch(`${API_BASE_URL}/tasks/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -167,34 +159,31 @@ const CalendarComponent = () => {
         }
     };
 
-    // Gestione selezione data nel calendario
     const handleDateClick = (date) => {
         setSelectedDate(date);
         setShowEventPreviewModal(true);
     };
 
-    // Apre il modal per creare nuovi eventi
     const openEventModal = () => {
-        setShowEventPreviewModal(false);  // Chiude l'anteprima degli eventi
-        setShowEventModal(true);          // Apre il modal per creare eventi
+        setShowEventPreviewModal(false);  
+        setShowEventModal(true);          
     };
 
-    // Apre il modal per creare nuove attività
     const openTaskModal = () => {
-        setShowEventPreviewModal(false);  // Chiude l'anteprima degli eventi
-        setShowTaskModal(true);           // Apre il modal per creare attività
+        setShowEventPreviewModal(false);  
+        setShowTaskModal(true);           
     };
 
-    // Modale per creare nuovi eventi
+    
     const handleCreateEvent = async (newEvent) => {
-        // Controllo se `frequency` è impostato e `repeatUntil` è vuoto
+        
         if (newEvent.frequency !== 'none' && !newEvent.repeatUntil) {
             alert('Seleziona una data di fine per gli eventi con ripetizioni.');
-            return; // Interrompi la funzione se la condizione non è soddisfatta
+            return; 
         }
 
         try {
-            const response = await fetch('http://localhost:3000/events/create', {
+            const response = await fetch(`${API_BASE_URL}/events/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -214,10 +203,9 @@ const CalendarComponent = () => {
         }
     };
 
-    // Modale per creare nuove attività
     const handleCreateTask = async (newTask) => {
         try {
-            const response = await fetch('http://localhost:3000/tasks/create', {
+            const response = await fetch(`${API_BASE_URL}/tasks/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -240,7 +228,7 @@ const CalendarComponent = () => {
     const handleDeleteEvent = async (eventId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:3000/events/delete/${eventId}`, {
+            const response = await fetch(`${API_BASE_URL}/events/delete/${eventId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -253,7 +241,7 @@ const CalendarComponent = () => {
             }
 
             window.alert("Evento eliminato con successo");
-            fetchEvents(); // Ricarica gli eventi
+            fetchEvents();
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
         }
@@ -262,7 +250,7 @@ const CalendarComponent = () => {
     const handleDeleteTask = async (taskId) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:3000/tasks/delete/${taskId}`, {
+            const response = await fetch(`${API_BASE_URL}/tasks/delete/${taskId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -275,13 +263,12 @@ const CalendarComponent = () => {
             }
 
             window.alert("Attività eliminata con successo");
-            fetchTasks(); // Ricarica le attività
+            fetchTasks(); 
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
         }
     };
 
-    // Controlla se la data ha eventi o scadenze di attività
     const hasEventsOrTasks = (date) => {
         const dateString = date.toDateString();
         return (

@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const Task = require('../models/Task');
 const jwt = require('jsonwebtoken');
+const JWT_SECRET = 'your_jwt_secret'; 
 
 exports.createTask = async (req, res) => {
   const authHeader = req.headers.authorization;
@@ -13,7 +14,7 @@ exports.createTask = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
   
     const user = await User.findById(userId);
@@ -29,7 +30,6 @@ exports.createTask = async (req, res) => {
     });
     await newTask.save();
 
-    // Metto l'attività dentro alla lista dell'utente che l'ha creata
     user.userTasks.push(newTask._id);
     await user.save();
 
@@ -54,7 +54,7 @@ exports.deleteTask = async (req, res) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
@@ -94,7 +94,7 @@ exports.updateTask = async (req, res) => {
   const token = authHeader.split(' ')[1]; 
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const user = await User.findById(userId);
@@ -140,7 +140,7 @@ exports.getTaskById = async (req, res) => {
   const token = authHeader.split(' ')[1]; 
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     const userId = decoded.id;
 
     const task = await Task.findById(taskId);

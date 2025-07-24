@@ -16,7 +16,6 @@ const CreateEventModal = ({ show, handleClose, handleCreate, defaultStartDate })
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Funzione per aggiornare automaticamente l'orario di fine
   const handleStartTimeChange = (newStartTime) => {
     setStartTime(newStartTime);
     
@@ -39,7 +38,6 @@ const CreateEventModal = ({ show, handleClose, handleCreate, defaultStartDate })
 
   useEffect(() => {
     if (show) {
-      // Imposta gli orari solo quando il modale si apre
       setStartDate(new Date(defaultStartDate).toLocaleDateString('en-CA'));
       setEndDate(new Date(defaultStartDate).toLocaleDateString('en-CA'));
       

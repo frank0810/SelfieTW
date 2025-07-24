@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import NavigationBar from '../Navbar';
 import HomeCard from '../HomeCard';
 import pomodoroLogo from '../../imgs/pomodoro_logo.png';
 import noteLogo from '../../imgs/note_logo.png';
@@ -8,6 +7,7 @@ import { fetchUserNotes, fetchUserEvents } from '../../utils';
 import './Home.css';
 import ResponsiveNavbar from '../NavBar/ResponsiveNavbar'; 
 import { useTimeMachine } from '../../TimeMachineContext';
+import { API_BASE_URL } from '../../config/api.js';
 
 const Home = () => {
   const [lastPomodoro, setLastPomodoro] = useState(null);
@@ -32,7 +32,7 @@ const Home = () => {
       const token = localStorage.getItem('token');
 
       try {
-        const response = await fetch('http://localhost:3000/user/getUserPomodoro', {
+        const response = await fetch(`${API_BASE_URL}/user/getUserPomodoro`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -83,8 +83,6 @@ const Home = () => {
         }
 
         let te = []
-        //let today = new Date();
-        //today.setHours(0, 0, 0, 0);
         const today = virtualTime;
         today.setHours(0, 0, 0, 0); // Imposta l'ora a mezzanotte per il confronto
 

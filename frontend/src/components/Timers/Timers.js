@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './Timers.css';
 import studioImg from '../../imgs/study_time.png';
 import relaxImg from '../../imgs/relax_time.webp';
+import { API_BASE_URL } from '../../config/api.js';
 
 const Timers = ({ cicles, studyTime, relaxTime }) => {
   const [currentCycle, setCurrentCycle] = useState(0);
@@ -85,7 +86,7 @@ const Timers = ({ cicles, studyTime, relaxTime }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/user/updateLastPomodoro', {
+      const response = await fetch(`${API_BASE_URL}/user/updateLastPomodoro`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

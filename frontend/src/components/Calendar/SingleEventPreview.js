@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Modal, Form, Button, ListGroup, Row, Col, Dropdown, Alert, Spinner, Badge } from 'react-bootstrap';
 import { useTimeMachine } from '../../TimeMachineContext';
+import { API_BASE_URL } from '../../config/api.js';
 
 const SingleEventPreview = ({ event, timeType, onEventUpdate, onEventDelete }) => {
     const { virtualTime } = useTimeMachine();
@@ -15,14 +16,12 @@ const SingleEventPreview = ({ event, timeType, onEventUpdate, onEventDelete }) =
     const displayStartTime = timeType === 'start' ? event.startTime : '00:00';
     const displayEndTime = event.isAllDay ? '23:59' : event.endTime;
 
-    // Gestione errori centralizzata
     const handleApiError = (error, operation) => {
         console.error(`Errore nella ${operation} dell'evento:`, error);
         setError(`Errore nella ${operation} dell'evento. Riprova più tardi.`);
         setLoading(false);
     };
 
-    // Validazione del form
     const validateEvent = useCallback(() => {
         if (!editedEvent.title?.trim()) {
             setError('Il titolo è obbligatorio');
@@ -45,14 +44,12 @@ const SingleEventPreview = ({ event, timeType, onEventUpdate, onEventDelete }) =
             return false;
         }
 
-        // Validazione orari se non è tutto il giorno
         if (!editedEvent.isAllDay) {
             if (!editedEvent.startTime || !editedEvent.endTime) {
                 setError('Gli orari di inizio e fine sono obbligatori');
                 return false;
             }
             
-            // Se è lo stesso giorno, controlla che l'ora di fine sia dopo quella di inizio
             if (startDate.toDateString() === endDate.toDateString()) {
                 const startDateTime = new Date(`${editedEvent.startDate}T${editedEvent.startTime}`);
                 const endDateTime = new Date(`${editedEvent.endDate}T${editedEvent.endTime}`);
@@ -74,7 +71,7 @@ const SingleEventPreview = ({ event, timeType, onEventUpdate, onEventDelete }) =
         setError('');
 
         try {
-            const response = await fetch(`http://localhost:3000/events/update/${event._id}`, {
+            const response = await fetch(`${API_BASE_URL}/events/update/${event._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -104,7 +101,7 @@ const SingleEventPreview = ({ event, timeType, onEventUpdate, onEventDelete }) =
         setError('');
 
         try {
-            const response = await fetch(`http://localhost:3000/events/delete/${event._id}`, {
+            const response = await fetch(`${API_BASE_URL}/events/delete/${event._id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -142,7 +139,7 @@ const SingleEventPreview = ({ event, timeType, onEventUpdate, onEventDelete }) =
                 excludedDates: updatedExcludedDates
             };
     
-            const response = await fetch(`http://localhost:3000/events/update/${event._id}`, {
+            const response = await fetch(`${API_BASE_URL}/events/update/${event._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

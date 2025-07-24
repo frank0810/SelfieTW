@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Modal, Form, Button, ListGroup, Row, Col, Alert, Spinner, Badge } from 'react-bootstrap';
 import { useTimeMachine } from '../../TimeMachineContext';
+import { API_BASE_URL } from '../../config/api.js';
 
 const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
     const { virtualTime } = useTimeMachine();
@@ -15,7 +16,11 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
         setLoading(false);
     };
 
-    // Validazione del form
+    const abbreviateDescription = (desc, maxLength = 35) => {
+        if (!desc) return '';
+        return desc.length > maxLength ? desc.substring(0, maxLength) + '...' : desc;
+    };
+
     const validateTask = useCallback(() => {
         if (!editedTask.title?.trim()) {
             setError('Il titolo è obbligatorio');
@@ -35,7 +40,7 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
         setError('');
 
         try {
-            const response = await fetch(`http://localhost:3000/tasks/update/${task._id}`, {
+            const response = await fetch(`${API_BASE_URL}/tasks/update/${task._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +76,7 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
         setError('');
 
         try {
-            const response = await fetch(`http://localhost:3000/tasks/delete/${task._id}`, {
+            const response = await fetch(`${API_BASE_URL}/tasks/delete/${task._id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +104,6 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
         }
     };
 
-    // Funzione per determinare lo stato e il colore del badge usando virtualTime
     const getTaskStatus = () => {
         const now = new Date(virtualTime);
         const deadline = new Date(task.deadline);
@@ -146,7 +150,7 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
                         {task.description && (
                             <div className="mb-1">
                                 <small className="text-muted">📝 </small>
-                                <small><strong>Descrizione:</strong> {task.description}</small>
+                                <small><strong>Descrizione:</strong> {abbreviateDescription(task.description)}</small>
                             </div>
                         )}
                     </Col>

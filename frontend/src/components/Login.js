@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-//import NavigationBar from './Navbar';
 import ResponsiveNavbar from './NavBar/ResponsiveNavbar';
 
 const Login = () => {

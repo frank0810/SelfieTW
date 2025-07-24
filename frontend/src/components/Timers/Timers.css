@@ -104,7 +104,7 @@ button:hover {
   }
 }
 
-/*Per schermi tipo Tablet e PC*/
+
 @media (min-width: 600px) {
   .pomodoro-button  {
     width: 60%;
