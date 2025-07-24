@@ -9,6 +9,10 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
   const [error, setError] = useState('');
   const [loading] = useState(false);
 
+  const abbreviateTitle = (title, maxLength = 10) => { 
+    return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
+  }
+
   const handleCompleteTask = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/tasks/update/${task._id}`, {
@@ -84,7 +88,9 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
     <>
       <ListGroup.Item className="mb-2 border-0">
         <Row className="align-items-center">
-          <Col>{task.title}</Col>
+          <Col className="text-truncate" style={{maxWidth: '200px'}}>
+            <strong>{abbreviateTitle ? abbreviateTitle(task.title, 20) : task.title}</strong>
+          </Col>
           <Col>{task.deadline.slice(0, 10)}</Col>
           <Col>{taskStatus}</Col>
           <Col>

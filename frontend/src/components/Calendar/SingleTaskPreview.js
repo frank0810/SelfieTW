@@ -16,7 +16,7 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
         setLoading(false);
     };
 
-    const abbreviateDescription = (desc, maxLength = 50) => {
+    const abbreviateDescription = (desc, maxLength = 35) => {
         if (!desc) return '';
         return desc.length > maxLength ? desc.substring(0, maxLength) + '...' : desc;
     };

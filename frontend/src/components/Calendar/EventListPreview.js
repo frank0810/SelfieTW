@@ -7,8 +7,8 @@ const EventListPreview = ({ events, onEventUpdate }) => {
 
   // Funzione per abbreviare il titolo
   const abbreviateTitle = (title, maxLength = 10) => { 
-  return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
-};
+    return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
+  };
 
   const getTodaysEvents = (events, currentDate) => {
     const today = currentDate.toISOString().slice(0, 10);
