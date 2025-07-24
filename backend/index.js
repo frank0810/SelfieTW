@@ -8,7 +8,6 @@ const eventsRoutes = require('./routes/event');
 const tasksRoutes = require('./routes/task');
 const userRouter = require('./routes/user');
 const noteRoutes = require('./routes/note');
-//const { scheduleNotifications } = require('./notificationManager'); 
 
 dotenv.config();
 const app = express();
@@ -22,7 +21,6 @@ app.use('/user', userRouter);
 app.use('/notes', noteRoutes);
 app.use('/images', express.static('images'));
 
-//scheduleNotifications();
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://site232452:ahB4ha7j@mongo_site232452:27017/site232452?authSource=admin', { useNewUrlParser: true, useUnifiedTopology: true });
 

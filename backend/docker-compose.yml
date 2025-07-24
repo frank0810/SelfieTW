@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mongo:
     image: mongo:latest
-    container_name: mongo_site232452  # Cambiato per match con .env
+    container_name: mongo_site232452  
     ports:
       - 27017:27017
     environment:
@@ -25,7 +25,7 @@ services:
       PORT: 8000
       MONGODB_URI: ${MONGODB_URI}
       JWT_SECRET: ${JWT_SECRET}
-      NODE_ENV: production  # Aggiunto per usare configurazione production
+      NODE_ENV: production  
     env_file:
       - .env
     depends_on:

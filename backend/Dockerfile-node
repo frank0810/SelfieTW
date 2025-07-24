@@ -9,7 +9,7 @@ RUN cd backend && npm install
 COPY frontend/package*.json ./frontend/
 RUN cd frontend && npm install
 
-# Esponi la porta 8000 invece di 3000
+# Esponi la porta 8000 
 EXPOSE 8000
 
 # Avvio del container con NODE_ENV=production

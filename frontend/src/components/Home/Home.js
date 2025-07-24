@@ -83,8 +83,6 @@ const Home = () => {
         }
 
         let te = []
-        //let today = new Date();
-        //today.setHours(0, 0, 0, 0);
         const today = virtualTime;
         today.setHours(0, 0, 0, 0); // Imposta l'ora a mezzanotte per il confronto
 
