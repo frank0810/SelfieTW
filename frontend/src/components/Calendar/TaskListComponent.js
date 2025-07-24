@@ -143,10 +143,10 @@ const TaskListComponent = ({ tasks, fetchTasks }) => {
         {/* Header per mobile */}
         <ListGroup.Item className="d-block d-md-none text-center bg-primary text-white">
           <Row>
-            <Col xs={5}>Titolo</Col>
-            <Col xs={3}>Scadenza</Col>
-            <Col xs={2}>Stato</Col>
-            <Col xs={2}>Azioni</Col>
+            <Col>Titolo</Col>
+            <Col>Scadenza</Col>
+            <Col>Stato</Col>
+            <Col></Col>
           </Row>
         </ListGroup.Item>
 
@@ -160,13 +160,13 @@ const TaskListComponent = ({ tasks, fetchTasks }) => {
             {/* Vista mobile */}
             <div className="d-block d-md-none">
               <Row className="align-items-center">
-                <Col xs={5}>
+                <Col>
                   <strong>{abbreviateTitle(task.title)}</strong>
                 </Col>
-                <Col xs={3}>
+                <Col>
                   <small>{new Date(task.deadline).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' })}</small>
                 </Col>
-                <Col xs={2} className="text-center">
+                <Col className="text-center">
                   <span 
                     style={{
                       display: 'inline-block',
@@ -177,7 +177,7 @@ const TaskListComponent = ({ tasks, fetchTasks }) => {
                     }}
                   ></span>
                 </Col>
-                <Col xs={2} className="text-center">
+                <Col className="text-center">
                   <span 
                     style={{ cursor: 'pointer', fontSize: '14px' }}
                     onClick={() => handleEditTask(task)}
