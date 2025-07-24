@@ -82,7 +82,7 @@ const SingleTaskComponent = ({ task, fetchTasks, virtualTime }) => {
 
   return (
     <>
-      <ListGroup.Item className="text-center">
+      <ListGroup.Item className="mb-2 border-0">
         <Row className="align-items-center">
           <Col>{task.title}</Col>
           <Col>{task.deadline.slice(0, 10)}</Col>

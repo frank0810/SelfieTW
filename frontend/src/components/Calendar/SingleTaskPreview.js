@@ -16,6 +16,11 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
         setLoading(false);
     };
 
+    const abbreviateDescription = (desc, maxLength = 50) => {
+        if (!desc) return '';
+        return desc.length > maxLength ? desc.substring(0, maxLength) + '...' : desc;
+    };
+
     const validateTask = useCallback(() => {
         if (!editedTask.title?.trim()) {
             setError('Il titolo è obbligatorio');
@@ -145,7 +150,7 @@ const SingleTaskPreview = ({ task, onTaskUpdate, onTaskDelete }) => {
                         {task.description && (
                             <div className="mb-1">
                                 <small className="text-muted">📝 </small>
-                                <small><strong>Descrizione:</strong> {task.description}</small>
+                                <small><strong>Descrizione:</strong> {abbreviateDescription(task.description)}</small>
                             </div>
                         )}
                     </Col>

@@ -1,156 +1,14 @@
-// import React, { useEffect } from 'react';
-// import { ListGroup, Row, Col } from 'react-bootstrap';
-// import { useTimeMachine } from '../../TimeMachineContext';
-
-// const EventListPreview = ({ events }) => {
-//   const { virtualTime } = useTimeMachine();
-
-//   const getTodaysEvents = (events, currentDate) => {
-//     const today = currentDate.toISOString().slice(0, 10);
-//     return events.filter(event => {
-//       const eventStart = new Date(event.startDate).toISOString().slice(0, 10);
-//       const eventEnd = new Date(event.endDate).toISOString().slice(0, 10);
-//       return today >= eventStart && today <= eventEnd;
-//     });
-//   };
-
-//   const getWeeklyEvents = (events, currentDate) => {
-//     const startOfWeek = new Date(currentDate);
-//     startOfWeek.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Lunedì
-//     startOfWeek.setHours(0, 0, 0, 0);
-
-//     const endOfWeek = new Date(startOfWeek);
-//     endOfWeek.setDate(startOfWeek.getDate() + 6); // Domenica
-//     endOfWeek.setHours(23, 59, 59, 999);
-
-//     return events.filter(event => {
-//       const eventStart = new Date(event.startDate);
-//       const eventEnd = new Date(event.endDate);
-//       return (
-//         (eventStart >= startOfWeek && eventStart <= endOfWeek) ||
-//         (eventEnd >= startOfWeek && eventEnd <= endOfWeek) ||
-//         (eventStart <= startOfWeek && eventEnd >= endOfWeek)
-//       );
-//     });
-//   };
-
-//   useEffect(() => {}, [virtualTime]);
-
-//   const currentDate = new Date(virtualTime || new Date());
-//   const todaysEvents = getTodaysEvents(events, currentDate);
-//   const weeklyEvents = getWeeklyEvents(events, currentDate);
-
-//   return (
-//     <div className="text-center">
-//       <h2 className="mb-4">Eventi di Oggi</h2>
-//       <ListGroup className="w-75 mx-auto">
-//         <ListGroup.Item className="text-center bg-primary text-white">
-//           <Row>
-//             <Col>Titolo</Col>
-//             <Col>Luogo</Col>
-//             <Col>Durata</Col>
-//           </Row>
-//         </ListGroup.Item>
-//         {todaysEvents.length > 0 ? (
-//           todaysEvents.map(event => (
-//             <ListGroup.Item key={event._id}>
-//               <Row>
-//                 <Col><strong>{event.title}</strong></Col>
-//                 <Col>{event.location || 'Nessuna posizione'}</Col>
-//                 <Col>
-//                   {event.startTime
-//                     ? `${event.startTime} - ${event.endTime || ''}`
-//                     : 'Tutto il giorno'}
-//                 </Col>
-//               </Row>
-//             </ListGroup.Item>
-//           ))
-//         ) : (
-//           <ListGroup.Item>Nessun evento per oggi</ListGroup.Item>
-//         )}
-//       </ListGroup>
-
-//       <h2 className="mt-4 mb-4">Eventi della Settimana</h2>
-//       <ListGroup className="w-75 mx-auto">
-//         <ListGroup.Item className="text-center bg-primary text-white">
-//           <Row>
-//             <Col>Titolo</Col>
-//             <Col>Luogo</Col>
-//             <Col>Giorno</Col>
-//             <Col>Durata</Col>
-//           </Row>
-//         </ListGroup.Item>
-//         {weeklyEvents.length > 0 ? (
-//           weeklyEvents.map(event => {
-//             const eventDay = new Date(event.startDate).toLocaleDateString('it-IT', {
-//               weekday: 'long', // mi dice il giorno della settimana
-//             });
-//             return (
-//               <ListGroup.Item key={event._id}>
-//                 <Row>
-//                   <Col><strong>{event.title}</strong></Col>
-//                   <Col>{event.location || 'Nessuna posizione'}</Col>
-//                   <Col>{eventDay}</Col>
-//                   <Col>
-//                     {event.startTime
-//                       ? `${event.startTime} - ${event.endTime || ''}`
-//                       : 'Tutto il giorno'}
-//                   </Col>
-//                 </Row>
-//               </ListGroup.Item>
-//             );
-//           })
-//         ) : (
-//           <ListGroup.Item>Nessun evento per questa settimana</ListGroup.Item>
-//         )}
-//       </ListGroup>
-//     </div>
-//   );
-// };
-
-// export default EventListPreview;
-
 import React, { useEffect } from 'react';
 import { ListGroup, Row, Col } from 'react-bootstrap';
 import { useTimeMachine } from '../../TimeMachineContext';
 
 const EventListPreview = ({ events, onEventUpdate }) => {
   const { virtualTime } = useTimeMachine();
-  // const [showModal, setShowModal] = useState(false);
-  // const [selectedEvent, setSelectedEvent] = useState(null);
-  // const [editedEvent, setEditedEvent] = useState({});
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState('');
 
   // Funzione per abbreviare il titolo
-  const abbreviateTitle = (title, maxLength = 15) => {
-    return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
-  };
-
-  // Funzione per aggiornare automaticamente l'orario di fine
-  // const handleStartTimeChange = (newStartTime) => {
-  //   setEditedEvent(prev => {
-  //     const updated = { ...prev, startTime: newStartTime };
-      
-  //     if (newStartTime) {
-  //       const [hours, minutes] = newStartTime.split(':');
-  //       const startDateTime = new Date();
-  //       startDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-        
-  //       const endDateTime = new Date(startDateTime);
-  //       endDateTime.setHours(endDateTime.getHours() + 1);
-        
-  //       const newEndTime = endDateTime.toLocaleTimeString([], { 
-  //         hour: '2-digit', 
-  //         minute: '2-digit', 
-  //         hour12: false 
-  //       });
-  //       updated.endTime = newEndTime;
-  //     }
-      
-  //     return updated;
-  //   });
-  // };
+  const abbreviateTitle = (title, maxLength = 10) => { 
+  return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
+};
 
   const getTodaysEvents = (events, currentDate) => {
     const today = currentDate.toISOString().slice(0, 10);
@@ -180,103 +38,6 @@ const EventListPreview = ({ events, onEventUpdate }) => {
       );
     });
   };
-
-  // Funzione per aprire il modale di modifica
-  // const handleEditEvent = (event) => {
-  //   setSelectedEvent(event);
-  //   setEditedEvent({ ...event });
-  //   setShowModal(true);
-  //   setError('');
-  // };
-
-  // Funzione per chiudere il modale
-  // const handleModalClose = () => {
-  //   setShowModal(false);
-  //   setSelectedEvent(null);
-  //   setEditedEvent({});
-  //   setError('');
-  // };
-
-  // Validazione del form
-  // const validateEvent = () => {
-  //   if (!editedEvent.title?.trim()) {
-  //     setError('Il titolo è obbligatorio');
-  //     return false;
-  //   }
-  //   if (!editedEvent.startDate) {
-  //     setError('La data di inizio è obbligatoria');
-  //     return false;
-  //   }
-  //   if (!editedEvent.endDate) {
-  //     setError('La data di fine è obbligatoria');
-  //     return false;
-  //   }
-    
-  //   const startDate = new Date(editedEvent.startDate);
-  //   const endDate = new Date(editedEvent.endDate);
-    
-  //   if (endDate < startDate) {
-  //     setError('La data di fine non può essere precedente alla data di inizio');
-  //     return false;
-  //   }
-
-  //   if (!editedEvent.isAllDay) {
-  //     if (!editedEvent.startTime || !editedEvent.endTime) {
-  //       setError('Gli orari di inizio e fine sono obbligatori');
-  //       return false;
-  //     }
-      
-  //     if (startDate.toDateString() === endDate.toDateString()) {
-  //       const startDateTime = new Date(`${editedEvent.startDate}T${editedEvent.startTime}`);
-  //       const endDateTime = new Date(`${editedEvent.endDate}T${editedEvent.endTime}`);
-        
-  //       if (endDateTime <= startDateTime) {
-  //         setError('L\'orario di fine deve essere successivo a quello di inizio');
-  //         return false;
-  //       }
-  //     }
-  //   }
-    
-  //   setError('');
-  //   return true;
-  // };
-
-  // Salva le modifiche
-  // const handleSaveEvent = async () => {
-  //   if (!validateEvent()) return;
-
-  //   setLoading(true);
-  //   setError('');
-
-  //   try {
-  //     const response = await fetch(`${API_BASE_URL}/events/update/${selectedEvent._id}`, {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${localStorage.getItem('token')}`,
-  //       },
-  //       body: JSON.stringify(editedEvent),
-  //     });
-
-  //     if (response.ok) {
-  //       const updatedEvent = await response.json();
-  //       handleModalClose();
-  //       if (onEventUpdate) {
-  //         onEventUpdate(updatedEvent);
-  //       } else {
-  //         window.location.reload();
-  //       }
-  //     } else {
-  //       const errorData = await response.json();
-  //       setError(errorData.message || 'Errore del server');
-  //     }
-  //   } catch (error) {
-  //     console.error('Errore nella modifica dell\'evento:', error);
-  //     setError('Errore nella modifica dell\'evento. Riprova più tardi.');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   useEffect(() => {}, [virtualTime]);
 
@@ -312,7 +73,7 @@ const EventListPreview = ({ events, onEventUpdate }) => {
               {/* Vista desktop */}
               <div className="d-none d-md-block">
                 <Row>
-                  <Col><strong>{event.title}</strong></Col>
+                  <Col><strong>{abbreviateTitle(event.title, 10)}</strong></Col>
                   <Col>{event.location || 'Nessuna posizione'}</Col>
                   <Col>
                     {event.startTime
@@ -326,7 +87,7 @@ const EventListPreview = ({ events, onEventUpdate }) => {
               <div className="d-block d-md-none">
                 <Row className="align-items-center">
                   <Col>
-                    <strong>{abbreviateTitle(event.title)}</strong>
+                    <strong>{abbreviateTitle(event.title, 7)}</strong>
                   </Col>
                   <Col>
                     <small>
@@ -376,7 +137,7 @@ const EventListPreview = ({ events, onEventUpdate }) => {
                 {/* Vista desktop */}
                 <div className="d-none d-md-block">
                   <Row>
-                    <Col><strong>{event.title}</strong></Col>
+                    <Col><strong>{abbreviateTitle(event.title, 10)}</strong></Col>
                     <Col>{event.location || 'Nessuna posizione'}</Col>
                     <Col>{new Date(event.startDate).toLocaleDateString('it-IT', { weekday: 'long' })}</Col>
                     <Col>
@@ -391,7 +152,7 @@ const EventListPreview = ({ events, onEventUpdate }) => {
                 <div className="d-block d-md-none">
                   <Row className="align-items-center">
                     <Col>
-                      <strong>{abbreviateTitle(event.title)}</strong>
+                      <strong>{abbreviateTitle(event.title, 7)}</strong>
                     </Col>
                     <Col>
                       <small>{eventDay}</small>
